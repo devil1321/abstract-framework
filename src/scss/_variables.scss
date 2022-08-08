@@ -1,0 +1,163 @@
+/* No CSS *//*# sourceMappingURL=style.css.map */
+:root {
+    // colors
+    --red            : #B03060;
+    --light-red      : rgba(176, 48, 96, 0.3);
+    --border-red     : #cb0000;
+    --orange         : #FE9A76;
+    --light-orange   : rgba(254, 154, 118, 0.3);
+    --border-orange  : #ff6600;
+    --yellow         : #FFD700;
+    --light-yellow   : rgba(255, 215, 0, 0.3);
+    --border-yellow  : #c5a801;
+    --olive          : #32CD32;
+    --light-olive    : rgba(50, 205, 50, 0.3);
+    --border-olive   : #00ff00;
+    --green          : #016936;
+    --light-green    : rgba(1, 105, 54, 0.3);
+    --border-green   : #00ff84;
+    --teal           : #008080;
+    --light-teal     : rgba(0, 128, 128, 0.3);
+    --border-teal    : #00ffff;
+    --blue           : #0E6EB8;
+    --light-blue     : rgba(14, 110, 184, 0.3);
+    --border-blue    : #0091ff;
+    --violet         : #EE82EE;
+    --light-violet   : rgba(238, 130, 238, 0.3);
+    --border-violet  : #ff00ff;
+    --purple         : #B413EC;
+    --light-purple   : rgba(180, 19, 236, 0.3);
+    --border-purple  : #9e00d2;
+    --pink           : #FF1493;
+    --light-pink     : rgba(255, 20, 147,0.3);
+    --border-pink    : #d60072;
+    --brown          : #A52A2A;
+    --light-brown    : rgba(165, 42, 42, 0.3);
+    --border-brown   : #ff0000;
+    --grey           : #A0A0A0;
+    --light-grey     : rgba(160, 160, 160, 0.3);
+    --border-grey    :#848484;
+    --black          : #000000;
+    --light-black    : rgba(0, 0, 0, 0.3);
+    --border-black   : #595959;
+    --white          : white;
+    --light-white    : #f3f3f3;
+    --medium-white   : #e2e2e2;
+    // transition variables
+    --pos-top             :   0px;
+    --pos-bottom          :   0px;
+    --pos-bottom-center   :   -150%;
+    --pos-left            :   0px;
+    --pos-left-center     :   50%;
+    --pos-right           :   0px;
+}
+
+$elementsColors:(
+    'red'            : #ff0000,
+    'orange'         : #FE9A76,
+    'yellow'         : #FFD700,
+    'olive'          : #32CD32,
+    'green'          : #016936,
+    'teal'           : #008080,
+    'blue'           : #0E6EB8,
+    'violet'         : #EE82EE,
+    'purple'         : #B413EC,
+    'pink'           : #FF1493,
+    'brown'          : #A52A2A,
+    'grey'           : #A0A0A0,
+    'dark-grey'      : #4b4b4b,
+    'black'          : #000000,
+    'white'          : white,
+    'light-white'    : #f3f3f3,
+    'medium-white'   : #e2e2e2,
+        
+);
+
+
+
+$elementsLightColors:(
+     'red'      : rgba(176, 48, 96, 0.3),
+     'orange'   : rgba(254, 154, 118, 0.3),
+     'yellow'   : rgba(255, 215, 0, 0.3),
+     'olive'    : rgba(50, 205, 50, 0.3),
+     'green'    : rgba(1, 105, 54, 0.3),
+     'teal'     : rgba(0, 128, 128, 0.3),
+     'blue'     : rgba(14, 110, 184, 0.3),
+     'violet'   : rgba(238, 130, 238, 0.3),
+     'purple'   : rgba(180, 19, 236, 0.3),
+     'pink'     : rgba(255, 20, 147,0.3),
+     'brown'    : rgba(165, 42, 42, 0.3),
+     'grey'     : rgba(160, 160, 160, 0.3),
+     'black'    : rgba(0, 0, 0, 0.3),
+);
+
+
+$elementsBorderColors:(
+    'red'            : #fe7d7d,
+    'orange'         : rgb(246, 121, 121),
+    'yellow'         : #f8e265,
+    'olive'          : #67ff67,
+    'green'          : #2c7b55,
+    'teal'           : #37a3a3,
+    'blue'           : #0E6EB8,
+    'violet'         : #f2d0f2,
+    'purple'         : #d786f2,
+    'pink'           : #f372b7,
+    'brown'          : #e55d5d,
+    'grey'           : #cecece,
+    'black'          : #727272,
+        
+);
+$tweleveColumnSizes:(
+    1   :   8.33%,
+    2   :   16.66%,
+    3   :   24.99%,
+    4   :   33.32%,
+    5   :   41.65%, 
+    6   :   49.98%,
+    7   :   58.31%,
+    8   :   66.64%,
+    9   :   74.97%,
+    10  :   83.3%,
+    11  :   91.63%,
+    12  :   100%
+);
+
+$sixteenColumnSizes:(
+    1   :   6.25%,
+    2   :   12.5%,
+    3   :   18.75%,
+    4   :   25%,
+    5   :   31.25%,
+    6   :   37.5%,
+    7   :   43.75%,
+    8   :   50%,
+    9   :   56.25%, 
+    10  :   62.5%,
+    11  :   68.75%,
+    12  :   75%,
+    13  :   81.25%,
+    14  :   87.5%,
+    15  :   93.75%,
+    16  :   100%
+);
+
+$margins:(
+    1   :   5px,
+    2   :   10px,
+    3   :   20px,
+    4   :   25px,
+    5   :   30px
+);
+$paddings:(
+    1   :   5px,
+    2   :   10px,
+    3   :   20px,
+    4   :   25px,
+    5   :   30px
+);
+
+
+
+
+
