@@ -1,0 +1,49 @@
+@import './controlers-mixins.scss';
+.features{
+    &__heading{
+        font-size: pxToRem(40);
+    }
+   
+}
+.benefits{
+    &__heading{
+        font-size: pxToRem(40);
+    }
+   
+}
+.documentation{
+    &__heading{
+        font-size: pxToRem(40);
+    }
+    &__left{
+        position: relative;
+        z-index: 2;
+    }
+}
+.community{
+    &__heading{
+        font-size: pxToRem(40);
+    }
+}
+.contact{
+    &__heading{
+        font-size: pxToRem(40);
+    }
+}
+.footer{
+    &__link:hover{
+        cursor: pointer;
+        position: relative;
+        top:0px;
+        left:0px;
+        opacity: 0.7;
+        &::before{
+            content: '';
+            width: 50%;
+            position: absolute;
+            bottom: -5px;
+            left: 0px;
+            border-bottom: 1px solid var(--olive); 
+        }
+    }
+}
