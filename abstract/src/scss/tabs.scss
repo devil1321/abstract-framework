@@ -1,0 +1,85 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.tabs{
+    overflow: hidden;
+    border-radius: 5px;
+    &__slide-x{
+        .tabs__tabs-wrapper{
+            overflow: hidden;
+            height: 100%;
+        }
+        .tabs__view{
+            position: relative;
+            top:0px;
+            left:0px;
+            transition: all 0.7s ease-in-out;
+            @include createFlex(row,flex-start,flex-start,null);
+            .tabs__tab{
+                display: block;
+                min-width: 96.5%;
+            }
+        }
+    }
+    &__slide-y{
+        .tabs__tabs-wrapper{
+            overflow: hidden;
+            transition: all 0.7s ease-in-out;
+        }
+        .tabs__view{
+            position: relative;
+            top:0px;
+            left:0px;
+            transition: all 0.7s ease-in-out;
+            .tabs__tab{
+                min-height: 100%;
+                display: block;
+            }
+        }
+    }
+    &__nav{
+        @include createFlex(row,flex-start,center,null);
+        border-bottom: 1px solid var(--medium-white);
+    }
+    &__nav-item{
+        cursor: pointer;
+        padding:10px 20px;
+        transition: all 0.5s ease-in-out;
+        &:not(:last-of-type){
+            border-right: 1px solid var(--medium-white);
+        }
+        &.active{
+            background-color: var(--medium-white);
+        }
+        &:hover{
+            background-color: var(--medium-white);
+        }
+    }
+    &__pills{
+        .tabs__nav-item{
+            margin-right:5px;
+            margin-bottom: 5px;
+            background-color: var(--medium-white);
+            border-radius: 5px;
+           
+        }
+        .tabs__tab{
+            margin:5px 0px;
+            border-radius: 5px;
+            background-color: var(--medium-white);
+        }
+    }
+    &__tab{
+        padding:10px;
+        display: none;
+        border: 1px solid var(--medium-white);
+        border-top: 0px;
+        transition: all 0.7s ease-in-out;
+        &.active{
+            display: block;
+        }
+    }
+}

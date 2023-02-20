@@ -1,0 +1,235 @@
+$alert-margin:8px 0px;
+$alert-border-radius:15px;
+$alert-padding:12px 10px;
+$alert-pararaph-margin:0px;
+$alert-box-shadow-x:0px;
+$alert-box-shadow-y:0px;
+$alert-box-shadow-spread:3px;
+$alert-box-shadow-outline-x:0px;
+$alert-box-shadow-outline-y:0px;
+$alert-box-shadow-outline-spread:5px;
+$alert-light-color-opacity:0.3;
+$alert-gradient-angle:45deg;
+$alert-dark-gradient-color:var(--black);
+$alert-light-gradient-color:var(--white);
+$alert-close-button-light:var(--white);
+$alert-close-button-dark:var(--black);
+
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.alert{
+    position: relative;
+    overflow: hidden;
+    max-height: 1080px;
+    max-width: 1920px;
+    margin: 8px 0px; 
+    border-radius: 15px;
+    padding:12px 10px;
+    @include createFlex(row,space-between,center,null);
+    p{
+        margin: $alert-pararaph-margin;
+    } 
+    @each $class,$color in $elementsColors {
+        &__#{$class}{
+            background-color: $color;
+            color:isColorDark($color);
+            box-shadow: $alert-box-shadow-x $alert-box-shadow-y $alert-box-shadow-spread $color;
+            @if(isColorDarkBool($color)){
+                span{
+                    border-bottom: 2px solid $alert-close-button-dark
+                }
+            }
+            @else{
+                span{
+                    border-bottom: 2px solid $alert-close-button-light;
+                }
+            }
+        }
+        &__#{$class}-light{
+            background-color: rgba($color,$alert-light-color-opacity);
+            color:isColorDark(rgba($color,$alert-light-color-opacity));
+            box-shadow: $alert-box-shadow-x $alert-box-shadow-y $alert-box-shadow-spread ($color,$alert-light-color-opacity);
+            @if(isColorDarkBool(rgba($color,$alert-light-color-opacity))){
+                span{
+                    border-bottom: 2px solid $alert-close-button-dark
+                }
+            }
+            @else{
+                span{
+                    border-bottom: 2px solid $alert-close-button-light;
+                }
+            }
+        }
+        
+        &.gradient-dark-#{$class}{
+            background: linear-gradient($alert-gradient-angle,$color,$alert-dark-gradient-color);
+            color:isColorDark($color);
+            box-shadow: $alert-box-shadow-x $alert-box-shadow-y $alert-box-shadow-spread $color;
+            @if(isColorDarkBool($color)){
+                span{
+                    border-bottom: 2px solid $alert-close-button-dark;
+                }
+            }
+            @else{
+                span{
+                    border-bottom: 2px solid $alert-close-button-light;
+                }
+            }
+          
+        }
+        &.gradient-dark-#{$class}-light{
+            background: linear-gradient($alert-gradient-angle,rgba($color,$alert-light-color-opacity),rgba($alert-dark-gradient-color,$alert-light-color-opacity));
+            color:isColorDark(rgba($color,$alert-light-color-opacity));
+            box-shadow: $alert-box-shadow-x $alert-box-shadow-y $alert-box-shadow-spread rgba($color,$alert-light-color-opacity);
+            @if(isColorDarkBool(rgba($color,$alert-light-color-opacity))){
+                span{
+                    border-bottom: 2px solid $alert-close-button-dark
+                }
+            }
+            @else{
+                span{
+                    border-bottom: 2px solid $alert-close-button-light;
+                }
+            }
+        }
+        &.gradient-dark-#{$class}-inverted{
+            background: linear-gradient($alert-gradient-angle,invert($color),$alert-dark-gradient-color);
+            color:isColorDark(invert($color));
+            box-shadow: $alert-box-shadow-x $alert-box-shadow-y $alert-box-shadow-spread $color;
+            @if(isColorDarkBool(invert($color))){
+                span{
+                    border-bottom: 2px solid $alert-close-button-dark
+                }
+            }
+            @else{
+                span{
+                    border-bottom: 2px solid $alert-close-button-light;
+                }
+            }
+        }
+        &.gradient-dark-#{$class}-light-inverted{
+            background: linear-gradient($alert-gradient-angle,invert(rgba($color,$alert-light-color-opacity)),rgba($alert-dark-gradient-color,$alert-light-color-opacity));
+            color:isColorDark(invert(rgba($color,$alert-light-color-opacity)));
+            box-shadow: $alert-box-shadow-x $alert-box-shadow-y $alert-box-shadow-spread rgba($color,$alert-light-color-opacity);
+            @if(isColorDarkBool(invert(rgba($color,$alert-light-color-opacity)))){
+                span{
+                    border-bottom: 2px solid $alert-close-button-dark
+                }
+            }
+            @else{
+                span{
+                    border-bottom: 2px solid $alert-close-button-light;
+                }
+            }
+        }
+        &.gradient-light-#{$class}{
+            background: linear-gradient($alert-gradient-angle,$alert-light-gradient-color,$color);
+            color:isColorDark($color);
+            box-shadow: 0px 0px 3px $color;
+            span{
+                border-bottom: 2px solid $alert-close-button-light;
+            }
+        }
+        &.gradient-light-#{$class}-light{
+            background: linear-gradient($alert-gradient-angle,$alert-light-gradient-color,rgba($color,$alert-light-color-opacity));
+            color:isColorDark(rgba($color,$alert-light-color-opacity));
+            box-shadow: $alert-box-shadow-x $alert-box-shadow-y $alert-box-shadow-spread rgba($color,$alert-light-color-opacity);
+            span{
+                border-bottom: 2px solid $alert-close-button-light;
+            }
+        }
+        &.gradient-light-#{$class}-inverted{
+            background: linear-gradient($alert-gradient-angle,$alert-light-gradient-color,invert($color));
+            color:isColorDark(invert($color));
+            box-shadow: $alert-box-shadow-x $alert-box-shadow-y $alert-box-shadow-spread $color;
+            span{
+                border-bottom: 2px solid $alert-close-button-light;
+            }        
+        }
+        &.gradient-light-#{$class}-light-inverted{
+            background: linear-gradient($alert-gradient-angle,$alert-light-gradient-color,invert(rgba($color,$alert-light-color-opacity)));
+            color:isColorDark(invert(rgba($color,$alert-light-color-opacity)));
+            box-shadow: $alert-box-shadow-x $alert-box-shadow-y $alert-box-shadow-spread rgba($color,$alert-light-color-opacity);
+            span{
+                      border-bottom: 2px solid $alert-close-button-light;
+            }
+         
+        }
+       
+        &__#{$class}-outline{
+            background-color: var(--white);
+            box-shadow: $alert-box-shadow-outline-x $alert-box-shadow-outline-y $alert-box-shadow-outline-spread $color;
+            color:black;
+            span{
+                border-bottom: 2px solid $alert-close-button-dark
+            }
+        }
+        &__#{$class}-outline-inside{
+            background-color: var(--white);
+            box-shadow: $alert-box-shadow-outline-x $alert-box-shadow-outline-y $alert-box-shadow-outline-spread $color inset;
+            color:black;
+            span{
+                border-bottom: 2px solid $alert-close-button-dark
+            }
+        }
+    }
+    [class^="alert__close"]{
+        cursor: pointer;
+        background: transparent;
+        height: 20px;
+        border:0px;
+    }
+    &__close{
+        span{
+            position: relative;
+            top:7px;
+            right:0px;
+            display: block;
+            width: 20px;
+            height: 0px;
+            transform-origin: 8px center;
+            &:first-of-type{
+                    transform: rotate($alert-gradient-angle);
+                }
+            &:last-of-type{
+                    transform: rotate(-$alert-gradient-angle);
+                }
+            }
+        }
+        &:focus{
+            & span:first-of-type{
+                animation: closingAlertFirstChild 1s ease-in-out forwards;
+            }
+            & span:last-of-type{
+                animation: closingAlertLastChild 1s ease-in-out forwards;
+            }
+            @keyframes closingAlertFirstChild {
+                0%{
+                    transform: rotate($alert-gradient-angle) scale(1.1);
+                }
+                50%{
+                    transform: rotate($alert-gradient-angle) scale(1);
+                }
+                100%{
+                    transform:rotate($alert-gradient-angle) scale(1.1);
+                }
+             
+            }
+            @keyframes closingAlertLastChild {
+                0%{
+                    transform: rotate(-$alert-gradient-angle) scale(1.1);
+                }
+                50%{
+                    transform: rotate(-$alert-gradient-angle) scale(1);
+                }
+                100%{
+                    transform: rotate(-$alert-gradient-angle) scale(1.1);
+                }
+              
+            }
+        }
+    }   

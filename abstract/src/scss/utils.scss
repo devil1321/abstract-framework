@@ -1,0 +1,2024 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+*{
+    margin:0px;
+    padding:0px;
+}
+@each $class,$size in $font-sizes{
+    .font-#{$class}{
+        font-size: $size;
+    }
+}
+.mr-auto{
+    margin:auto;
+}
+
+.mr-x-auto{
+    margin:0px auto;
+}
+
+.mr-y-auto{
+    margin:auto 0px;
+}
+.mr-l-auto{
+    margin-left: auto;
+}
+.mr-r-auto{
+    margin-right: auto;
+}
+.mr-t-auto{
+    margin-top: auto;
+}
+.mr-b-auto{
+    margin-bottom: auto;
+}
+@each $index, $value in $margins{
+    .mr-#{$index} {
+        margin:$value;
+    }
+}
+@each $index, $value in $margins{
+    .mr-y-#{$index} {
+        margin-top:$value;
+        margin-bottom:$value;
+    }
+}
+@each $index, $value in $margins{
+    .mr-x-#{$index} {
+        margin-left:$value;
+        margin-right:$value;
+    }
+}
+@each $index, $value in $margins{
+    .mr-t-#{$index} {
+        margin-top:$value;
+    }
+}
+@each $index, $value in $margins{
+    .mr-b-#{$index} {
+        margin-bottom:$value;
+    }
+}
+@each $index, $value in $margins{
+    .mr-l-#{$index} {
+        margin-left:$value;
+    }
+}
+@each $index, $value in $margins{
+    .mr-r-#{$index} {
+        margin-right:$value;
+    }
+}
+.pd-auto{
+    padding:auto;
+}
+
+.pd-x-auto{
+    padding:0px auto;
+}
+
+.pd-y-auto{
+    padding:auto 0px;
+}
+@each $index, $value in $margins{
+    .pd-#{$index} {
+        padding:$value;
+    }
+}
+@each $index, $value in $paddings{
+    .pd-y-#{$index} {
+        padding-top:$value;
+        padding-bottom:$value;
+    }
+}
+@each $index, $value in $paddings{
+    .pd-x-#{$index} {
+        padding-left:$value;
+        padding-right:$value;
+    }
+}
+@each $index, $value in $paddings{
+    .pd-t-#{$index} {
+        padding-top:$value;
+    }
+}
+@each $index, $value in $paddings{
+    .pd-b-#{$index} {
+        padding-bottom:$value;
+    }
+}
+@each $index, $value in $paddings{
+    .pd-l-#{$index} {
+        padding-left:$value;
+    }
+}
+@each $index, $value in $paddings{
+    .pd-r-#{$index} {
+        padding-right:$value;
+    }
+}
+
+$i:0;
+@while $i < 100 {
+    $width: $i + 5%;
+    $i:$i + 5;
+    .min-w-#{$i}{
+        min-width:$width;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $height: $i + 5%;
+    $i:$i + 5;
+    .min-h-#{$i}{
+        min-height:$height;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $width: $i + 5%;
+    $i:$i + 5;
+    .max-w-#{$i}{
+        max-width:$width;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $height: $i + 5%;
+    $i:$i + 5;
+    .max-h-#{$i}{
+        max-height:$height;
+    }
+}
+$i:0;
+@while $i < 1900 {
+    $i:$i + 50px;
+    .min-h-#{$i}{
+        min-height:$i;
+    }
+}
+$i:0;
+@while $i < 1900 {
+    $i:$i + 50px;
+    .min-w-#{$i}{
+        min-width:$i;
+    }
+}
+$i:0;
+@while $i < 1900 {
+    $i:$i + 50px;
+    .max-h-#{$i}{
+        max-height:$i;
+    }
+}
+$i:0;
+@while $i < 1900 {
+    $i:$i + 50px;
+    .max-w-#{$i}{
+        max-width:$i;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $width: $i + 5%;
+    $i:$i + 5;
+    .w-#{$i}{
+        width:$width;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $height: $i + 5%;
+    $i:$i + 5;
+    .h-#{$i}{
+        height:$height;
+    }
+}
+$i:0;
+@while $i < 1900 {
+    $i:$i + 50px;
+    .h-#{$i}{
+        height:$i;
+    }
+}
+$i:0;
+@while $i < 1900 {
+    $i:$i + 50px;
+    .w-#{$i}{
+        width:$i;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $width: $i + 5vw;
+    $i:$i + 5;
+    .w-#{$i}-vw{
+        width:$width;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $height: $i + 5vh;
+    $i:$i + 5;
+    .h-#{$i}-vh{
+        height:$height;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $width: $i + 5vw;
+    $i:$i + 5;
+    .min-w-#{$i}-vw{
+        min-width:$width;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $height: $i + 5vh;
+    $i:$i + 5;
+    .min-h-#{$i}-vh{
+        min-height:$height;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $width: $i + 5vw;
+    $i:$i + 5;
+    .max-w-#{$i}-vw{
+        max-width:$width;
+    }
+}
+$i:0;
+@while $i < 100 {
+    $height: $i + 5vh;
+    $i:$i + 5;
+    .max-h-#{$i}-vh{
+        max-height:$height;
+    }
+}
+.font-bold{
+    font-weight: bold;
+}
+.font-italic{
+    font-style: italic;
+}
+.font-normal{
+    font-style: normal;
+}
+@each $class,$color in $elementsColors{
+    .bg-#{$class}{
+        background-color:$color;
+        color:isColorDark($color);
+    }
+}
+@each $class,$color in $elementsColors{
+    .bg-#{$class}-inverted{
+        background-color:invert($color);
+        color:isColorDark(invert($color));
+    }
+}
+@each $class,$color in $elementsLightColors{
+    .bg-#{$class}-light{
+        background-color:rgba($color,1);
+        color:isColorDark(rgba($color,1));
+    }
+}
+@each $class,$color in $elementsLightColors{
+    .bg-#{$class}-light-inverted{
+        background-color:invert(rgba($color,1));
+        color:isColorDark(invert(rgba($color,1)));
+    }
+}
+@each $class,$color in $elementsColors{
+    .gradient-dark-#{$class}{
+        background: linear-gradient(45deg,$color,var(--black));
+        color:isColorDark($color);
+    }
+}
+@each $class,$color in $elementsColors{
+    .gradient-light-#{$class}{
+        background: linear-gradient(45deg,$color,var(--white));
+        color:isColorDark($color);
+    }
+}
+
+@each $class,$color in $elementsLightColors{
+    .gradient-dark-#{$class}-light{
+       background: linear-gradient(45deg,rgba($color,1),var(--medium-black));
+       color:isColorDark($color);
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-#{$class}{
+        border: 1px solid $color;
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-#{$class}-light{
+        border:1px solid rgba($color,0.3);
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-left-#{$class}{
+        border-left: 1px solid $color;
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-left-#{$class}-light{
+        border-left:1px solid rgba($color,0.3);
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-right-#{$class}{
+        border-right: 1px solid $color;
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-right-#{$class}-light{
+        border-right:1px solid rgba($color,0.3);
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-top-#{$class}{
+        border-top: 1px solid $color;
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-top-#{$class}-light{
+        border-top:1px solid rgba($color,0.3);
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-bottom-#{$class}{
+        border-bottom: 1px solid $color;
+    }
+}
+
+
+@each $class,$color in $elementsBorderColors{
+    .border-#{$class}-light{
+        border:1px solid rgba($color,0.3);
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-left-#{$class}{
+        border-left: 1px solid $color;
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-left-#{$class}-light{
+        border-left:1px solid rgba($color,0.3);
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-right-#{$class}{
+        border-right: 1px solid $color;
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-right-#{$class}-light{
+        border-right:1px solid rgba($color,0.3);
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-top-#{$class}{
+        border-top: 1px solid $color;
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-top-#{$class}-light{
+        border-top:1px solid rgba($color,0.3);
+    }
+}
+@each $class,$color in $elementsBorderColors{
+    .border-bottom-#{$class}{
+        border-bottom: 1px solid $color;
+    }
+}
+
+@each $class,$color in $elementsBorderColors{
+    .border-bottom-#{$class}-light{
+        border-bottom:1px solid rgba($color,0.3);
+    }
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-#{$i}-gradient-to-left-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin:calc($width * -2);
+                z-index: -1;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to left, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-#{$i}-gradient-to-top-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin:calc($width * -2);
+                z-index: -1;
+                transform: translateZ(-1px);
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to top, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-left-#{$i}-gradient-to-top-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin-left:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to top, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-left-#{$i}-gradient-to-bottom-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin-left:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to bottom, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-right-#{$i}-gradient-to-top-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin-right:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to top, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-right-#{$i}-gradient-to-bottom-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin-right:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to bottom, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-#{$i}-gradient-to-bottom-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to bottom, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-#{$i}-gradient-to-right-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to right, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-top-#{$i}-gradient-to-right-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin-top:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to right, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-top-#{$i}-gradient-to-left-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin-top:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to left, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-bottom-#{$i}-gradient-to-right-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin-bottom:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to right, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-bottom-#{$i}-gradient-to-left-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin-bottom:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(to left, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-#{$i}-gradient-45deg-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(45deg, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-#{$i}-gradient-135deg-#{$class} {
+            position: relative;
+            top:0px;
+            left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin:calc($width * -2);
+                z-index: -1;
+                overflow:hidden;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(135deg, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+$i:1;
+$width:1px;
+@while $i < 6 {
+    @each $class,$color in $elementsColors{
+       .border-#{$i}-gradient-225deg-#{$class} {
+        position: relative;
+        top:0px;
+        left:0px;
+            &:before{
+                content: '';
+                position: absolute;
+                overflow:hidden;
+                top:0px;
+                left: 0px;
+                right:0px;
+                bottom:0px;
+                margin:calc($width * -2);
+                z-index: -1;
+                border-radius: inherit; /* !importanté */
+                transform:translateZ(-1px); 
+                background: linear-gradient(225deg, $color, invert($color));
+            }
+        }
+        
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+@each $class,$color in $elementsColors{
+    .hover-bg-#{$class}{
+        &:hover{
+            cursor: pointer;
+            background-color: $color;
+        }
+    }
+}
+@each $class,$color in $elementsLightColors{
+    .hover-bg-#{$class}-light{
+        &:hover{
+            cursor: pointer;
+            background-color: $color;
+        }
+    }
+}
+@each $class,$color in $elementsColors{
+    .hover-color-#{$class}{
+        &:hover{
+            cursor: pointer;
+            color: $color;
+        }
+    }
+}
+@each $class,$color in $elementsLightColors{
+    .hover-color-#{$class}-light{
+        &:hover{
+            cursor: pointer;
+            color: $color;
+        }
+    }
+}
+
+
+.gradient-color-top-before-hover:before{
+    transform:translateZ(0px);
+}
+@each $class,$color in $elementsColors{
+    .outline-#{$class}{
+        box-shadow:0px 0px 3px $color;
+    }
+}
+@each $class,$color in $elementsColors{
+    .outline-#{$class}-inside{
+        box-shadow:0px 0px 3px $color;
+    }
+}
+
+$i:0;
+$width:0px;
+@while $i < 6{
+    .border-#{$i}{
+        border-width:$width;
+    }
+    $i:$i + 1;
+    $width:$width + 1px;
+}
+.border-dashed{
+    border-style: dashed;
+}
+.border-dotted{
+    border-style: dotted;
+}
+.border-groove{
+    border-style: groove;
+}
+.border-double{
+    border-style: double;
+}
+@each $class,$color in $elementsColors{
+    .color-#{$class}{
+        color:$color;
+    }
+}
+@each $class,$color in $elementsLightColors{
+    .color-#{$class}-light{
+        color:$color;
+    }
+}
+.text-center{
+    text-align:center;
+}
+.text-left{
+    text-align:left;
+}
+.text-right{
+    text-align:right;
+}
+.text-justify{
+    text-align:justify;
+}
+.block{
+    display: block;
+}
+$i:0px;
+$class:0;
+@while $i < 30{
+    .rounded-#{$class}{
+        border-radius:$i !important;
+        border-top-left-radius:$i !important;
+        border-bottom-left-radius:$i !important;
+        border-top-right-radius:$i !important;
+        border-bottom-right-radius:$i !important;
+    }
+    $class:$class + 1;
+    $i:$i + 5px;
+}
+$i:0px;
+$class:0;
+@while $i < 30{
+    .rounded-bottom-#{$class}{
+        border-bottom-left-radius:$i;
+        border-bottom-right-radius:$i;
+    }
+    $class:$class + 1;
+    $i:$i + 5px;
+}
+$i:0px;
+$class:0;
+@while $i < 30{
+    .rounded-top-#{$class}{
+        border-top-left-radius:$i;
+        border-top-right-radius:$i;
+    }
+    $class:$class + 1;
+    $i:$i + 5px;
+}
+$i:0px;
+$class:0;
+@while $i < 30{
+    .rounded-left-#{$class}{
+        border-top-left-radius:$i;
+        border-bottom-left-radius:$i;
+    }
+    $class:$class + 1;
+    $i:$i + 5px;
+}
+$i:0px;
+$class:0;
+@while $i < 30{
+    .rounded-right-#{$class}{
+        border-top-right-radius:$i;
+        border-bottom-right-radius:$i;
+    }
+    $class:$class + 1;
+    $i:$i + 5px;
+}
+.rounded-end-right{
+    border-end-end-radius: 255px 100px;
+    direction: ltr;
+}
+.rounded-end-left{
+    border-end-end-radius: 255px 100px;
+    direction: rtl;
+}
+.rounded-start-right{
+    border-start-start-radius: 255px 100px;
+    direction: rtl;
+}
+.rounded-start-left{
+    border-start-start-radius: 255px 100px;
+    direction: ltr;
+}
+.rounded-end-left-vertical{
+    border-end-end-radius: 255px 100px;
+    writing-mode: vertical-rl;
+}
+.rounded-end-right-vertical{
+    border-end-end-radius: 255px 100px;
+    writing-mode: vertical-lr;
+}
+
+.rounded-start-right-vertical{
+    border-start-start-radius: 255px 100px;
+    writing-mode: vertical-rl;
+}
+.rounded-start-left-vertical{
+    border-start-start-radius: 255px 100px;
+    writing-mode: vertical-lr;
+}
+.rounded-start-end-left-rtl{
+    border-start-end-radius: 100px 250px;
+    direction: rtl;
+}
+.rounded-start-end-right-rtl{
+    border-start-end-radius: 100px 250px;
+    direction: ltr;
+}
+$i:0;
+$font-size:1rem;
+$step:0.50;
+@while $i < 6 {
+    $font-size:1rem + $step;
+   .heading-#{$i}{
+        font-size:$font-size;
+        
+   }
+   $i:$i + 1;
+   $step:$step + 0.50;
+}
+.container-tweleve{
+    height: 100%;
+   @each $class, $width in $tweleveColumnSizes{
+        .column-#{$class}{
+            width:$width;
+            &-sm{
+                @include breakpoint-down(small){
+                    width:$width;
+                }
+            }
+            &-sm-md{
+                @include breakpoint-down(medium-sm){
+                    width:$width;
+                }
+            }
+            &-md{
+                @include breakpoint-down(medium){
+                    width:$width;
+                }
+            }
+            &-lg{
+                @include breakpoint-down(large){
+                    width:$width;
+                }
+            }
+        }
+        .row-#{$class}{
+            height:$width;
+            &-sm{
+                @include breakpoint-down(small){
+                    height:$width;
+                }
+            }
+            &-sm-md{
+                @include breakpoint-down(medium-sm){
+                    height:$width;
+                }
+            }
+            &-md{
+                @include breakpoint-down(medium){
+                    height:$width;
+                }
+            }
+            &-lg{
+                @include breakpoint-down(large){
+                    height:$width;
+                }
+            }
+        }
+        .pos-x-plus-#{$class}{
+            margin-left:$width;
+             &-sm{
+                @include breakpoint-down(small){
+                    margin-left:$width;
+                }
+            }
+            &-sm-md{
+                @include breakpoint-down(medium-sm){
+                    margin-left:$width;
+                }
+            }
+            &-md{
+                @include breakpoint-down(medium){
+                    margin-left:$width;
+                }
+            }
+            &-lg{
+                @include breakpoint-down(large){
+                    margin-left:$width;
+                }
+            }
+        }
+        .pos-y-plus-#{$class}{
+            margin-top:$width;
+             &-sm{
+                @include breakpoint-down(small){
+                    margin-top:$width;
+                }
+            }
+            &-sm-md{
+                @include breakpoint-down(medium-sm){
+                    margin-top:$width;
+                }
+            }
+            &-md{
+                @include breakpoint-down(medium){
+                    margin-top:$width;
+                }
+            }
+            &-lg{
+                @include breakpoint-down(large){
+                    margin-top:$width;
+                }
+            }
+        }
+        .pos-x-minus-#{$class}{
+            margin-left:-$width;
+             &-sm{
+                @include breakpoint-down(small){
+                    margin-left:-$width;
+                }
+            }
+            &-sm-md{
+                @include breakpoint-down(medium-sm){
+                    margin-left:-$width;
+                }
+            }
+            &-md{
+                @include breakpoint-down(medium){
+                    margin-left:-$width;
+                }
+            }
+            &-lg{
+                @include breakpoint-down(large){
+                    margin-left:-$width;
+                }
+            }
+        }
+        .pos-y-minus-#{$class}{
+            margin-top:-$width;
+             &-sm{
+                @include breakpoint-down(small){
+                    margin-top:-$width;
+                }
+            }
+            &-sm-md{
+                @include breakpoint-down(medium-sm){
+                     margin-top:-$width;
+                }
+            }
+            &-md{
+                @include breakpoint-down(medium){
+                    margin-top:-$width;
+                }
+            }
+            &-lg{
+                @include breakpoint-down(large){
+                    margin-top:-$width;
+                }
+            }
+        }
+    }
+  }
+.container-sixteen{
+    height: 100%;
+   @each $class, $width in $sixteenColumnSizes{
+    .column-#{$class}{
+        width:$width;
+        &-sm{
+            @include breakpoint-down(small){
+                width:$width;
+            }
+        }
+        &-sm-md{
+            @include breakpoint-down(medium-sm){
+                width:$width;
+            }
+        }
+        &-md{
+            @include breakpoint-down(medium){
+                width:$width;
+            }
+        }
+        &-lg{
+            @include breakpoint-down(large){
+                width:$width;
+            }
+        }
+    }
+    .row-#{$class}{
+        height:$width;
+        &-sm{
+            @include breakpoint-down(small){
+                height:$width;
+            }
+        }
+        &-sm-md{
+            @include breakpoint-down(medium-sm){
+                height:$width;
+            }
+        }
+        &-md{
+            @include breakpoint-down(medium){
+                height:$width;
+            }
+        }
+        &-lg{
+            @include breakpoint-down(large){
+                height:$width;
+            }
+        }
+    }
+    .pos-x-plus-#{$class}{
+        margin-left:$width;
+         &-sm{
+            @include breakpoint-down(small){
+                margin-left:$width;
+            }
+        }
+        &-sm-md{
+            @include breakpoint-down(medium-sm){
+                margin-left:$width;
+            }
+        }
+        &-md{
+            @include breakpoint-down(medium){
+                margin-left:$width;
+            }
+        }
+        &-lg{
+            @include breakpoint-down(large){
+                margin-left:$width;
+            }
+        }
+    }
+    .pos-y-plus-#{$class}{
+        margin-top:$width;
+         &-sm{
+            @include breakpoint-down(small){
+                margin-top:$width;
+            }
+        }
+        &-sm-md{
+            @include breakpoint-down(medium-sm){
+                margin-top:$width;
+            }
+        }
+        &-md{
+            @include breakpoint-down(medium){
+                margin-top:$width;
+            }
+        }
+        &-lg{
+            @include breakpoint-down(large){
+                margin-top:$width;
+            }
+        }
+    }
+    .pos-x-minus-#{$class}{
+        margin-left:-$width;
+         &-sm{
+            @include breakpoint-down(small){
+                margin-left:-$width;
+            }
+        }
+        &-sm-md{
+            @include breakpoint-down(medium-sm){
+                margin-left:-$width;
+            }
+        }
+        &-md{
+            @include breakpoint-down(medium){
+                margin-left:-$width;
+            }
+        }
+        &-lg{
+            @include breakpoint-down(large){
+                margin-left:-$width;
+            }
+        }
+    }
+    .pos-y-minus-#{$class}{
+        margin-top:-$width;
+         &-sm{
+            @include breakpoint-down(small){
+                margin-top:-$width;
+            }
+        }
+        &-sm-md{
+            @include breakpoint-down(medium-sm){
+                 margin-top:-$width;
+            }
+        }
+        &-md{
+            @include breakpoint-down(medium){
+                margin-top:-$width;
+            }
+        }
+        &-lg{
+            @include breakpoint-down(large){
+                margin-top:-$width;
+            }
+            }
+        }
+    }
+  }
+[class^="column"]{
+    display: block;
+}
+.row{
+   display:flex;
+   justify-content:flex-start;
+   align-items:flex-start;
+   flex-wrap:wrap;
+}
+.row__x-center{
+    left:50%;
+    transform: translateX(-50%);
+}
+.row__y-center{
+    top:50%;
+    transform: translateY(-50%);
+}
+.row__left{
+    float:left;
+}
+.row__right{
+    float:right;
+}
+.static{
+    position:static;
+}
+.relative{
+    position:relative;
+}
+.absolute{
+    position:absolute;
+}
+.fixed{
+    position: fixed;
+}
+.sticky{
+    position: sticky;
+}
+.top-0{
+    top:0px;
+}
+.left-0{
+    left:0px;
+}
+.right-0{
+    right:0px;
+}
+.bottom-0{
+    bottom:0px;
+}
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .top-plus-#{$i}{
+        top:$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .top-plus-#{$i}px{
+        top:$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .top-minus-#{$i}{
+        top:-$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .top-minus-#{$i}px{
+        top:-$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+
+$i:0;
+$pos:0%;
+@while $i < 10 {
+    .left-plus-#{$i}{
+        left:$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .left-plus-#{$i}px{
+        left:$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .left-minus-#{$i}{
+        left:-$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .left-minus-#{$i}px{
+        left:-$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .right-plus-#{$i}{
+        right:$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .right-plus-#{$i}px{
+        right:$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .right-minus-#{$i}{
+        right:-$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .right-minus-#{$i}px{
+        right:-$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .bottom-plus-#{$i}{
+        bottom:$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .bottom-plus-#{$i}px{
+        bottom:$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .bottom-minus-#{$i}{
+        bottom:-$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .bottom-minus-#{$i}px{
+        bottom:-$pos;
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .translate-y-plus-#{$i}{
+        transform: translateY($pos);
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .translate-y-plus-#{$i}px{
+        transform: translateY($pos);
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+
+
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .translate-y-minus-#{$i}{
+        transform: translateY(-$pos);
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .translate-y-minus-#{$i}px{
+        transform: translateY(-$pos);
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+$i:0;
+$pos:0%;
+@while $i < 105 {
+    .translate-x-plus-#{$i}{
+        transform: translateX($pos);
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .translate-x-plus-#{$i}px{
+        transform: translateX($pos);
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+
+
+$i:0;
+$pos:0%;
+@while $i < 10 {
+    .translate-x-minus-#{$i}{
+        transform: translateX(-$pos);
+    }
+    $i:$i + 5;
+    $pos:$pos + 5%;
+}
+$i:0;
+$pos:0px;
+@while $i < 505 {
+    .translate-x-minus-#{$i}px{
+        transform: translateX(-$pos);
+    }
+    $i:$i + 5;
+    $pos:$pos + 5px;
+}
+.translate-left{
+    transform: translateX(-100%);
+}
+.translate-right{
+    transform: translateX(100%);
+}
+.translate-x-center{
+    position: relative;
+    left:50%;
+    transform: translateX(-50%);
+}
+.translate-y-center{
+    position: relative;
+    top:50%;
+    transform: translateY(-50%);
+}
+.translate-xy-center{
+    position: relative;
+    top:50%;
+    left:50%;
+    transform: translate(-50% -50%);
+}
+.translate-bottom{
+    transform: translateY(100%);
+}
+.translate-top{
+    transform: translateY(-100%);
+}
+.flex{
+    display: flex;
+}
+.flex__row{
+    flex-direction: row;
+}
+.flex__column{
+    flex-direction: column;
+}
+.flex__wrap{
+    flex-wrap: wrap;
+    &-sm{
+        @include breakpoint-down(small){
+            flex-wrap: wrap;
+        }
+    }
+    &-sm-md{
+        @include breakpoint-down(medium-sm){
+            flex-wrap: wrap;
+        }
+    }
+    &-md{
+        @include breakpoint-down(medium){
+            flex-wrap: wrap;
+        }
+    }
+    &-lg{
+        @include breakpoint-down(large){
+            flex-wrap: wrap;
+        }
+    }
+}
+.flex__nowrap{
+    flex-wrap: nowrap;
+}
+.justify__flex-start{
+    justify-content: flex-start;
+}
+.justify__flex-stretch{
+    justify-content: stretch;
+}
+.justify__flex-space-between{
+    justify-content:space-between
+}
+.justify__flex-space-around{
+    justify-content: space-around;
+}
+.justify__flex-space-evenly{
+    justify-content: space-evenly;
+}
+.justify__flex-center{
+    justify-content:center;
+}
+.justify__flex-end{
+    justify-content:flex-end
+}
+.align-items__flex-start{
+    align-items: flex-start;
+}
+.align-items__flex-stretch{
+   align-items: stretch;
+}
+.align-items__flex-end{
+   align-items: flex-end;
+}
+.align-items__flex-center{
+    align-items: center;
+}
+.align-items__flex-baseline{
+    align-items: baseline;
+}
+$i:0;
+$class:0;
+@while $i < 100{
+    $class:$class + 5;
+    $i:$i + 5%;
+    .flex__basis-#{$class}{
+        flex-basis: $i;
+    }  
+}
+$i:0;
+$class:0;
+@while $i < 1900{
+    $class:$class + 5;
+    $i:$i + 100px;
+    .flex__basis-#{$class}px{
+        flex-basis: $i;
+    }  
+}
+.grid{
+    display: grid;
+}
+.grid__inline{
+    display: inline-grid;
+}
+.grid__auto-column-min-content{
+    grid-auto-columns: min-content;
+}
+.grid__auto-column{
+    grid-auto-columns: auto;
+}
+.grid__auto-row-min-content{
+    grid-auto-rows: min-content;
+}
+.grid__auto-row{
+    grid-auto-rows: auto;
+}
+.grid__auto-column-max-content{
+    grid-auto-columns: max-content;
+}
+$i:0;
+$class:0;
+@while $i < 100{
+    $class:$class + 5;
+    $i:$i + 5%;
+    .grid__auto-column-#{$class}{
+        grid-auto-columns: $i;
+    }  
+}
+$i:0;
+$class:0;
+@while $i < 100{
+    $class:$class + 5;
+    $i:$i + 5%;
+    .grid__column-auto-fill-#{$class}{
+        grid-template-columns: repeat(auto-fill,minmax($i,1fr))
+    }  
+}
+$i:0;
+$class:0;
+@while $i < 100{
+    $class:$class + 5;
+    $i:$i + 5%;
+    .grid__column-auto-fit-#{$class}{
+        grid-template-columns: repeat(auto-fit,minmax($i,1fr))
+    }  
+}
+$px:0;
+$class:0;
+@while $px < 1900{
+    $class:$class + 100;
+    $px:$px + 50px;
+    .grid__column-auto-fit-#{$class}-px{
+        grid-template-columns: repeat(auto-fit,minmax($px,1fr))
+    }  
+}
+$px:0;
+$class:0;
+@while $px < 1900{
+    $class:$class + 100;
+    $px:$px + 50px;
+    .grid__column-auto-fill-#{$class}-px{
+        grid-template-columns: repeat(auto-fill,minmax($px,1fr))
+    }  
+}
+
+$i:0;
+$class:0;
+@while $i < 100{
+    $class:$class + 5;
+    $i:$i + 5%;
+    .grid__row-auto-fill-#{$class}{
+        grid-template-rows: repeat(auto-fill,minmax($i,1fr))
+    }  
+}
+$i:0;
+$class:0;
+@while $i < 100{
+    $class:$class + 5;
+    $i:$i + 5%;
+    .grid__row-auto-fit-#{$class}{
+        grid-template-rows: repeat(auto-fit,minmax($i,1fr))
+    }  
+}
+$px:0;
+$class:0;
+@while $px < 1900{
+    $class:$class + 100;
+    $px:$px + 50px;
+    .grid__row-auto-fit-#{$class}-px{
+        grid-template-rows: repeat(auto-fit,minmax($px,1fr))
+    }  
+}
+$px:0;
+$class:0;
+@while $px < 1900{
+    $class:$class + 100;
+    $px:$px + 50px;
+    .grid__row-auto-fill-#{$class}-px{
+        grid-template-rows: repeat(auto-fill,minmax($px,1fr))
+    }  
+}
+$i:0;
+$class:0;
+@while $i < 100{
+    $class:$class + 5;
+    $i:$i + 5%;
+    .grid__auto-row-#{$class}{
+        grid-auto-rows: $i;
+    }  
+}
+$i:1;
+@while $i < 16{
+   .grid__columns-#{$i}{
+        grid-template-columns: repeat(#{$i},1fr);
+   }
+   $i:$i + 1;
+}
+$i:1;
+@while $i < 16{
+    .grid__rows-#{$i}{
+        grid-template-rows: repeat(#{$i},1fr);
+    }
+   $i:$i + 1;
+}
+$i:1;
+@while $i < 17{
+    .grid__column-start-#{$i}{
+        grid-column-start:$i;
+    }
+   $i:$i + 1;
+}
+$i:1;
+@while $i < 17{
+    .grid__column-end-#{$i}{
+        grid-column-end:$i;
+    }
+   $i:$i + 1;
+}
+$i:1;
+@while $i < 17{
+    .grid__row-start-#{$i}{
+        grid-row-start:$i;
+    }
+   $i:$i + 1;
+}
+$i:1;
+@while $i < 17{
+    .grid__row-end-#{$i}{
+        grid-row-end:$i;
+    }
+   $i:$i + 1;
+}
+.justify-self__start{
+    justify-self: start;
+}
+.justify-self__end{
+    justify-self: end;
+}
+.justify-self__center{
+    justify-self: center;
+}
+.justify-self__stretch{
+    justify-self: stretch;
+}
+.align-self__start{
+    align-self: start;
+}
+.align-self__end{
+    align-self: end;
+}
+.align-self__center{
+    align-self: center;
+}
+.align-self__stretch{
+    align-self: stretch;
+}
+$i:1;
+.colorfull{
+    @each $name,$color in $elementsColors{
+        @if($name != 'light-var(--white)' or $name != 'medium-var(--white)'){
+            & *:nth-child(#{$i}){
+                background-color:$color;
+                color:isColorDark($color);
+            }
+        }
+        $i:$i + 2;
+    }
+}
+$i:1;
+.colorfull__with-sibling{
+    @each $name,$color in $elementsColors{
+        @if($name != 'light-var(--white)' or $name != 'medium-var(--white)'){
+            & *:nth-child(#{$i}){
+                background-color:$color;
+                color:isColorDark($color);
+            }
+            & *:nth-child(#{$i + 1}){
+                background-color:$color;
+                color:isColorDark($color);
+            }
+        }
+        $i:$i + 2;
+    }
+}
+
+
+.shadow-none{
+    box-shadow: none !important;
+}
+
+@each $class,$color in $elementsColors{
+    .shadow-#{$class}{
+        box-shadow: 1px 1px 5px $color;
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow-#{$class}-inside{
+        box-shadow: 0px 0px 5px $color inset;
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow-#{$class}-light{
+        box-shadow: 5px 5px 10px rgba($color,0.15);
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow-#{$class}-inside-light{
+        box-shadow: 0px 0px 10px rgba($color,0.15) inset;
+    }
+}
+.overflow-hidden{
+    overflow: hidden;
+}
+.overflow-visible{
+    overflow: visible;
+}
+.overflow-x-hidden{
+    overflow-x: hidden;
+}
+.overflow-x-visible{
+    overflow-x: visible;
+}
+.overflow-y-hidden{
+    overflow-y: hidden;
+}
+.overflow-y-visible{
+    overflow-y: visible;
+}
+.overflow-scroll{
+    overflow: scroll;
+}
+.overflow-scroll{
+    overflow: scroll;
+}
+.overflow-x-scroll{
+    overflow-x: scroll;
+}
+.overflow-x-scroll{
+    overflow-x: scroll;
+}
+.overflow-y-scroll{
+    overflow-y: scroll;
+}
+.overflow-y-visible{
+    overflow-y: visible;
+}
+.pulse-inside,.pulse-inside-big{
+    pointer-events:none;
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:0px;
+    height:0px;
+    opacity:0.3;
+    border-radius:100%;
+    transition:all 0.3s ease-in-out;
+    transform:translate(-50%, -50%);
+    transform-origin:center center;
+}
+.pulse-inside--active{
+    animation:pulseInside 0.7s linear forwards;
+ }
+.pulse-inside--active-big{
+    animation:pulseInsideBig 0.7s linear forwards;
+ }
+.chevron {
+    height: 8px;
+    width: 8px;
+    border-left: 2px solid var(--medium-var(--white));
+    border-top: 2px solid var(--medium-var(--white));
+    transform: rotate(-135deg);
+    filter: brightness(85%);
+    transition:all 0.2s ease-in-out;
+}
+.chevron-light {
+    height: 8px;
+    width:8px;
+    border-top: 1px solid var(--medium-var(--white));
+    border-left: 1px solid var(--medium-var(--white));
+    transform: rotate(-135deg);
+    filter: brightness(85%);
+    transition:all 0.2s ease-in-out;
+}
+[class^="chevron"]{
+    pointer-events: none;
+    &.up{
+        transform: rotateZ(45deg);
+    }
+    &.right{
+        transform: rotate(135deg);
+    }
+    &.down{
+        transform: rotate(225deg);
+    }
+    &.left{
+        transform: rotate(310deg);
+    }
+}

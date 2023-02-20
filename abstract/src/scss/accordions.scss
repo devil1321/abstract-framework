@@ -1,0 +1,68 @@
+$accordion-box-shadow-x:0px;
+$accordion-box-shadow-y:0px;
+$accordion-box-shadow-spread:10px;
+$accordion-border-radius:15px;
+$accordion-border-width:1px;
+$accordion-border-color:var(--medium-white);
+$accordion-border-type:solid;
+$accordion-heading-padding:5px 10px;
+$accordion-heading-background-color: var(--white);
+$accordion-heading-border-width:1px;
+$accordion-heading-border-color:var(--medium-white);
+$accordion-heading-border-type:solid;
+$accordion-footer-padding:5px 10px;
+$accordion-footer-border-width:1px;
+$accordion-footer-border-color:var(--medium-white);
+$accordion-footer-border-type:solid;
+
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.accordion{
+    position: relative;
+    top:0px;
+    left:0px;
+    border-radius: $accordion-border-radius;
+    border: $accordion-border-width $accordion-border-type $accordion-border-color;
+    overflow: hidden;
+    @each $name,$color in $elementsColors{
+        &__shadowed-#{$name}{
+            & * {
+                box-shadow: $accordion-box-shadow-x $accordion-box-shadow-y $accordion-box-shadow-spread rgba($color, 0.15) inset;
+            }
+        }
+    }
+    &__heading{
+        cursor: pointer;
+        overflow:hidden;
+        position:relative;
+        top:0px;
+        left:0px;
+        padding:$accordion-heading-padding;
+        background-color:$accordion-heading-background-color;
+        @include createFlex(row,space-between,center,null);
+        &:not(:last-of-type){
+            border-top:$accordion-heading-border-width $accordion-heading-border-type $accordion-heading-border-color;
+        }
+        &:first-of-type{
+            border-top: $accordion-heading-border-width $accordion-heading-border-type $accordion-heading-border-color;
+        }
+        .chevron,.chevron-light{
+            margin-right: 10px;
+        }
+    }
+    &__body{
+        &.visible{
+            height: 100%;
+            max-height: 100%;
+        }
+    }
+    &__footer{
+        padding:5px 10px;
+        border-top: $accordion-footer-border-width $accordion-footer-border-type $accordion-footer-border-color
+    }
+}
+

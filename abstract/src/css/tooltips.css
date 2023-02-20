@@ -1,0 +1,76 @@
+.tooltip {
+  display: inline-block;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  cursor: pointer;
+}
+.tooltip:hover [class^=tooltip__content] {
+  opacity: 1;
+  visibility: visible;
+}
+.tooltip [class^=tooltip__content] {
+  box-sizing: border-box;
+  padding: 8px;
+  opacity: 0;
+  width: -moz-fit-content;
+  width: fit-content;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border-radius: 5px;
+  background-color: var(--light-white);
+}
+.tooltip [class^=tooltip__content]::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: inherit;
+}
+.tooltip__content-right {
+  transform: translateY(-50%);
+  padding-left: 5px;
+}
+.tooltip__content-right::before {
+  left: -3px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+.tooltip__content-left {
+  transform: translateY(-50%);
+  padding-left: 5px;
+}
+.tooltip__content-left::before {
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+.tooltip__content-top {
+  transform: translateX(-50%);
+  padding-left: 5px;
+}
+.tooltip__content-top::before {
+  left: 50%;
+  bottom: -3px;
+  transform: translateX(-50%) rotate(45deg);
+}
+.tooltip__content-bottom {
+  transform: translateX(-50%);
+  padding-left: 5px;
+}
+.tooltip__content-bottom::before {
+  left: 50%;
+  top: -3px;
+  transform: translateX(-50%) rotate(45deg);
+}
+.tooltip__header {
+  position: relative;
+  z-index: 3;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  padding: 5px;
+}/*# sourceMappingURL=tooltips.css.map */

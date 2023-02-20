@@ -1,0 +1,34 @@
+@function isColorDark( $color ) {
+    // Parse RGB by isolating each color
+    $c_red: red( $color );
+    $c_green: green( $color );
+    $c_blue: blue( $color );
+    // Compute the perceptive luminance, keeping
+    // in mind that the human eye favors green.
+    $l: 1 - ( 0.299 * $c_red + 0.587 * $c_green + 0.114 * $c_blue ) / 255;
+    /* arguably this should be 0.50, but testing out various colors, this seemed to be the best so far. */
+    @if ( $l < 0.30 ) {
+      // if the luminance is less than 0.5 return black
+      @return var(--black); 
+    } @else {
+      // if the luminance is more than 0.5 return white
+      @return var(--white);
+    }
+  }
+@function isColorDarkBool( $color ) {
+    // Parse RGB by isolating each color
+    $c_red: red( $color );
+    $c_green: green( $color );
+    $c_blue: blue( $color );
+    // Compute the perceptive luminance, keeping
+    // in mind that the human eye favors green.
+    $l: 1 - ( 0.299 * $c_red + 0.587 * $c_green + 0.114 * $c_blue ) / 255;
+    /* arguably this should be 0.50, but testing out various colors, this seemed to be the best so far. */
+    @if ( $l < 0.30 ) {
+      // if the luminance is less than 0.5 return black
+      @return true; 
+    } @else {
+      // if the luminance is more than 0.5 return white
+      @return false;
+    }
+  }

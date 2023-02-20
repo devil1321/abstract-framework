@@ -1,0 +1,130 @@
+$dropdown-color-opacity-hover:1;
+$dropdown-item-margin:0px 5px;
+$dropdown-button-shadow-x:1px;
+$dropdown-button-shadow-y:1px;
+$dropdown-button-shadow-spread:5px;
+$dropdown-button-shadow-color:var(--black);
+$dropdown-button-shadow-color-opacity:0.15;
+$dropdown-menu-width:100%;
+$dropdown-menu-background-color:var(--white);
+$dropdown-menu-border-radius:5px;
+$dropdown-menu-shadow-x:1px;
+$dropdown-menu-shadow-y:1px;
+$dropdown-menu-shadow-spread:5px;
+$dropdown-menu-shadow-color:var(--black);
+$dropdown-menu-shadow-color-opacity:0.15;
+$dropdown-menu-inner-margin:10px 0px;
+
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.dropdown{
+    @include createFlex(row,flex-start,center,null);
+    @each $class,$color in $elementsColors{
+        &.hover-#{$class}{
+            .dropdown__menu-item{
+                &:hover{
+                    background-color: rgba($color,$dropdown-color-opacity-hover);
+                    color:isColorDark(rgba($color,$dropdown-color-opacity-hover));
+                    [class^="chevron"]{
+                        margin:0px 2px;
+                        border-color:black;
+                    }
+                }
+            }
+        }
+    }
+    @each $class,$color in $elementsLightColors{
+        &.hover-#{$class}-light{
+            .dropdown__menu-item{
+                &:hover{
+                    background-color: rgba($color,$dropdown-color-opacity-hover);
+                    color:isColorDark(rgba($color,$dropdown-color-opacity-hover));
+                    [class^="chevron"]{
+                        margin:0px 2px;
+                        border-color:black;
+                    }
+                }
+            }
+        }
+    }
+    &__item{
+        position: relative;
+        top:0px;
+        left:0px;
+        margin:$dropdown-item-margin;
+        border-radius: 5px;
+    }
+    &__button{
+        cursor: pointer;
+        width: 100%;
+        box-shadow: $dropdown-button-shadow-x $dropdown-button-shadow-y $dropdown-button-shadow-spread rgba($dropdown-button-shadow-color,$dropdown-button-shadow-color-opacity);
+
+    }
+    &__link{
+        width: 100%;
+        display:block;
+        cursor: pointer
+    }
+    &__menu-wrapper{
+        transition: opacity 0.5s ease-in-out;
+    }
+ 
+    &__menu{
+        position: absolute;
+        background-color: $dropdown-menu-background-color;
+        width: $dropdown-menu-width;
+        border-radius: $dropdown-menu-border-radius;
+        box-shadow: $dropdown-menu-shadow-x $dropdown-menu-shadow-y $dropdown-menu-shadow-spread rgba($dropdown-menu-shadow-color,$dropdown-menu-shadow-color-opacity);
+        transition: opacity 0.5s ease-in-out;
+        pointer-events: auto;
+        background-color: var(--light-white);
+        color:var(--black);
+        &:not(.menu__open){
+            border:0px;
+        }
+        .dropdown__menu{
+            position: absolute;
+        }
+        &.dropdown__menu-fix-top{
+            top:0px !important;
+        }
+        & > .dropdown__menu-inner{
+            margin:$dropdown-menu-inner-margin;
+            &:first-of-type{
+                margin-top:0px;
+            }
+            background-color: var(--light-white);
+            min-width:75px;
+            border-radius: 5px;
+            box-shadow: 1px 1px 5px rgba(black,0.15);
+            transition: opacity 0.5s ease-in-out;
+        }
+    }
+    
+    &__submenu{
+        position: relative;
+        top:0px; 
+        bottom:0px;
+        transition: opacity 0.5s ease-in-out;
+        pointer-events: none;
+    }
+    &__menu-item{
+        box-sizing: border-box;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        top:0px;
+        left:0px;
+        transition: width 0.2s ease-in-out;
+        @include createFlex(row,space-between,center,null);
+        &:hover{
+            background-color: var(--medium-white);
+        }
+        
+    }   
+ 
+}

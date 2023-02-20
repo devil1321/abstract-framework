@@ -1,0 +1,46 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.step{
+  border-radius: 5px;
+  overflow:hidden;
+  text-align: center;
+  filter: drop-shadow(0px 0px 1px var(--light-black));
+  @include createFlex(row,center,center,null);
+  &__right,&__left{
+    position:relative;
+    top:0px;
+    left:0px;
+    z-index: 2;
+    padding:10px 20px;
+    background-color: var(--medium-white);
+    filter: drop-shadow(0px 0px 1px var(--light-black));
+    &:before{
+        content:'';
+        position:absolute;
+        top:50%;
+        height: 10px;
+        width: 10px;
+        background-color: inherit;
+        transform: rotate(45deg) translateY(-50%);
+    }
+  }
+  &__left{
+    &::before{    
+        left:-8px;
+    }
+  }
+  &__right{
+    &::before{    
+        right:-2px;
+    }
+  }
+  &__content{
+    padding:10px 20px;
+    background-color: var(--light-white);
+    filter: drop-shadow(0px 0px 1px var(--light-black));
+  }
+}

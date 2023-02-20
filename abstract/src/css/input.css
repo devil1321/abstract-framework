@@ -1,0 +1,93 @@
+[class*=input__field] {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  transition: all 0.2s ease-in-out;
+}
+[class*=input__field] label {
+  display: block;
+  font-size: pxToRem(14);
+  margin-bottom: 5px;
+}
+[class*=input__field] input, [class*=input__field] textarea {
+  padding: 5px;
+  width: 100%;
+  outline: none;
+  border: 0px;
+  background-color: transparent;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0px 0px 3px var(--light-black);
+}
+[class*=input__field] input:focus, [class*=input__field] input:active, [class*=input__field] textarea:focus, [class*=input__field] textarea:active {
+  outline: none;
+  border: 0px;
+  box-shadow: 0px 0px 4px var(--light-olive);
+}
+
+.input__field {
+  position: relative;
+  top: 0px;
+  left: 0px;
+}
+.input__field label {
+  font-style: italic;
+}
+.input__field-normal label {
+  display: block;
+  margin: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-style: italic;
+  transition: all 0.3s ease-in-out;
+  font-size: pxToRem(14);
+}
+.input__field-line {
+  border-bottom: 1px solid var(--light-black);
+}
+.input__field-line label {
+  display: block;
+  margin: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-style: italic;
+  transition: all 0.3s ease-in-out;
+  font-size: pxToRem(14);
+}
+.input__field-line input, .input__field-line textarea {
+  box-shadow: none;
+}
+.input__field-line input:active, .input__field-line input:focus, .input__field-line textarea:active, .input__field-line textarea:focus {
+  box-shadow: none;
+}
+.input__field-underscore {
+  border-bottom: 2px solid var(--light-black);
+}
+.input__field-underscore label {
+  display: block;
+  margin: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-style: italic;
+  transition: all 0.3s ease-in-out;
+  font-size: pxToRem(14);
+}
+.input__field-underscore input, .input__field-underscore textarea {
+  box-shadow: none;
+}
+.input__field-underscore input:active, .input__field-underscore input:focus, .input__field-underscore textarea:active, .input__field-underscore textarea:focus {
+  box-shadow: none;
+}
+.input__field-underscore > .input__underscore-line-effect {
+  width: 0%;
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  border: 1px solid var(--border-olive);
+  transition: all 0.5s ease-in-out;
+}/*# sourceMappingURL=input.css.map */

@@ -1,0 +1,271 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.nav{
+    position: relative;
+    top:0px;
+    left:0px;
+    z-index: 99999;
+    padding:0px 50px;
+    box-sizing:border-box;
+    min-height:50px;
+    background-color: var(--light-white);
+    @include createFlex(row,flex-start,center,null);
+    @include breakpoint-down(medium-sm){
+        position: fixed;
+        width: 100vw;
+    }
+    &__hamburger{
+        display: none;
+        margin-left: auto;
+        @include breakpoint-down(medium-sm){
+            display: block;
+        }
+        span{
+            pointer-events: none;
+            display: block;
+            width: 25px;
+            height:2px;
+            background-color: var(--medium-black);
+            transform-origin: 4px 1px;
+            margin:4px 0px;
+            transition: all 0.3s ease-in-out;
+        }
+        &.active{
+            span{
+                &:first-of-type{
+                    transform: rotate(45deg);
+                }
+                &:nth-of-type(2){
+                    width: 0%;
+                    transition: all 0.2s ease-in-out;
+                }
+                &:last-of-type{
+                    transform: rotate(-45deg)
+                }
+            }
+        }
+    }
+  
+    &__menu-wrapper{
+        @include breakpoint-down(medium-sm){
+            overflow: hidden;
+            display:block;
+            position: absolute;
+            z-index:9999;
+            width: 100vw;
+            height:fit-content; 
+            max-height: 0%;
+            transition: all 1s ease-in-out;
+        }
+    }
+    &__menu{
+        @include createFlex(row,center,center,wrap);
+    }
+    &__menu-fade{
+        @include breakpoint-down(medium-sm){
+            left:50%;
+            top:0px;
+            opacity: 0;
+            max-height: fit-content;
+            transform: translateX(-50%);
+        }
+    }
+    &__menu-slide{
+        @include breakpoint-down(medium-sm){
+            left:50%;
+            top:0px;
+            transform: translateX(-50%);
+        }
+    }
+    &__menu-slide-left{
+        @include breakpoint-down(medium-sm){
+            left:0%;
+            top:0px;
+            height: 100vh;
+            max-height: 100vh;
+            transform: translateX(-100%);
+        }
+    }
+    &__menu-slide-right{
+        @include breakpoint-down(medium-sm){
+            left:0%;
+            top:0px;
+            height: 100vh;
+            max-height: 100vh;
+            transform: translateX(100%);
+        }
+    }
+    &__menu-slide-top{
+        @include breakpoint-down(medium-sm){
+            left:0%;
+            top:0px;
+            height: 100vh;
+        }
+    }
+    &__overlay{
+        @include breakpoint-down(medium-sm){
+            display: none;
+            opacity:0;
+            position: fixed;
+            left:0px;
+            top:0px;
+            z-index: 1;
+            min-width: 100vw;
+            min-height:100vh;
+            box-shadow: 0px -200px 150px var(--medium-black) inset;
+            transition: all 1s ease-in-out;
+        }
+    }
+    &__menu-item{
+        padding:5px 15px;
+        cursor:pointer;
+        position:relative;
+        top:0px;
+        left:0px;
+        color:var(--medium-black);
+        @include createFlex(row,center,center,null);
+        &:hover{
+            opacity: 0.7;
+        }
+        @include breakpoint-down(medium-sm){
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+        }
+        @each $class, $color in $elementsColors{
+            &.active{
+                &.active-#{$class}{
+                    background-color: $color;
+                    color:isColorDark($color);
+                }
+            }
+        }
+        @each $class, $color in $elementsLightColors{
+            &.active{
+                &.active-#{$class}-light{
+                    background-color: $color;
+                    color:isColorDark($color);
+                }
+            }
+        }
+    }
+
+    @each $class,$color in $elementsColors{
+        &__menu-item-underline-#{$class}{
+            &::before{
+                content: '';
+                position: absolute;
+                left:50%;
+                bottom:-5px;
+                width: 80%;
+                height:2px;
+                background: $color ;
+                transform: translateX(-50%);
+            }
+        }
+    }
+    @each $class,$color in $elementsLightColors{
+        &__menu-item-underline-#{$class}-light{
+            &::before{
+                content: '';
+                position: absolute;
+                left:50%;
+                bottom:-5px;
+                width: 80%;
+                height:2px;
+                background: $color ;
+                transform: translateX(-50%);
+            }
+        }
+    }
+    @each $class,$color in $elementsColors{
+        &__menu-item-underline-gradient-dark-#{$class}{
+            &::before{
+                content: '';
+                position: absolute;
+                left:50%;
+                bottom:-5px;
+                width: 80%;
+                height:2px;
+                background: linear-gradient(45deg,$color,var(--black)) ;
+                transform: translateX(-50%);
+            }
+        }
+    }
+    @each $class,$color in $elementsColors{
+        &__menu-item-underline-gradient-light-#{$class}{
+            &::before{
+                content: '';
+                position: absolute;
+                left:50%;
+                bottom:-5px;
+                width: 80%;
+                height:2px;
+                background: linear-gradient(45deg,$color,var(--white)) ;
+                transform: translateX(-50%);
+            }
+        }
+    }
+    @each $class,$color in $elementsLightColors{
+        &__menu-item-underline-gradient-dark-#{$class}-light{
+            &::before{
+                content: '';
+                position: absolute;
+                left:50%;
+                bottom:-5px;
+                width: 80%;
+                height:2px;
+                background: linear-gradient(45deg,$color,var(--black)) ;
+                transform: translateX(-50%);
+            }
+        }
+    }
+    @each $class,$color in $elementsLightColors{
+        &__menu-item-underline-gradient-light-#{$class}-light{
+            &::before{
+                content: '';
+                position: absolute;
+                left:50%;
+                bottom:-5px;
+                width: 80%;
+                height:2px;
+                background: linear-gradient(45deg,$color,var(--white)) ;
+                transform: translateX(-50%);
+            }
+        }
+    }
+    &__menu-item-hover-line{
+        &::before{
+            width: 0%;
+        }
+        &:hover{
+            &::before{
+                width: 80%;
+            }
+        }
+        &.active{
+            &::before{
+                width: 80%;
+            }
+        }
+    }
+    &__menu-item-hover-line-transition{
+        &::before{
+            width: 0%;
+            transition: all 0.3s ease-in-out;
+        }
+        &:hover{
+            &::before{
+                width: 80%;
+            }
+        }
+        &.active{
+            &::before{
+                width: 80%;
+            }
+        }
+    }
+}

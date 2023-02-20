@@ -1,0 +1,83 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.card-placeholder{
+    border-radius: 10px;
+    padding:10px;
+    background-color: var(--medium-white);
+    border:1px solid var(--light-white);
+    &__header,&__footer,&__body{
+        margin:15px 0px;
+        padding:0px;
+    }
+    &__img{
+        width: 100%;
+        height: 30%;
+        i{
+            font-size:pxToRem(100);
+            position: relative;
+            top:0px;
+            left:50%;
+            transform: translateX(-50%);
+            color:var(--light-white);
+           
+        }
+    }
+    &__header{
+        width:50%;
+    }
+    .placeholder__line{
+        margin:5px 0px;
+        &:last-of-type{
+            width:70%;
+        }
+    }
+    &__footer{
+        width:40%;
+    }
+    
+}
+
+.img-placeholder{
+    padding:20px 0px;
+    background-color: var(--medium-white);
+    border-radius: 10px;
+    @include createFlex(row,center,center,null);
+    i{
+        color:var(--light-white);
+        font-size:pxToRem(200);
+    }
+}
+
+[class^="placeholder__button"]{
+    width:100%;
+    padding:10px 20px;
+    font-weight: bold;
+    background-color: var(--light-white);
+    color:var(--medium-white);
+    border:0px;
+    outline: none;
+    border-radius:5px;
+    pointer-events: none;
+}
+
+[class*="placeholder__line"]{
+    margin:15px 0px;
+    border-radius: 25px;
+    width: 100%;
+    height:15px;
+    background-color: var(--light-white);
+}
+.placeholder{
+    &__line-dark{
+        background-color: var(--medium-black);
+    }
+    &__button-dark{
+        background-color: var(--medium-black);
+        color:var(--light-black);
+    }
+    
+}

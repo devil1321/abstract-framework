@@ -1,0 +1,93 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.list{
+    display: block;
+    border-radius: 5px;
+    border:1px solid var(--light-grey);
+    list-style-type:none;
+    overflow: hidden;
+    &__dark{
+        .list__item{
+            color:var(--white) !important;
+            background-color: var(--medium-black) !important;
+            &:hover{
+                background-color: var(--light-grey) !important;
+                color:var(--black) !important;
+            }
+        }
+    }
+    [class^="list__stairs"]{
+        overflow: visible;
+        border:0px;
+        $step:1;
+        $translate:10;
+        .list__item{
+            border:1px solid var(--light-grey);
+            border-top:0px;
+            transition: all 0.5s ease-in-out;
+        }
+        @while ($step < 100){
+            .list__item:nth-of-type(#{$step}){
+                transform:translateX(#{$translate} + px);
+                $step:$step + 1;
+                $translate:$translate + 10;
+            }
+        }
+        &:hover{
+            .list__item{
+                transform: translateX(0px);
+            }
+        }
+    }
+    &__stairs-hidden{
+        overflow: hidden;
+    }
+    &__splited{
+        overflow: visible;
+        border:0px;
+        .list__item{
+            color:var(--black);
+            background-color: var(--light-white);
+            border-radius:5px;
+            border:1px solid var(--light-grey);
+            border-top:0px;
+            transition: all 0.5s ease-in-out;
+        }
+        .list__item:nth-of-type(2n + 1){
+            transform: translateX(20px);
+        }
+        .list__item:nth-of-type(2n){
+            transform: translateX(-20px);
+        }
+        &:hover{
+            .list__item{
+                border:0px;
+                border-bottom:1px solid var(--light-grey);
+                transform: translateX(0px);
+            }
+        }
+    }
+    &__item{
+        cursor: pointer;
+        padding:5px;
+        background-color: var(--white);
+        &:first-of-type{
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        &:last-of-type{
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        &:not(:last-of-type){
+            border-bottom: 1px solid var(--light-grey);
+        }
+        &:hover{
+            background-color: var(--light-grey);
+        }
+    }
+}

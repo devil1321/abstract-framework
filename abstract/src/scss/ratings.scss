@@ -1,0 +1,29 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+[class*="rating"]{
+    @include createFlex(row,flex-start,center,null);
+    .rating__star{
+        overflow: hidden;
+        .rating__icon{
+            color:var(--yellow);
+        }
+    }
+    .rating__star-half{
+        position: relative;
+        top:0px;
+        left:0px;
+        &::before{
+            content: '';
+            position: absolute;
+            top:0px;
+            left:50%;
+            width: 100%;
+            height: 100%;
+            background-color: inherit;
+        }
+    }
+}

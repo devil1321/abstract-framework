@@ -1,0 +1,67 @@
+$breadcrumb-padding:10px;
+$breadcrumb-border-width:1px;
+$breadcrumb-border-type:solid;
+$breadcrumb-border-color:lightgrey;
+$breadcrumb-path-padding:5px;
+$breadcrumb-path-background-color:var(--light-white);
+$breadcrumb-path-border-radius:5px;
+$breadcrumb-divider-margin:0px 5px;
+$breadcrumb-divider-width:20px;
+$breadcrumb-divider-border-width:1px;
+$breadcrumb-divider-border-type:solid;
+$breadcrumb-divider-border-color:darkgrey;
+$breadcrumb-divider-angle:-65deg;
+$breadcrumb-divider-arrow-margin:0px 10px;
+$breadcrumb-divider-arrow-width-height:10px;
+$breadcrumb-divider-arrow-border-width:1px;
+$breadcrumb-divider-arrow-border-type:solid;
+$breadcrumb-divider-arrow-border-color:darkgrey;
+$breadcrumb-divider-arrow-angle:45deg;
+$breadcrumb-animation-start-translate-y:0px;
+$breadcrumb-animation-center-translate-y:-5px;
+$breadcrumb-animation-end-translate-y:-5px;
+
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.breadcrumb{
+    padding:$breadcrumb-padding;
+    width: fit-content;
+    border-bottom: $breadcrumb-border-width $breadcrumb-border-type $breadcrumb-border-color;
+    @include createFlex(row,flex-start,center,null);
+    &__path{
+        padding:$breadcrumb-path-padding;
+        background-color: $breadcrumb-path-background-color;
+        border-radius: $breadcrumb-path-border-radius;
+    }
+    &__divider{
+        margin:$breadcrumb-divider-margin;
+        width:$breadcrumb-divider-width;
+        border-bottom: $breadcrumb-divider-border-width $breadcrumb-divider-border-type $breadcrumb-divider-border-color;
+        transform: rotate($breadcrumb-divider-angle);
+    }
+    &__divider-arrow{
+        margin:$breadcrumb-divider-arrow-margin;
+        width:$breadcrumb-divider-arrow-width-height;
+        height: $breadcrumb-divider-arrow-width-height;
+        border-right: $breadcrumb-divider-arrow-border-width $breadcrumb-divider-arrow-border-type $breadcrumb-divider-arrow-border-color;
+        border-top: $breadcrumb-divider-arrow-border-width $breadcrumb-divider-arrow-border-type $breadcrumb-divider-arrow-border-color;
+        transform: rotate($breadcrumb-divider-arrow-angle);
+    }
+    &__animated{
+        @keyframes animItem {
+            0%{
+                transform: translateY($breadcrumb-animation-start-translate-y);
+            }
+            50%{
+                transform: translateY($breadcrumb-animation-center-translate-y);
+            }
+            100%{
+                transform: translateY($breadcrumb-animation-end-translate-y);
+            }
+        }
+    }
+}

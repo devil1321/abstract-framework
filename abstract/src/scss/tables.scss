@@ -1,0 +1,83 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.table{
+    border-radius: 5px;
+    overflow: hidden;
+    &__light{
+        box-shadow: 0px 0px 1px var(--black);
+        .table__body{
+            .table__row:nth-of-type(2n){
+                background-color: var(--white);
+            }
+            .table__row:nth-of-type(2n + 1){
+                background-color: var(--light-white);
+            }
+        }
+        .table__header,.table__footer{
+            background-color: var(--white);
+            font-weight:bold;
+        }
+        .table__row{
+            cursor: pointer;
+            transition:all 0.3s ease-in-out;
+            &:hover{
+                background-color: var(--medium-white) !important;
+            }
+        }
+    }
+    &__dark{
+        color:var(--white);
+        .table__body{
+            .table__row:nth-of-type(2n){
+                background-color: var(--light-black);
+            }
+            .table__row:nth-of-type(2n + 1){
+                background-color: var(--medium-black);
+            }
+        }
+        .table__header,.table__footer{
+            background-color: var(--light-black);
+            font-weight:bold;
+        }
+        .table__row{
+            cursor: pointer;
+            transition:all 0.3s ease-in-out;
+            &:hover{
+                background-color: var(--black) !important;
+            }
+        }
+    }
+    &__header{
+        width:100%;
+    }
+    &__row{
+        width:100%;
+    }
+    &__heading{
+        margin:0px;
+        padding:10px 20px;
+        text-align: center;
+    }
+    &__body{
+        .table__row:hover{
+            .table__data{
+                transform: translateX(10px);
+            }
+        }
+    }
+    &__data{
+        cursor: pointer;
+        width: fit-content;
+        margin:0px;
+        padding:10px 20px;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+    }
+    &__footer{
+        width:100%;
+    }
+}

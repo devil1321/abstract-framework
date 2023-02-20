@@ -1,0 +1,61 @@
+$button-font-weight:bold;
+$button-padding:5px 20px;
+$button-height:fit-content;
+$button-min-height:33px;
+$button-border-width:0px;
+$button-border-type:solid;
+$button-border-color:transparent;
+$button-border-radius:5px;
+$button-transition:all 0.7s ease;
+$button-text-align:center;
+$button-outline-background-color:var(--white);
+$button-border-width:1px;
+$button-border-type:solid;
+$button-group-left-border-radius:5px;
+$button-group-right-border-radius:5px;
+
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.button{
+    cursor: pointer;
+    position:relative;
+    top:0px;
+    left:0px;
+    font-weight:$button-font-weight;
+    padding:$button-padding;
+    height:$button-height;
+    min-height:$button-min-height;
+    border:$button-border-width $button-border-type $button-border-color;
+    border-radius:$button-border-radius;
+    transition:$button-transition;
+    text-align: $button-text-align;
+}
+
+@each $class,$color in $elementsColors{
+    .button__#{$class}-outline{
+        background-color:$button-outline-background-color;
+        border:$button-border-width $button-border-type $color;
+        color:$color;
+    }
+}
+
+.buttons__group{
+    display: flex;
+    button{
+        border-radius: 0px;
+        &:first-child{
+            border-top-left-radius:$button-group-left-border-radius;
+            border-bottom-left-radius:$button-group-left-border-radius;
+        }
+   
+        &:last-child{
+            border-top-right-radius:$button-group-right-border-radius;
+            border-bottom-right-radius:$button-group-right-border-radius;
+        }
+    }
+}
+

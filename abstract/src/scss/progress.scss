@@ -1,0 +1,121 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.progress{
+    margin:25px 0px;
+    position: relative;
+    top:0px;
+    left:0px;
+    border-radius: 25px;
+    background-color: var(--medium-white);
+    height:20px;
+    &__position{
+        padding:10px 5px;
+        position: absolute;
+        top:50%;
+        left:50%;
+        z-index: 2;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+        border-radius:5px;
+    }
+    &__bar{
+        width:0%;
+        overflow: hidden;
+        height:100%;
+        border-radius: 25px;
+        transition: all 1s ease-in-out;
+    }
+    &__mixed-wrapper{
+        position: relative;
+        left:0%;
+        top:0%;
+        @include createFlex(row,flex-start,center,null);
+        animation: slideMixedItems 10s linear infinite;
+        @keyframes slideMixedItems {
+            0%{
+                transform:translateX(0%);
+            }
+            100%{
+                transform:translateX(-100%);
+            }
+        }
+    }
+    &__mixed-item{
+        position:relative;
+        z-index: 2;
+        top:0px;
+        left:0px;
+        margin:0px 4px;
+        transform: skewX(20deg);
+        opacity: 0.4;
+    }
+   
+}
+
+.progress-round{
+    position: relative;
+    top:0px;
+    left:0px;
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    @include createFlex(row,center,center,null);
+    &__position{
+        padding:5px 2px;
+        border-radius: 5px;
+    }
+    &__dot-wrapper{
+        position: absolute;
+        top:0px;
+        left:46%;
+        height: 100px;
+        width:5px;
+        transform: translateX(-50%) scale(1.5);
+        transform-origin: 100% 100%;
+    }
+    &__dot{
+        position: absolute;
+        height: 5px;
+        width:5px;
+        border-radius: 100%;
+        top:0px;
+        bottom:0px;
+    }
+    
+    @each $class ,$color in $elementsColors{
+        .progress-round__dot-wrapper:nth-of-type(2n){
+            .progress-round__dot-#{$class}{
+                background-color: $color;
+                box-shadow: 0px 0px 5px $color , 0px 0px 8px $color , 0px 0px 10px $color, 0px 0px 12px $color;
+                transform-origin: center center;
+            }
+           
+        }
+        .progress-round__dot-wrapper:nth-of-type(2n + 1){
+            .progress-round__dot-#{$class}{
+                height: 3px;
+                width: 3px;
+                background-color: $color;
+                box-shadow: 0px 0px 5px $color , 0px 0px 8px $color , 0px 0px 10px $color, 0px 0px 12px $color;
+            }
+        }
+    }
+    @each $class ,$color in $elementsLightColors{
+        .progress-round__dot-wrapper:nth-of-type(2n){
+            .progress-round__dot-#{$class}-light{
+                background-color: $color;
+                box-shadow: 0px 0px 5px $color , 0px 0px 8px $color , 0px 0px 10px $color, 0px 0px 12px $color;
+            }
+        }
+        .progress-round__dot-wrapper:nth-of-type(2n + 1){
+            .progress-round__dot-#{$class}-light{
+                background-color: $color;
+                box-shadow: 0px 0px 5px $color , 0px 0px 8px $color , 0px 0px 10px $color, 0px 0px 12px $color;
+            }
+        }
+    }
+}

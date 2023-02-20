@@ -1,0 +1,114 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.item{
+    cursor: pointer;
+    border-radius:5px;
+    background-color: var(--light-white);
+    @include createFlex(row,flex-start,center,null);
+    &__split-x{
+        &:hover{
+            .item__content{
+                margin-left: 40px;
+            }
+        }
+    }
+    &:hover{
+        .item__img-overlay{
+            transform:translateX(-100%);
+        }
+    }
+    &:hover{
+        .item__img-slide{
+            .item__img{
+                transform:translateX(-100%);
+            }
+        }
+    }
+    &:hover{
+        .item__img-fade{
+            .item__img:last-of-type{
+                opacity: 0;
+            }
+        }
+    }
+    &:hover{
+        .item__img-overlay{
+            transform:translateX(-100%);
+        }
+    }
+    &__img{
+        position: relative;
+        top:0px;
+        left:0px;
+        min-height: 150px;
+        max-height: 150px;
+        width: 30%;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        overflow: hidden;
+        img{
+            width:200%;
+        }
+        &-overlay{
+            position: absolute;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height:100%;
+            z-index: 2;
+            transition: all 0.7s ease-in-out;
+            overflow:hidden;
+            img{
+                width: 200%;
+            }
+        }
+       
+    }
+    &__img-slide{
+        min-height: 150px;
+        max-height: 150px;
+        width: 30%;
+        overflow:hidden;
+        .item__img{
+            min-width: 100%;
+            transition: all 0.7s ease-in-out;
+        }
+        @include createFlex(row,flex-start,center,null);
+    }
+    &__img-fade{
+        position: relative;
+        top:0px;
+        left:0px;
+        min-height: 150px;
+        max-height: 150px;
+        width: 30%;
+        overflow:hidden;
+        .item__img{
+            position: absolute;
+            top:0px;
+            left:0px;
+            min-width: 100%;
+            min-height: 100%;
+            transition: all 0.7s ease-in-out;
+        }
+    }
+    &__content{
+        box-sizing:border-box;
+        width: 70%;
+        margin-left:20px;
+        transition: all 0.7s ease-in-out;
+        &-header{
+            font-size: pxToRem(18);
+        }
+        &-text{
+            font-size: pxToRem(14);
+        }
+        &-footer{
+            font-size: pxToRem(12);
+        }
+    }
+}

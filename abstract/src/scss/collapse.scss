@@ -1,0 +1,30 @@
+$collapse-margin:10px 0px;
+$collapse-padding:0px 0px;
+$collapse-border-radius:5px;
+$collapse-text-align:justify;
+$collapse-border-radius:15px;
+$collapse-border-width:1px;
+$collapse-border-color:var(--medium-white);
+$collapse-border-type:solid;
+$collapse-box-shadow-x:0px;
+$collapse-box-shadow-y:1px;
+$collapse-box-shadow-spread:10px;
+$collapse-box-shadow-color:black;
+$collapse-box-shadow-color-opacity:0.15;
+
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.collapse{
+    position: relative;
+    margin:$collapse-margin;
+    padding: $collapse-padding;
+    border-radius: $collapse-border-radius;
+    text-align: $collapse-text-align;
+    border:$collapse-border-width $collapse-border-type$collapse-border-color;
+    box-shadow: $collapse-box-shadow-x $collapse-box-shadow-y $collapse-box-shadow-spread rgba($collapse-box-shadow-color,$collapse-box-shadow-color-opacity);
+}
+

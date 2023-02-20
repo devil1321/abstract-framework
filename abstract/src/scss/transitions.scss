@@ -1,0 +1,1089 @@
+// // Trasnsitions Start State Modifiers
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+.fade{
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0px;
+    max-width: 0px;
+    
+}
+.slide-y{
+    overflow: hidden;
+    min-height: 0px;
+    max-height: 0px;
+}
+.slide-x{
+    overflow: hidden;
+    max-width: 0px;
+    min-width: 0px;
+}
+
+.scale{
+    transform: scale(0);
+    animation-duration: 0.2s !important;
+    opacity: 0;
+    visibility: hidden;
+}
+.comes-left{
+    transform: translateX(-1000px);
+}
+.comes-right{
+    transform: translateX(1000px);
+}
+.comes-top{
+    transform: translatY(-1000px);
+}
+.comes-bottom{
+    transform: translateY(2000px);
+}
+
+// In Transitions
+
+@keyframes pulseInside{
+    0%{
+        width:0px;
+        height:0px;
+        opacity:0;
+    }
+    50%{
+        opacity:0.7;
+        width:150px;
+        height:150px;
+    }
+    100%{
+        opacity:0;
+        width:150px;
+        height:150px;
+    }
+}
+@keyframes pulseInsideBig{
+    0%{
+        width:0px;
+        height:0px;
+        opacity:0;
+    }
+    50%{
+        opacity:0.7;
+        width:350px;
+        height:350px;
+    }
+    100%{
+        opacity:0;
+        width:350px;
+        height:350px;
+    }
+}
+
+@mixin pulse-outside($name,$color){
+    box-shadow: 0px 0px 0px var($color);
+    animation:  #{$name} 1s ease infinite;
+    @keyframes #{$name} {
+        0%{
+            box-shadow: 0px 0px 0px 0px rgba($color, 0.3);
+        }
+        100%{
+            box-shadow: 0px 0px 0px 20px rgba($color, 0.0)
+        }
+    }
+}
+@mixin pulse-outside-hover($name,$color){
+    box-shadow: 0px 0px 0px var($color);
+    @keyframes hover#{$name} {
+        0%{
+            box-shadow: 0px 0px 0px 0px  rgba($color, 0.3);
+        }
+        100%{
+            box-shadow: 0px 0px 0px 20px rgba($color, 0.0);
+        }
+    }
+    &:hover{
+        animation: hover#{$name} 0.7s ease;
+    }
+}
+@mixin pulse-outside-hover-off($name,$color){
+    box-shadow: 0px 0px 0px var($color);
+    @keyframes hoverOff#{$name} {
+        0%{
+            box-shadow: 0px 0px 0px 20px rgba($color, 0.0);
+        }
+        100%{
+            box-shadow: 0px 0px 0px 0px  rgba($color, 0.3);
+        }
+    }
+    &:hover{
+        animation: hoverOff#{$name} 0.7s ease;
+    }
+}
+@mixin pulse-outside-hover-infinite($name,$disabledName,$color){
+    box-shadow: 0px 0px 0px var($color);
+    animation:  #{$name} 0.7s ease infinite;
+    @keyframes #{$name} {
+        0%{
+            box-shadow: 0px 0px 0px 0px  rgba($color, 0.3);
+        }
+        100%{
+            box-shadow: 0px 0px 0px 20px rgba($color, 0.0);
+        }
+    }
+    @keyframes #{$disabledName}{
+        0%{
+            box-shadow: 0px 0px 0px 20px rgba($color, 0.0);
+        }
+        100%{
+            box-shadow: 0px 0px 0px 0px  rgba($color, 0.3);
+
+        }
+    }
+    &:hover{
+        animation:  #{$disabledName} 0.7s ease forwards;
+    }
+
+}
+@mixin pulse-outside-active($name,$color){
+    box-shadow: 0px 0px 0px var($color);
+    @keyframes #{$name} {
+        10%{
+            box-shadow: 0px 0px 0px 0px  rgba($color, 0.3);
+        }
+        100%{
+            box-shadow: 0px 0px 0px 20px rgba($color, 0.0);
+        }
+    }            
+}
+@mixin pulse-outside-active-double($name,$color){
+    box-shadow: 0px 0px 0px var($color);
+    @keyframes #{$name} {
+        0%{
+            filter:invert(90%);
+            box-shadow: 0px 0px 0px 0px  rgba($color, 0.3);
+        }
+        100%{
+            box-shadow: 0px 0px 0px 20px rgba($color, 0.0);
+        }
+    }   
+}
+@mixin pulse-outside-active-inverted($name,$color){
+    box-shadow: 0px 0px 0px var($color);
+    @keyframes #{$name} {
+        10%{
+            box-shadow: 0px 0px 0px 20px rgba($color, 0.0);
+        }
+        100%{
+            box-shadow: 0px 0px 0px 0px  rgba($color, 0.3);
+        }
+    }   
+}
+
+
+@each $class,$color in $elementsColors{
+    $name:pulseOutline#{$class};
+    .pulse-outside-#{$class}{
+        background-color: $color;
+        @include pulse-outside($name,$color);
+    }
+}
+
+@each $class,$color in $elementsColors{
+    $name:pulseOutlineHover#{$class};
+    .pulse-outside-#{$class}--hover{
+        background-color: $color;
+        @include pulse-outside-hover($name,$color);
+    }
+}
+@each $class,$color in $elementsColors{
+    $name:pulseOutlineHover#{$class};
+    .pulse-outside-#{$class}--hover-off{
+        background-color: $color;
+        @include pulse-outside-hover-off($name,$color);
+    }
+}
+@each $class,$color in $elementsColors{
+    $name:pulseOutlineHoverInfinite#{$class};
+    $disabledName:pulseOutlineDisabledHoverInfinite#{$class};
+    .pulse-outside-#{$class}--hover-infinite{
+        background-color: $color;
+        @include pulse-outside-hover-infinite($name,$disabledName,$color);
+    }
+}
+@each $class,$color in $elementsColors{
+    $name:pulseOutlineActive#{$class};
+    .pulse-outside-#{$class}--active{
+        background-color: $color;
+        @include pulse-outside-active($name,$color);
+    }
+}
+@each $class,$color in $elementsColors{
+    $name:pulseOueActiveDouble#{$class};
+    .pulse-outside-#{$class}--active-double{
+        background-color: $color;
+        @include pulse-outside-active-double($name,$color);
+    }
+}
+@each $class,$color in $elementsColors{
+    $name:pulseOutlineActiveInverted#{$class};
+    .pulse-outside-#{$class}--active-inverted{
+        background-color: $color;
+        @include pulse-outside-active-inverted($name,$color);
+    }
+}
+
+
+@keyframes fadeIn {
+    0%{
+        top:var(--pos-top);
+        opacity: 0;
+        visibility: hidden;
+        max-height: 1080px;
+        max-width: 1920px;
+
+    }
+    100%{
+        top:var(--pos-top);
+        visibility: visible;
+        opacity: 1;
+        max-height: 1080px;
+        max-width: 1920px;
+     }
+  
+}
+@keyframes fadeInWithMove {
+    0%{
+        top:var(--pos-top);
+        opacity: 0;
+        visibility: hidden;
+        max-height: 1080px;
+        max-width: 1920px;
+        transform: translateY(20px);
+     }
+    100%{
+        top:var(--pos-top);
+        opacity: 1;
+        visibility: visible;
+        max-height: 1080px;
+        max-width: 1920px;
+        transform: translateY(0px);
+    }
+  
+}
+@keyframes fadeInWithRotateX {
+    0%{
+        top:var(--pos-top);
+        opacity: 0;
+        visibility: hidden;
+        max-height: 1080px;
+        max-width: 1920px;
+        transform: rotateX(-60deg);
+     }
+    100%{
+        top:var(--pos-top);
+        opacity: 1;
+        visibility: visible;
+        max-height: 1080px;
+        max-width: 1920px;
+        transform: rotateX(0deg);
+     }
+  
+}
+@keyframes fadeInWithRotateY {
+    0%{
+        top:var(--pos-top);
+        opacity: 0;
+        visibility: hidden;
+        max-height: 1080px;
+        max-width: 1920px;
+        transform: rotateY(-60deg);
+     }
+    100%{
+        top:var(--pos-top);
+        opacity: 1;
+        visibility: visible;
+        max-height: 1080px;
+        max-width: 1920px;
+        transform: rotateY(0deg);
+     }
+  
+}
+@keyframes slideInXLeft {
+    0%{
+       top:var(--pos-top);
+        max-width: 0px;
+        left:(--pos-left);
+    }
+    100%{
+       top:var(--pos-top);
+       max-width: 1920px;
+       left:(--pos-left);
+       overflow: visible;
+    }
+    
+}
+@keyframes slideInXRight {
+    0%{
+         top:var(--pos-top);
+         max-width: 0px;
+         right:(--pos-right);
+    }
+    100%{
+         top:var(--pos-top);
+         max-width: 1920px;
+         right:(--pos-right);
+         overflow: visible;
+    }
+    
+}
+@keyframes slideInXCenter {
+    0%{
+        top:var(--pos-top);
+        max-width: 0px;
+        max-height: 1080px;
+        left:var(--pos-left-center);
+        transform:translateX(-50%);
+        white-space: nowrap;
+        text-overflow: clip;
+    }
+    100%{
+       top:var(--pos-top);
+       max-width: 1920px;
+       max-height: 1080px;
+       left:var(--pos-left-center);
+       transform:translateX(-50%);
+       overflow: visible;
+    }
+    
+}
+@keyframes slideInYTop {
+    0%{
+        
+        max-height: 0px;
+        top:var(--pos-top);
+    }
+    100%{
+        
+        max-height: 1920px;
+        top:var(--pos-top);
+        overflow: visible;
+    }
+    
+}
+@keyframes slideInYBottom {
+    0%{
+        max-height: 0px;
+        bottom:var(--pos-bottom);;
+    }
+    100%{
+       max-height: 1920px;
+       bottom:var(--pos-bottom);;
+       overflow: visible;
+    }
+    
+}
+@keyframes slideInYCenter {
+    0%{
+        max-height: 0px;
+        bottom:var(--pos-bottom-center);
+        transform:translateY(50%);
+    }
+    100%{
+       max-height: 1080px;
+       bottom:var(--pos-bottom-center);
+       transform:translateY(50%);
+        overflow: visible;
+    }
+    
+}
+@keyframes fadeInWithSlideX {
+    0%{
+        top:var(--pos-top);
+        opacity: 0;
+        max-width: 0px;
+    }
+    100%{
+       opacity: 1;
+       top:var(--pos-top);
+       max-width: 1920px;
+       overflow: visible;
+    }
+    
+}
+@keyframes fadeInWithSlideY {
+    0%{
+        top:var(--pos-top);
+        opacity: 0;
+        max-height: 0px;
+    }
+    100%{
+       top:var(--pos-top);
+       opacity: 1;
+       max-height: 1080px;
+       overflow: visible;
+    }
+    
+}
+@keyframes slideInXWithMove {
+    0%{
+        top:var(--pos-top);
+        max-width: 0px;
+        transform: translateX(20px);
+     }
+    100%{
+        top:var(--pos-top);
+        opacity: 1;
+        max-width: 1920px;
+        transform: translateX(0px);
+        overflow: visible;
+
+     }    
+}
+@keyframes slideInYWithMove {
+    0%{
+        top:var(--pos-top);
+        max-height: 0px;
+        transform: translateY(20px);
+     }
+    100%{
+        top:var(--pos-top);
+        opacity: 1;
+        max-height: 1080px;
+        transform: translateY(0px);
+        overflow: visible;
+
+     }    
+}
+@keyframes scaleIn {
+    0%{
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0);
+    }
+    100%{
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+    }
+}
+@keyframes comesLeftFade {
+    0%{}
+    100%{}
+}
+@keyframes comesRightFade {
+    0%{}
+    100%{}
+}
+@keyframes comesTopFade {
+    0%{}
+    100%{}
+}
+@keyframes comesBottomFade{
+    0%{}
+    100%{}
+}
+@keyframes comesLeftFadeScale {
+    0%{}
+    100%{}
+}
+@keyframes comesRightFadeScale {
+    0%{}
+    100%{}
+}
+@keyframes comesTopFadeScale {
+    0%{}
+    100%{}
+}
+@keyframes comesBottomFadeScale{
+    0%{}
+    100%{}
+}
+@keyframes comesLeft {
+    0%{}
+    100%{}
+}
+@keyframes comesRight {
+    0%{}
+    100%{}
+}
+@keyframes comesTop {
+    0%{}
+    100%{}
+}
+@keyframes comesBottom{
+    0%{}
+    100%{}
+}
+@keyframes comesLeftScale {
+    0%{}
+    100%{}
+}
+@keyframes comesRightScale {
+    0%{}
+    100%{}
+}
+@keyframes comesTopScale {
+    0%{}
+    100%{}
+}
+@keyframes comesBottomSknew{
+    0%{}
+    100%{}
+}
+@keyframes comesLeftSknew {
+    0%{}
+    100%{}
+}
+@keyframes comesRightSknew {
+    0%{}
+    100%{}
+}
+@keyframes comesTopSknew {
+    0%{}
+    100%{}
+}
+@keyframes comesBottomSknew{
+    0%{}
+    100%{}
+}
+// Out Transitions
+
+@keyframes fadeOut {
+    0%{
+        visibility: visible;
+        opacity: 1;
+        max-height: 1080px;
+        max-width: 1920px;
+        transform: scale(1);
+        top:var(--pos-top);
+      
+     }
+     99%{
+        opacity: 0;
+        visibility: hidden;
+        max-height: 1080px;
+        max-width: 1920px;
+        transform: scale(1);
+        top:var(--pos-top);
+    }
+    100%{
+        max-height: 0px;
+        max-width: 0px;
+    }
+  
+}
+@keyframes fadeOutWithMove {
+     0%{
+        opacity: 1;
+        max-height: 1080px;
+        max-width: 1920px;
+        top:var(--pos-top);
+   
+     }
+    99%{
+        opacity: 0;
+        transform: translateY(20px);
+        max-height: 1080px;
+        max-width: 1920px;
+        top:var(--pos-top);
+     }
+     100%{
+        max-height: 0px;
+        max-width: 0px;
+    }
+}
+@keyframes slideOutXLeft {
+    0%{
+       max-width: 1920px;
+       left:(--pos-left);
+       top:var(--pos-top);
+       white-space: wrap;
+       text-overflow: clip;
+    }
+    100%{
+        max-width: 0px;
+        left:(--pos-left);
+        top:var(--pos-top);
+        white-space: nowrap;
+        text-overflow: clip;
+        overflow: hidden;
+    }
+    
+}
+@keyframes slideOutXRight {
+    0%{
+       max-width: 1920px;
+       right:(--pos-right);
+       top:var(--pos-top);
+       white-space: wrap;
+       text-overflow: clip;
+    }
+    100%{
+        max-width: 0px;
+        right:(--pos-right);
+        top:var(--pos-top);
+        white-space: nowrap;
+        text-overflow: clip;
+        overflow: hidden;
+    }
+}
+@keyframes slideOutXCenter {
+    0%{
+       max-width: 1920px;
+       left:var(--pos-left-center);
+       transform:translateX(-50%);
+       top:var(--pos-top);
+       white-space: wrap;
+       text-overflow: clip;
+    }
+    100%{
+        max-width: 0px;
+        left:var(--pos-left-center);
+        transform:translateX(-50%);
+        top:var(--pos-top);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: clip;
+    }
+    
+}
+@keyframes slideOutYTop {
+    0%{
+        max-height: 1920px;
+        top:var(--pos-top);
+    }
+    100%{
+        max-height: 0px;
+        top:var(--pos-top);
+        overflow: hidden;
+
+    }
+}
+@keyframes slideOutYBottom {
+    0%{
+       max-height: 1920px;
+       bottom:var(--pos-bottom);;
+    }
+    100%{
+        max-height: 0px;
+       bottom:var(--pos-bottom);;
+        overflow: hidden;
+    }
+    
+}
+@keyframes slideOutYCenter {
+    0%{
+       max-height: 1080px;
+       bottom:var(--pos-bottom-center);
+       transform:translateY(50%);
+    }
+    100%{
+        max-height: 0px;
+        bottom:var(--pos-bottom-center);
+        transform:translateY(50%);
+        overflow: hidden;
+    }
+    
+}
+@keyframes fadeOutWithSlideX {
+    0%{
+       opacity: 1;
+       max-height: 1080px;
+       max-width: 1920px;
+        top:var(--pos-top);
+    }
+    99%{
+        opacity: 0;
+        max-width: 0px;
+         top:var(--pos-top);
+         overflow: hidden;
+    }
+    100%{
+        max-height: 0px;
+        max-width: 0px;
+    }
+}
+@keyframes fadeOutWithSlideY {
+    0%{
+       opacity: 1;
+       max-height: 1080px;
+       max-width: 1920px;
+        top:var(--pos-top);
+    }
+    100%{
+        opacity: 0;
+        max-height: 0px;
+        max-width: 1920px;
+         top:var(--pos-top);
+         overflow: hidden;
+    }
+    100%{
+        max-height: 0px;
+        max-width: 0px;
+    }
+}
+@keyframes slideOutXWithMove {
+    0%{
+        opacity: 1;
+        max-width: 1920px;
+        transform: translateX(0px);
+         top:var(--pos-top);
+
+     }    
+     100%{
+        max-width: 0px;
+        transform: translateX(20px);
+         top:var(--pos-top);
+         overflow: hidden;
+     }
+}
+@keyframes slideOutYWithMove {
+     0%{
+        opacity: 1;
+        max-height: 1080px;
+        transform: translateY(0px);
+         top:var(--pos-top);
+
+     } 
+     100%{
+        max-height: 0px;
+        transform: translateY(20px);
+         top:var(--pos-top);
+         overflow: hidden;
+     }  
+}
+@keyframes scaleOut {
+    0%{
+        transform: scale(1);
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+    } 
+    100%{
+        transform: scale(0);
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+@keyframes comesLeftFade {
+    0%{}
+    100%{}
+}
+@keyframes comesRightFade {
+    0%{}
+    100%{}
+}
+@keyframes comesTopFade {
+    0%{}
+    100%{}
+}
+@keyframes comesBottomFade{
+    0%{}
+    100%{}
+}
+@keyframes comesLeftFadeScale {
+    0%{}
+    100%{}
+}
+@keyframes comesRightFadeScale {
+    0%{}
+    100%{}
+}
+@keyframes comesTopFadeScale {
+    0%{}
+    100%{}
+}
+@keyframes comesBottomFadeScale{
+    0%{}
+    100%{}
+}
+@keyframes comesLeft {
+    0%{}
+    100%{}
+}
+@keyframes comesRight {
+    0%{}
+    100%{}
+}
+@keyframes comesTop {
+    0%{}
+    100%{}
+}
+@keyframes comesBottom{
+    0%{}
+    100%{}
+}
+@keyframes comesLeftScale {
+    0%{}
+    100%{}
+}
+@keyframes comesRightScale {
+    0%{}
+    100%{}
+}
+@keyframes comesTopScale {
+    0%{}
+    100%{}
+}
+@keyframes comesBottomSknew{
+    0%{}
+    100%{}
+}
+@keyframes comesLeftSknew {
+    0%{}
+    100%{}
+}
+@keyframes comesRightSknew {
+    0%{}
+    100%{}
+}
+@keyframes comesTopSknew {
+    0%{}
+    100%{}
+}
+@keyframes comesBottomSknew{
+    0%{}
+    100%{}
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}--hover{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        &:hover{
+            box-shadow: 1px 1px 5px $color;
+        }
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-inside--hover{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        &:hover{
+            box-shadow: 0px 0px 5px $color inset; 
+        }
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-light--hover{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        &:hover{
+            box-shadow: 5px 5px 10px rgba($color,0.15);
+        }
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-inside-light--hover{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        &:hover{
+            box-shadow: 0px 0px 10px rgba($color,0.15) inset;
+        }
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}--hover-off{
+        cursor: pointer;
+        box-shadow: 1px 1px 5px $color;
+        transition: all 0.3s ease-in-out !important;
+        &:hover{
+            box-shadow: 0px 0px 0px $color;
+        }
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-inside--hover-off{
+        cursor: pointer;
+        box-shadow: 0px 0px 5px $color inset;
+        transition: all 0.3s ease-in-out !important;
+        &:hover{
+            box-shadow: 0px 0px 0px $color inset;
+        }
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-light--hover-off{
+        cursor: pointer;
+        box-shadow: 5px 5px 10px rgba($color,0.15);
+        transition: all 0.3s ease-in-out !important;
+        &:hover{
+            box-shadow: 0px 0px 0px $color;
+        }
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-light-inset--hover-off{
+        cursor: pointer;
+        box-shadow: 0px 0px 10px rgba($color,0.15) inset;
+        transition: all 0.3s ease-in-out !important;
+        &:hover{
+            box-shadow: 0px 0px 0px $color inset;
+        }
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}--click{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        @keyframes shadowClick#{$class} {
+            0%{
+                box-shadow:0px 0px 0px $color;
+            }
+            50%{
+                box-shadow:1px 1px 5px $color;
+            }
+            100%{
+                box-shadow:0px 0px 0px $color;
+            }
+            
+        }
+    
+      
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-inside--click{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        @keyframes shadowClickInside#{$class} {
+            0%{
+                box-shadow:0px 0px 0px $color inset;
+            }
+            50%{
+                box-shadow:0px 0px 5px $color inset;
+            }
+            100%{
+                box-shadow:0px 0px 0px $color inset;
+            }
+            
+        }
+    
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-light--click{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        @keyframes shadowClick#{$class}Light {
+            0%{
+                box-shadow:0px 0px 0px $color;
+            }
+            50%{
+                box-shadow: 5px 5px 10px rgba($color,0.15);
+            }
+            100%{
+                box-shadow:0px 0px 0px $color;
+            }
+            
+        }
+     
+      
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-inside-light--click{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        @keyframes shadowClick#{$class}LightInside {
+            0%{
+                box-shadow:0px 0px 0px $color inset;
+            }
+            50%{
+                box-shadow: 0px 0px 10px rgba($color,0.15) inset;
+            }
+            100%{
+                box-shadow:0px 0px 0px $color inset;
+            }
+            
+        }
+     
+      
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}--click-off{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        box-shadow:1px 1px 5px $color;
+        @keyframes shadowClickOff#{$class} {
+            0%{
+                box-shadow:1px 1px 5px $color;
+            }
+            50%{
+                box-shadow:0px 0px 0px $color;
+            
+            }
+            100%{
+                box-shadow:1px 1px 5px $color;
+            }
+            
+        }
+     
+      
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-inside-click-off{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        box-shadow:1px 1px 5px $color;
+        @keyframes shadowClickOffInside#{$class} {
+            0%{
+                box-shadow:0px 0px 5px $color inset;
+            }
+            50%{
+                box-shadow:0px 0px 0px $color inset;
+            
+            }
+            100%{
+                box-shadow:0px 0px 5px $color inset;
+            }
+            
+        }
+     
+      
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-light--click-off{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        box-shadow:1px 1px 5px $color;
+        @keyframes shadowClickOffLight#{$class} {
+            0%{
+                box-shadow: 5px 5px 10px rgba($color,0.15);
+            }
+            50%{
+                box-shadow:0px 0px 0px $color;
+            
+            }
+            100%{
+                box-shadow: 5px 5px 10px rgba($color,0.15);
+            }
+            
+        }
+   
+      
+    }
+}
+@each $class,$color in $elementsColors{
+    .shadow__#{$class}-light-inside--click-off{
+        cursor: pointer;
+        transition: all 0.3s ease-in-out !important;
+        box-shadow:1px 1px 5px $color inside;
+        @keyframes shadowClickOffLightInside#{$class} {
+            0%{
+                box-shadow: 0px 0px 10px rgba($color,0.15) inset;
+            }
+            50%{
+                box-shadow:0px 0px 0px $color inset;
+            
+            }
+            100%{
+                box-shadow: 0px 0px 10px rgba($color,0.15) inset;
+            }
+            
+        }
+    
+      
+    }
+}

@@ -1,0 +1,20 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+@each $class,$color in $elementsColors{
+    .scrollspy-#{$class}{
+        &.scrollspy--active{
+            background-color: $color !important;
+        }
+    }
+}
+@each $class,$color in $elementsLightColors{
+    .scrollspy-#{$class}-light{
+        &.scrollspy--active{
+            background-color: $color !important;
+        }
+    }
+}

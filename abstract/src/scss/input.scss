@@ -1,0 +1,102 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+[class*="input__field"]{
+    position: relative;
+    top:0px;
+    left:0px;
+    transition: all 0.2s ease-in-out;
+    label{
+        display: block;
+        font-size:pxToRem(14);
+        margin-bottom: 5px;
+    }
+    input,textarea{
+        padding: 5px;
+        width: 100%;
+        outline: none;
+        border: 0px;
+        background-color: transparent;
+        border-radius: 5px;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0px 0px 3px var(--light-black);
+        &:focus,&:active{
+            outline: none;
+            border: 0px;
+            box-shadow: 0px 0px 4px var(--light-olive);
+        }
+    }
+}
+.input{
+    &__field{
+        position: relative;
+        top:0px;
+        left:0px;
+        label{
+            font-style: italic;
+        }
+    }
+    &__field-normal{
+        label{
+            display: block;
+            margin: 0px;
+            position: absolute;
+            top:0px;
+            left:0px;
+            font-style: italic;
+            transition: all 0.3s ease-in-out;
+            font-size: pxToRem(14);
+        }
+    }
+    &__field-line{
+        border-bottom: 1px solid var(--light-black);
+        label{
+            display: block;
+            margin: 0px;
+            position: absolute;
+            top:0px;
+            left:0px;
+            font-style: italic;
+            transition: all 0.3s ease-in-out;
+            font-size: pxToRem(14);
+        }
+        input,textarea{
+            box-shadow: none;
+            &:active,&:focus{
+                box-shadow: none;
+            }
+        }
+    }
+    &__field-underscore{
+        border-bottom: 2px solid var(--light-black);
+        label{
+            display: block;
+            margin: 0px;
+            position: absolute;
+            top:0px;
+            left:0px;
+            font-style: italic;
+            transition: all 0.3s ease-in-out;
+            font-size: pxToRem(14);
+        }
+        input,textarea{
+            box-shadow: none;
+            &:active,&:focus{
+                box-shadow: none;
+            }
+        }
+        & > .input__underscore-line-effect{
+            width: 0%;
+            position: absolute;
+            bottom:-2px;
+            left:50%;
+            z-index: 2;
+            transform: translateX(-50%);
+            border:1px solid var(--border-olive);
+            transition: all 0.5s ease-in-out;
+        }
+    }
+}

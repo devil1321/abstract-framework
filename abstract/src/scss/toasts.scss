@@ -1,0 +1,45 @@
+// @import 'variables';
+// @import 'functions';
+// @import 'controlers-mixins';
+// @import 'transitions';
+// @import 'global';
+
+.toast{
+    box-shadow: 0px 0px 1px var(--black);
+    border-radius: 5px;
+    overflow: hidden;
+    transition: all 1s ease-in-out;
+    &__header{
+        font-weight:bold;
+        padding:10px 20px;
+        background-color: var(--medium-white);
+        @include createFlex(row,space-between,center,null);
+    }
+    &__close{
+        cursor:pointer;
+        position:relative;
+        top:0px;
+        left:0px;
+        &:hover{
+            opacity:0.7;
+        }
+        span{
+            pointer-events: none;
+            display:block;
+            width:25px;
+            border-bottom: 2px solid var(--black);
+            transform-origin: 11px 1px;
+            &:first-of-type{
+                transform: rotate(45deg);
+            }
+            &:last-of-type{
+                transform: rotate(-45deg);
+            }
+        }
+    }
+    &__body{
+        padding:20px;
+        background-color: var(--light-white);
+    }
+}
+

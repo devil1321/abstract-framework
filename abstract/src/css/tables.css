@@ -1,0 +1,70 @@
+.table {
+  border-radius: 5px;
+  overflow: hidden;
+}
+.table__light {
+  box-shadow: 0px 0px 1px var(--black);
+}
+.table__light .table__body .table__row:nth-of-type(2n) {
+  background-color: var(--white);
+}
+.table__light .table__body .table__row:nth-of-type(2n + 1) {
+  background-color: var(--light-white);
+}
+.table__light .table__header, .table__light .table__footer {
+  background-color: var(--white);
+  font-weight: bold;
+}
+.table__light .table__row {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.table__light .table__row:hover {
+  background-color: var(--medium-white) !important;
+}
+.table__dark {
+  color: var(--white);
+}
+.table__dark .table__body .table__row:nth-of-type(2n) {
+  background-color: var(--light-black);
+}
+.table__dark .table__body .table__row:nth-of-type(2n + 1) {
+  background-color: var(--medium-black);
+}
+.table__dark .table__header, .table__dark .table__footer {
+  background-color: var(--light-black);
+  font-weight: bold;
+}
+.table__dark .table__row {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.table__dark .table__row:hover {
+  background-color: var(--black) !important;
+}
+.table__header {
+  width: 100%;
+}
+.table__row {
+  width: 100%;
+}
+.table__heading {
+  margin: 0px;
+  padding: 10px 20px;
+  text-align: center;
+}
+.table__body .table__row:hover .table__data {
+  transform: translateX(10px);
+}
+.table__data {
+  cursor: pointer;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0px;
+  padding: 10px 20px;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+.table__footer {
+  width: 100%;
+}/*# sourceMappingURL=tables.css.map */

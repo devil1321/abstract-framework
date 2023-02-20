@@ -1,0 +1,301 @@
+[class*=hover--3d-100deg-right-with-shadow] {
+  transform: rotate3d(1, -1, 1, 100deg);
+}
+
+[class*=hover--3d-65deg-right-with-shadow] {
+  transform: rotate3d(1, -1, 1, 65deg);
+}
+
+[class*=hover--3d-100deg-left-with-shadow] {
+  transform: rotate3d(-1, -1, -1, 100deg);
+}
+
+[class*=hover--3d-65deg-left-with-shadow] {
+  transform: rotate3d(-1, -1, -1, 65deg);
+}
+
+.card {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.7s ease-in-out;
+  background-color: var(--white);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.card:hover {
+  z-index: 9999;
+}
+.card__header {
+  padding: 10px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  transition: all 0.7s ease-in-out;
+}
+.card__body {
+  padding: 10px;
+  transition: all 0.7s ease-in-out;
+}
+.card__button {
+  cursor: pointer;
+  margin: 5px 0px;
+  width: 100%;
+  padding: 10px 20px;
+  font-weight: bold;
+  outline: none;
+  border: 0px;
+  border-radius: 5px;
+}
+.card__button:focus, .card__button:active {
+  outline: none;
+  border: 0px;
+}
+.card__button:hover {
+  opacity: 0.7;
+}
+.card__footer {
+  padding: 10px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  transition: all 0.7s ease-in-out;
+}
+.card__bordered-inside .card__header {
+  border: 1px solid var(--medium-white);
+}
+.card__bordered-inside .card__body {
+  border-left: 1px solid var(--medium-white);
+  border-right: 1px solid var(--medium-white);
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+}
+.card__bordered-inside .card__footer {
+  border: 1px solid var(--medium-white);
+}
+.card__hover--split-y:hover .card__header {
+  transform: translateY(-20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-y:hover .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-y:hover .card__footer {
+  transform: translateY(20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-x-left:hover .card__header {
+  transform: translateX(-20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-x-left:hover .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-x-left:hover .card__footer {
+  transform: translateX(20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-x-right:hover .card__header {
+  transform: translateX(20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-x-right:hover .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-x-right:hover .card__footer {
+  transform: translateX(-20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-xy-left:hover .card__header {
+  transform: translate(-20px, -20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-xy-left:hover .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-xy-left:hover .card__footer {
+  transform: translate(20px, 20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-xy-right:hover .card__header {
+  transform: translate(20px, -20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-xy-right:hover .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--split-xy-right:hover .card__footer {
+  transform: translate(-20px, 20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-y {
+  transition: all 0.7s ease-in-out;
+}
+.card__hover--combine-y .card__header {
+  transform: translate(0px, -20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-y .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-y .card__footer {
+  transform: translate(0px, 20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-y:hover .card__header {
+  transform: translate(0px, 0px);
+  box-shadow: none;
+}
+.card__hover--combine-y:hover .card__body {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.7s ease-in-out;
+  box-shadow: none;
+}
+.card__hover--combine-y:hover .card__footer {
+  transform: translate(0px, 0px);
+  box-shadow: none;
+}
+.card__hover--combine-x-right {
+  transition: all 0.7s ease-in-out;
+}
+.card__hover--combine-x-right .card__header {
+  transform: translateX(-20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-x-right .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-x-right .card__footer {
+  transform: translateX(20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-x-right:hover .card__header {
+  transform: translateX(0px);
+  box-shadow: none;
+}
+.card__hover--combine-x-right:hover .card__body {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.7s ease-in-out;
+  box-shadow: none;
+}
+.card__hover--combine-x-right:hover .card__footer {
+  transform: translateX(0px);
+  box-shadow: none;
+}
+.card__hover--combine-x-left {
+  transition: all 0.7s ease-in-out;
+}
+.card__hover--combine-x-left .card__header {
+  transform: translateX(20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-x-left .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-x-left .card__footer {
+  transform: translateX(-20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-x-left:hover .card__header {
+  transform: translateX(0px);
+  box-shadow: none;
+}
+.card__hover--combine-x-left:hover .card__body {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.7s ease-in-out;
+  box-shadow: none;
+}
+.card__hover--combine-x-left:hover .card__footer {
+  transform: translateX(0px);
+  box-shadow: none;
+}
+.card__hover--combine-xy-right {
+  transition: all 0.7s ease-in-out;
+}
+.card__hover--combine-xy-right .card__header {
+  transform: translate(20px, -20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-xy-right .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-xy-right .card__footer {
+  transform: translate(-20px, 20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-xy-right:hover .card__header {
+  transform: translate(0px, 0px);
+  box-shadow: none;
+}
+.card__hover--combine-xy-right:hover .card__body {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.7s ease-in-out;
+  box-shadow: none;
+}
+.card__hover--combine-xy-right:hover .card__footer {
+  transform: translate(0px, 0px);
+  box-shadow: none;
+}
+.card__hover--combine-xy-left {
+  transition: all 0.7s ease-in-out;
+}
+.card__hover--combine-xy-left .card__header {
+  transform: translate(-20px, -20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-xy-left .card__body {
+  border-top: 1px solid var(--medium-white);
+  border-bottom: 1px solid var(--medium-white);
+  transition: all 0.7s ease-in-out;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-xy-left .card__footer {
+  transform: translate(20px, 20px);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.card__hover--combine-xy-left:hover .card__header {
+  transform: translate(0px, 0px);
+  box-shadow: none;
+}
+.card__hover--combine-xy-left:hover .card__body {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.7s ease-in-out;
+  box-shadow: none;
+}
+.card__hover--combine-xy-left:hover .card__footer {
+  transform: translate(0px, 0px);
+  box-shadow: none;
+}/*# sourceMappingURL=cards.css.map */
