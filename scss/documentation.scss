@@ -1,0 +1,83 @@
+@import './controlers-mixins.scss';
+.offcanvas{
+    .sidebar__item{
+        .accordion__body{
+            ul{
+                padding:0px;
+                margin: 0px;
+                li{
+                    width: 100%;
+                    list-style-type: none;
+                    &:hover{
+                        list-style-type:disc;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.ui{
+    &__controls{   
+        i{
+            pointer-events: none;
+            cursor: pointer;
+            font-size:pxToRem(20);
+            color:var(--medium-black);
+        }
+    }
+    &__buttons{
+        z-index: 9999;
+    }
+    &__component{
+        .nav__menu-wrapper,.nav{
+            @include breakpoint-down(medium){
+                position: relative !important;
+                overflow: visible !important;
+            }
+        }
+        .nav__menu-wrapper{
+            top:0px !important;
+            max-height: 100%;
+            display: flex;
+        }
+        .nav__menu-slide{
+            left:0px;
+            transform: translateX(0px);
+            display: flex;
+            flex-wrap: nowrap;
+        }
+        .nav__menu-item{
+            opacity:1;
+        }
+        .nav__hamburger{
+            display: none;
+        }
+    }
+    &__show-component,&__show-code{
+        cursor: pointer;
+        &:hover{
+            i{
+                opacity: 0.7;
+            }
+        }
+    }
+    &__code{
+        position:absolute;
+        z-index: 99999;
+    }
+    &__select-in,&__select-out,&__select-type{
+        overflow: hidden;
+        height: 100%;
+        max-height: 45px;
+        transition: all 1s ease-in-out;
+    }
+    &__code{
+        code{
+            font-weight: bold;
+        }
+        pre {
+            white-space: pre-wrap;
+        }
+    }
+}

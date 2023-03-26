@@ -25,7 +25,6 @@
     cursor: pointer;
     border-radius: 10px;
     transition:all 0.7s ease-in-out;
-    background-color: var(--white);
     transform-style: preserve-3d;
     will-change: transform;
     &:hover{
@@ -36,10 +35,12 @@
         border-top-left-radius: 8px;
         border-top-right-radius:8px;
         transition:all 0.7s ease-in-out;
+        background-color:var(--white);
     }
     &__body{
         padding:10px;
         transition:all 0.7s ease-in-out;
+        background-color:var(--white);
 
     }
     &__button{
@@ -51,6 +52,7 @@
         outline: none;
         border:0px;
         border-radius: 5px;
+        background-color:var(--white);
         &:focus,&:active{
             outline: none;
             border:0px;
@@ -64,9 +66,10 @@
         border-bottom-left-radius: 8px;
         border-bottom-right-radius:8px;
         transition:all 0.7s ease-in-out;
+        background-color:var(--white);
         
     }
-   
+    
     &__bordered-inside{
         .card__header{
             border:1px solid var(--medium-white);
@@ -340,4 +343,33 @@
         }
     }
 
+}
+.cards-flip{
+    position: relative;
+    top:0px;
+    left:0px;
+    .card{
+        transition: all 1s ease-in-out;
+    }
+    .card:last-of-type,.card:first-of-type{
+        position: absolute;
+        top:0px;
+        left:0px;
+        backface-visibility: hidden;
+    }
+    .card:first-of-type{
+        transform: rotateY(0deg);
+    }
+    .card:last-of-type{
+        transform: rotateY(180deg);
+    }
+    &:hover{
+        .card:first-of-type{
+            transform: rotateY(180deg);
+        }
+    
+        .card:last-of-type{
+            transform: rotateY(0deg);
+        }
+    }
 }

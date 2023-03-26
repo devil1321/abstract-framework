@@ -1,0 +1,18 @@
+.sandbox__html textarea {
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  font-size: 1.875rem;
+  border: 0px;
+  outline: none;
+  background-color: var(--light-black);
+  color: var(--light-white);
+}
+.sandbox__html textarea:focus, .sandbox__html textarea:active {
+  border: 0px;
+  outline: none;
+}
+.sandbox__output {
+  box-sizing: border-box;
+  background-color: var(--light-black);
+}/*# sourceMappingURL=sanbox.css.map */

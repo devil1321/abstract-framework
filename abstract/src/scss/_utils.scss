@@ -155,28 +155,28 @@ $i:0;
 }
 $i:0;
 @while $i < 1900 {
-    $i:$i + 50px;
+    $i:$i + 25px;
     .min-h-#{$i}{
         min-height:$i;
     }
 }
 $i:0;
 @while $i < 1900 {
-    $i:$i + 50px;
+    $i:$i + 25px;
     .min-w-#{$i}{
         min-width:$i;
     }
 }
 $i:0;
 @while $i < 1900 {
-    $i:$i + 50px;
+    $i:$i + 25px;
     .max-h-#{$i}{
         max-height:$i;
     }
 }
 $i:0;
 @while $i < 1900 {
-    $i:$i + 50px;
+    $i:$i + 25px;
     .max-w-#{$i}{
         max-width:$i;
     }
@@ -199,14 +199,14 @@ $i:0;
 }
 $i:0;
 @while $i < 1900 {
-    $i:$i + 50px;
+    $i:$i + 25px;
     .h-#{$i}{
         height:$i;
     }
 }
 $i:0;
 @while $i < 1900 {
-    $i:$i + 50px;
+    $i:$i + 25px;
     .w-#{$i}{
         width:$i;
     }
@@ -224,7 +224,7 @@ $i:0;
     $height: $i + 5vh;
     $i:$i + 5;
     .h-#{$i}-vh{
-        height:$height;
+        height:$height !important;
     }
 }
 $i:0;
@@ -267,6 +267,12 @@ $i:0;
 }
 .font-normal{
     font-style: normal;
+}
+.bg-transparent{
+    background-color: transparent;
+}
+.bg-inherit{
+    background-color: inherit;  
 }
 @each $class,$color in $elementsColors{
     .bg-#{$class}{
@@ -876,7 +882,7 @@ $i:0;
 $width:0px;
 @while $i < 6{
     .border-#{$i}{
-        border-width:$width;
+        border-width:$width !important;
     }
     $i:$i + 1;
     $width:$width + 1px;
@@ -1364,7 +1370,7 @@ $i:0;
 $pos:0%;
 @while $i < 105 {
     .top-plus-#{$i}{
-        top:$pos;
+        top:$pos !important;
     }
     $i:$i + 5;
     $pos:$pos + 5%;
@@ -1373,7 +1379,7 @@ $i:0;
 $pos:0px;
 @while $i < 505 {
     .top-plus-#{$i}px{
-        top:$pos;
+        top:$pos !important;
     }
     $i:$i + 5;
     $pos:$pos + 5px;

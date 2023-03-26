@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./abstract/src/css/all.css">
+        <link rel="stylesheet" href="./css/sanbox.css">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="container-tweleve bg-medium-black">
+            <div class="sandbox min-h-100-vh">
+                <div class="nav bg-black">
+                    <div class="nav__hamburger" data-target-id="nav">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div id="nav" class="nav__menu-wrapper nav__menu-slide mr-l-auto">
+                        <div class="nav__menu pd-b-2 bg-black ">
+                            <div class="nav__menu-item mr-x-1 nav__menu-item-underline-gradient-light-olive nav__menu-item-hover-line-transition color-medium-white active active-medium-black"><a href="/">Home</a></div>
+                            <div class="nav__menu-item mr-x-1 nav__menu-item-underline-gradient-light-olive nav__menu-item-hover-line-transition color-medium-white active-medium-black"><a href="/documentation.html">Documentation</a></div>
+                            <div class="nav__menu-item mr-x-1 nav__menu-item-underline-gradient-light-olive nav__menu-item-hover-line-transition color-medium-white active-medium-black"><a href="/contact.html">Contact</a></div>
+                            <div class="nav__menu-item mr-x-1 nav__menu-item-underline-gradient-light-olive nav__menu-item-hover-line-transition color-medium-white active-medium-black"><a href="/sandbox.html">Sandbox</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h1 class="text-center mr-t-8 color-olive-light">
+                    Sandbox
+                </h1>
+                
+                <div class="sandbox__html column-11 mr-y-5 mr-x-auto min-h-50-vh">
+                    <textarea class="bg-light-black shadow-light-white min-h-50-vh" name="" id=""></textarea>
+                </div>
+
+                <h1 class="text-center mr-y-5 color-olive-light">Output</h1>
+                <div class="sandbox__output bg-light-black  pd-5 column-11 mr-x-auto shadow-light-white min-h-50-vh flex justify__flex-center align-items__flex-center"></div>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="./abstract/src/abstract.js"></script>
+        <script src='./abstract/src/jelly.js'></script>
+        <script src='./js/sandbox.js'></script>
+    </body>
+</html>

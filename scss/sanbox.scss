@@ -1,0 +1,24 @@
+@import './controlers-mixins.scss';
+
+.sandbox{
+    &__html{
+        textarea{
+            overflow-y: scroll;
+            width: 100%;
+            height: 100%;
+            font-size: pxToRem(30);
+            border:0px;
+            outline:none;
+            background-color: var(--light-black);
+            color:var(--light-white);
+            &:focus,&:active{
+                border:0px;
+                outline:none;
+            }
+        }
+    }
+    &__output{
+        box-sizing:border-box;
+        background-color: var(--light-black);
+    }
+}

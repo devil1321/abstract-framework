@@ -9,7 +9,6 @@
     visibility: hidden;
     max-height: 0px;
     max-width: 0px;
-    
 }
 .slide-y{
     overflow: hidden;
@@ -42,6 +41,23 @@
 }
 
 // In Transitions
+@keyframes flipIn{
+    0%{
+        transform: rotateY(180deg);
+    }
+   
+    100%{
+        transform: rotateY(0deg);
+    }
+}
+@keyframes flipOut{
+    0%{
+        transform: rotateY(0deg);
+    }
+    100%{
+        transform: rotateY(180deg);
+    }
+}
 
 @keyframes pulseInside{
     0%{
@@ -309,7 +325,7 @@
 }
 @keyframes slideInXLeft {
     0%{
-       top:var(--pos-top);
+        top:var(--pos-top);
         max-width: 0px;
         left:(--pos-left);
     }

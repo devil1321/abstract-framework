@@ -32,7 +32,7 @@
     @each $class,$color in $elementsColors{
         &__horizontal-light-#{$class}{
             cursor: pointer;
-            transition: all 0.3 ease-in-out;
+            transition: all 0.6 ease-in-out;
             position: absolute;
             &:first-of-type{
                 left:0px;
@@ -69,7 +69,7 @@
     @each $class,$color in $elementsLightColors{
         &__horizontal-light-#{$class}-light{
             cursor: pointer;
-            transition: all 0.3 ease-in-out;
+            transition: all 0.6 ease-in-out;
             position: absolute;
             &:first-of-type{
                 left:0px;
@@ -106,7 +106,7 @@
     @each $class,$color in $elementsColors{
         &__horizontal-dark-#{$class}{
             cursor: pointer;
-            transition: all 0.3 ease-in-out;
+            transition: all 0.6 ease-in-out;
             position: absolute;
             &:first-of-type{
                 left:0px;
@@ -143,7 +143,7 @@
     @each $class,$color in $elementsLightColors{
         &__horizontal-dark-#{$class}-light{
             cursor: pointer;
-            transition: all 0.3 ease-in-out;
+            transition: all 0.6 ease-in-out;
             position: absolute;
             &:first-of-type{
                 left:0px;
@@ -181,7 +181,7 @@
     @each $class,$color in $elementsColors{
         &__vertical-light-#{$class}{
             cursor: pointer;
-            transition: all 0.3 ease-in-out;
+            transition: all 0.6 ease-in-out;
             position: absolute;
             &:first-of-type{
                 left:0px;
@@ -218,7 +218,7 @@
     @each $class,$color in $elementsLightColors{
         &__vertical-light-#{$class}-light{
             cursor: pointer;
-            transition: all 0.3 ease-in-out;
+            transition: all 0.6 ease-in-out;
             position: absolute;
             &:first-of-type{
                 left:0px;
@@ -255,7 +255,7 @@
     @each $class,$color in $elementsColors{
         &__vertical-dark-#{$class}{
             cursor: pointer;
-            transition: all 0.3 ease-in-out;
+            transition: all 0.6 ease-in-out;
             position: absolute;
             &:first-of-type{
                 left:0px;
@@ -292,7 +292,7 @@
     @each $class,$color in $elementsLightColors{
         &__vertical-dark-#{$class}-light{
             cursor: pointer;
-            transition: all 0.3 ease-in-out;
+            transition: all 0.6 ease-in-out;
             position: absolute;
             &:first-of-type{
                 left:0px;

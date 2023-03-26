@@ -158,8 +158,12 @@ window.handleAllEvents = (mountPoint) =>{
             const wholeEvent = {
                 name:ev.slice(3,ev.length).toString(),
                 fn:function fire(e){
-                   const validFn = eval(fn)
-                   validFn(e)
+                    try{
+                        const validFn = eval(fn)
+                        validFn(e)
+                    }catch(err){
+                        console.error(err)
+                    }
                 }
             }
             return wholeEvent
@@ -194,8 +198,12 @@ window.handleRemoveEvents = (mountPoint) =>{
             const wholeEvent = {
                 name:ev.slice(3,ev.length).toString(),
                 fn:function fire(e){
-                   const validFn = eval(fn)
-                   validFn(e)
+                   try{
+                       const validFn = eval(fn)
+                       validFn(e)
+                   }catch(err){
+                    console.error(err)
+                   }
                 }
             }
             return wholeEvent
@@ -267,8 +275,12 @@ window.handleAllAttributes = (mountPoint) => {
                 node.removeAttribute(a.name)
                     if(matches?.length > 0){
                         matches.forEach(m => {
-                            const val = eval(m)
-                            validValue = validValue.replaceAll(m,val)
+                            try{
+                                const val = eval(m)
+                                validValue = validValue.replaceAll(m,val)
+                            }catch(err){
+                                console.error(err)
+                            }
                         })
                     }
                 node.setAttribute(a.name,validValue)
@@ -294,8 +306,12 @@ window.handleAllVariables = (mountPoint) => {
         if(validNodes?.length > 0){
             let validString = textnode.textContent
             validNodes.forEach(n => {
-                let val = eval(n)
-                validString = validString.replaceAll(n,val)
+                try{
+                    let val = eval(n)
+                    validString = validString.replaceAll(n,val)
+                }catch(err){
+                    console.error(err)
+                }
             })
             textnode.textContent = validString
         }else{
@@ -303,8 +319,12 @@ window.handleAllVariables = (mountPoint) => {
             let validString = textnode.nodeValueVar
             if(matches?.length > 0){
                 matches.forEach(n => {
-                    let val = eval(n)
-                    validString = validString.replaceAll(n,val)
+                    try{
+                        let val = eval(n)
+                        validString = validString.replaceAll(n,val)
+                    }catch(err){
+                        console.error(err)
+                    }
                 })
                 textnode.nodeValue = validString
             }
@@ -384,8 +404,12 @@ window.createDOMMap = (mountPoint) => {
                                     let validValue = attr
                                     if(matches?.length > 0){
                                         matches.forEach(m => {
-                                            const val = eval(m)
-                                            validValue = validValue.replaceAll(m,val)
+                                            try{
+                                                const val = eval(m)
+                                                validValue = validValue.replaceAll(m,val)
+                                            }catch(err){
+                                                console.error(err)
+                                            }
                                         })
                                     }
                                     allAttrs.push({name,attr:validValue})
@@ -405,6 +429,9 @@ window.createDOMMap = (mountPoint) => {
                 el.className = node.className 
                 el.n_index = node.n_index
                 el.id = node.id
+                for(let key in node){
+                    el[key] = node[key]
+                }
                 map.push(el)
             }
             }
@@ -441,6 +468,19 @@ window.renderDOM = (DOMmap,mountPoint) =>{
         }
         else{
            const el = document.createElement(node.tag)
+           for(let key in node){
+            if(key !== 'outerHTML' && key !== 'outerText' && key === 'valueAsDate' && key === 'innerHTML' && key === 'outerHTML' && key === 'innerText' && key === 'textContent'){
+                if(key === 'maxLength' || key === 'minLength'){
+                    if(node[key] < 0){
+                        node[key] = 0
+                        el[key] = node[key]
+                    }
+                }
+                else{
+                    el[key] = node[key]
+                }
+            }
+           }
            node.attrs.forEach(a => {
                 el.setAttribute(a.name,a.attr)
            })
@@ -513,8 +553,12 @@ window.updateDOMNode = (map,nodesMap,variable) => {
             const matches = n.nodeValueVar.match(validName)
             let varString = n.nodeValueVar
             matches.forEach(m => {
-                const value = eval(m)
-                varString = varString.replaceAll(m,value)            
+                try{
+                    const value = eval(m)
+                    varString = varString.replaceAll(m,value)            
+                }catch(err){
+                    console.error(err)
+                }
             })
             n.nodeValue = varString
         }
@@ -553,7 +597,11 @@ window.updateDOMNode = (map,nodesMap,variable) => {
                     }else{
                         if(rest_attrs_valid_string[i+1] === undefined){
                             if(validString.split(' ').filter(el => el === rest_attrs_valid_string[i]).length === 0){
-                                validString = validString + " " + rest_attrs_valid_string[i]
+                                if(validString.length > 0){
+                                    validString = validString + " " + rest_attrs_valid_string[i]
+                                }else{
+                                    validString = validString + rest_attrs_valid_string[i]
+                                }
                             }
                         }
                     }
@@ -570,8 +618,12 @@ window.updateDOMNode = (map,nodesMap,variable) => {
         }
         if(matches?.length > 0){
             matches.forEach(m => {
-                const val = eval(m)
-                validString = validString.replaceAll(m,val)
+                try{
+                    const val = eval(m)
+                    validString = validString.replaceAll(m,val)
+                }catch(err){
+                    console.error(err)
+                }
             })
         }
 
@@ -627,8 +679,12 @@ window.DOMobserver = new MutationObserver((mutation)=>{
                             const matches = n.nodeValueVar.match(regex)?.filter(a => a !== undefined || a !== null)
                             if(matches?.length > 0){
                                 matches.forEach(m => {
-                                    const val = eval(m)
-                                    validTextContent = validTextContent.replaceAll(m,val)
+                                    try{
+                                        const val = eval(m)
+                                        validTextContent = validTextContent.replaceAll(m,val)
+                                    }catch(err){
+                                        console.error(err)
+                                    }
                                 })
                             }
                             n.nodeValue = validTextContent
@@ -638,8 +694,12 @@ window.DOMobserver = new MutationObserver((mutation)=>{
                             n.nodeValueVar = n.nodeValue
                             if(matches?.length > 0){
                                 matches.forEach(m => {
-                                    const val = eval(m)
-                                    validTextContent = validTextContent.replace(m,val)
+                                    try{
+                                        const val = eval(m)
+                                        validTextContent = validTextContent.replace(m,val)
+                                    }catch(err){
+                                        console.error(err)
+                                    }
                                 })
                                 n.nodeValue = validTextContent
                             }
@@ -659,8 +719,12 @@ window.DOMobserver = new MutationObserver((mutation)=>{
                     }
                     if(matches?.length > 0){
                         matches.forEach(m => {
-                            const val = eval(m)
-                            validTextContent = validTextContent.replaceAll(m,val)
+                            try{
+                                const val = eval(m)
+                                validTextContent = validTextContent.replaceAll(m,val)
+                            }catch(err){
+                                console.error(err)
+                            }
                         })
                         n.nodeValue = validTextContent
                     }
@@ -672,8 +736,12 @@ window.DOMobserver = new MutationObserver((mutation)=>{
                         let validValue = a.attr
                         if(matches?.length > 0){
                             matches.forEach(m => {
-                                const val = eval(m)
-                                validValue = validValue.replaceAll(m,val)
+                                try{
+                                    const val = eval(m)
+                                    validValue = validValue.replaceAll(m,val)
+                                }catch(err){
+                                    console.error(err)
+                                }
                             })
                         }
                         n.setAttribute(a.name,validValue)
@@ -684,8 +752,12 @@ window.DOMobserver = new MutationObserver((mutation)=>{
                 let validString = n.nodeValueVar
                 if(matches?.length > 0){
                     matches.forEach(m => {
-                    let val = eval(m)
-                    validString = validString.replaceAll(n,val)
+                        try{
+                            let val = eval(m)
+                            validString = validString.replaceAll(n,val)
+                        }catch(err){
+                            console.error(err)
+                        }
                    })
                    n.nodeValue = validString
                 }
@@ -713,6 +785,23 @@ window.startDynamic = (rootMountPointId,mapMountPointId) =>{
     }
 }
 
+dynamic = {
+    points:[]
+}
+
+const handler = {
+  set(target, prop, value) {
+    target[prop] = value;
+    if (prop === "points") {
+      window.dynamic.points.forEach(point =>{
+        startDynamic(point.section_parent,point.section_child)
+    })
+    }
+    return true;
+  },
+};
+
+window.dynamic = new Proxy(dynamic, handler);
 
 
 

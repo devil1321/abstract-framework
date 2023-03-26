@@ -226,6 +226,65 @@ class Utils {
         }
        
     }
+    recreateNode(el, withChildren) {
+        if (withChildren) {
+          el.parentNode.replaceChild(el.cloneNode(true), el);
+        }
+        else {
+          var newEl = el.cloneNode(false);
+          while (el.hasChildNodes()) newEl.appendChild(el.firstChild);
+          el.parentNode.replaceChild(newEl, el);
+        }
+      }
+    handleUsedStylesInHead = async (all,variables,global) =>{
+        const styles = document.createElement('style')
+        const root = document.querySelectorAll('*')
+    
+        let text_variables = ''
+        let text_all = ''
+        let text_global = ''
+        if(variables){
+            const res_variables = await fetch(variables)
+            text_variables = await res_variables.text()
+        }
+        if(global){
+            const res_global = await fetch(global)
+            text_global = await res_global.text()
+        }
+    
+        if(all){
+            const res = await fetch(all)
+            text_all = await res.text()
+        }
+       
+        text_variables = text_variables.replace(/(\r\n|\n|\r)/gm, "");
+        text_global = text_global.replace(/(\r\n|\n|\r)/gm, "");
+        text_all = text_all.replace(/(\r\n|\n|\r)/gm, "");
+    
+        const makeStyle = (text) =>{
+            let styles_text =''
+            root.forEach(el =>{
+                const classes = [...el.classList]
+                classes.forEach(c =>{
+                    const stylesRegex = new RegExp(`.${c} \{(.*)\}`,'gi')
+                    const matches = text.match(stylesRegex)
+                    matches?.forEach(m => {
+                        const isInRegex = new RegExp(`.${c} \{(.*)\}`,'gi')
+                        if(!isInRegex.test(styles_text)){
+                            styles_text += m
+                        }
+                    })
+                })
+            })
+            return styles_text
+        }
+    
+    
+        styles.innerHTML += text_variables
+        styles.innerHTML += text_global
+        styles.innerHTML += makeStyle(text_all)
+        document.head.appendChild(styles)
+    }
     cancelAllAnimationFrames(){
         var id = window.requestAnimationFrame(function(){});
         while(id--){
@@ -817,19 +876,16 @@ class Effects {
             }
     
             elsActive.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                    animation(e,`pulseOutlineActive${c} 0.7s ease`)
-                })
+                el.onclick = ''
+                el.onclick = () => animation(e,`pulseOutlineActive${c} 0.7s ease`)
             })
             elsActiveDouble.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                    animation(e,`pulseOueActiveDouble${c} 0.7s ease`)
-                })  
+                el.onclick = ''
+                el.onclick = () => animation(e,`pulseOueActiveDouble${c} 0.7s ease`)
             })
             elsActiveInverted.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                   animation(e,`pulseOutlineActiveInverted${c} 0.7s ease`)
-              })  
+                el.onclick = ''
+                el.onclick = () =>  animation(e,`pulseOutlineActiveInverted${c} 0.7s ease`)
             })
         })
     }
@@ -858,54 +914,47 @@ class Effects {
             }
     
             elsActive.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                    animation(e,`shadowClick${c} ${framework.globalSetup.cssShadowAnimationTime}s ease`)
-                })
+                el.onclick = ''    
+                el.onclick = () => animation(e,`shadowClick${c} ${framework.globalSetup.cssShadowAnimationTime}s ease`)
             })
             elsActiveInside.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                    animation(e,`shadowClickInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
-                })  
+                el.onclick = ''
+                el.onclick = () => animation(e,`shadowClickInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
             })
             elsActiveLight.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                   animation(e,`shadowClickLight${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
-              })  
+                el.onclick = ''
+                el.onclick = () => animation(e,`shadowClickLight${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
             })
             elsActiveLightInside.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                   animation(e,`shadowClickLightInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
-              })  
+                el.onclick = ''
+                el.onclick = () => animation(e,`shadowClickLightInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
             })
             elsActiveOff.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                   animation(e,`shadowClickOff${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
-              })  
+                el.onclick = ''
+                el.onclick = () =>animation(e,`shadowClickOff${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
             })
             elsActiveOffInside.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                   animation(e,`shadowClickOffInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
-              })  
+                el.onclick = ''
+                el.onclick = () =>animation(e,`shadowClickOffInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
             })
             elsActiveLightOff.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                   animation(e,`shadowClickOffLight${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
-              })  
+                el.onclick = ''
+                el.onclick = () =>animation(e,`shadowClickOffLight${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
             })
             elsActiveLightInsideOff.forEach(el => {
-                el.addEventListener('click',(e)=>{
-                   animation(e,`shadowClickOffLightInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
-              })  
+                el.onclick = ''
+                el.onclick = () =>animation(e,`shadowClickOffLightInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
             })
         })
     }
     handleButtonFocuses(){
         const buttons = document.querySelectorAll('button')
         buttons.forEach(btn =>{
-            btn.addEventListener("click", (e) => {  
+            btn.onclick = ''
+            btn.onclick = (e) => {
                 e.target.blur()
                 e.target.focus()
-            }, true);
+            }
         })
     }
     handlePulses(){
@@ -941,7 +990,8 @@ class Effects {
                                 pulse.classList.add('pulse-inside--active-big')
                             }
                         }
-                        t.addEventListener('click',(e)=>handlePulse(e))
+                        t.onclick = ''
+                        t.onclick = (e) => handlePulse(e) 
                     }
                 }
             })
@@ -952,7 +1002,8 @@ class Effects {
         closeBtns.forEach(btn => {
             const target = btn.parentElement
             const animatioOut = framework.utils.handleTransitionOut(target)
-            btn.addEventListener('click',()=>{
+            btn.onclick = ''
+            btn.onclick = () =>{
                 const trOutAttr = target.getAttribute('data-transition_out')
                 target.style.animation = animatioOut
                 if(trOutAttr === 'slideOutYCenter'){
@@ -963,7 +1014,7 @@ class Effects {
                 stopTimer = setTimeout(function(){
                     target.style.display ='none'
                 },framework.globalSetup.animationTime)
-            })
+            }
         })
     }
     handleScrollSpy(){
@@ -1000,18 +1051,18 @@ class Effects {
 }
 class ButtonCollapse{
     constructor(){
-        this.buttons = document.querySelectorAll('.button__collapse')
+        this.buttons = document.querySelectorAll('.collapse__button')
     }
     handleCollapses(btn){
-        const target = document.querySelector(`${btn.dataset.target}`)
+        const target_id = btn.getAttribute('data-target-id')
+        const target = document.querySelector(`#${target_id}`)
         const animationIn = framework.utils.handleTransitionIn(target)
         const animationOut = framework.utils.handleTransitionOut(target)
         target.style.borderWidth = '0px'
-        btn.addEventListener('click',(e)=>{
+        const handleCollapseAnim = () => {
             target.style.removeProperty('border-width')
             if(!target.classList.contains('collapse__open')){
                 target.classList.add('collapse__open')
-                    target.style.padding = '20px 10px'
                     target.style.animation = 'none'
                     target.style.animation = animationIn
             }else{
@@ -1020,14 +1071,15 @@ class ButtonCollapse{
                     clearTimeout(stopTimer)
                     if(target.classList.contains('slide-y') || target.classList.contains('slide-x')){
                         stopTimer = setTimeout(function(){
-                            target.style.padding = '0px 0px'
                             target.style.borderWidth = '0px'
                         },framework.globalSetup.animationTime);
                     }
                     target.style.animation = 'none'
                     target.style.animation = animationOut
             }
-        })
+        }
+        btn.onclick = ''
+        btn.onclick = () => handleCollapseAnim()
     }
     handleSetup(){
         this.buttons.forEach(btn => this.handleCollapses(btn))
@@ -1038,7 +1090,8 @@ class Accordion{
         this.headings = document.querySelectorAll('.accordion__heading')
     }
     handleAccordions(h){
-        const handleAccordion = () =>{
+       
+        const handleAccordion = (d) =>{
             const animationIn = framework.utils.handleTransitionIn(h)
             const animationOut = framework.utils.handleTransitionOut(h)
             const chevron = document.querySelector('.chevron')
@@ -1075,7 +1128,7 @@ class Accordion{
                         }
                     }
             }else{
-                    h.classList.remove('accordion__open')
+                h.classList.remove('accordion__open')
                     if(body){
                         if(chevron){
                             chevron.classList.remove('chevron-up')
@@ -1100,10 +1153,14 @@ class Accordion{
                     }
             }
         }
-        h.addEventListener('click',handleAccordion)
+   
+        h.onclick = 
+        h.onclick = () => handleAccordion()
     }
     handleSetup(){
-        this.headings.forEach(h => this.handleAccordions(h))
+        this.headings.forEach(h => {
+            this.handleAccordions(h)
+        })
     }
 }
 class Breadcrumb{
@@ -1168,7 +1225,8 @@ class Dropdown{
             const menu = button.nextElementSibling.firstElementChild
             if(button && menu){
                 if(button.classList.contains('event--click')){
-                    button.addEventListener('click',(e)=>{
+                    button.onclick = ''
+                    button.onclick = (e) =>{
                         e.stopImmediatePropagation()
                         if(menu){
                             if(!menu.classList.contains('menu__open')){
@@ -1197,12 +1255,12 @@ class Dropdown{
                                 })
                             }
                         }
-                    })
+                    }
                     
                 }
                 if(button.classList.contains('event--hover')){
-                    button.addEventListener('mouseenter',(e) => {
-                        e.stopImmediatePropagation()
+                  
+                    button.onmouseenter = (e) => {
                         e.stopImmediatePropagation()
                         if(menu){
                             if(!menu.classList.contains('menu__open')){
@@ -1213,7 +1271,7 @@ class Dropdown{
                                 this.handleMenuClose(e,menu)
                             }
                         }
-                    })
+                    }
                 }
             }
         })
@@ -1228,7 +1286,8 @@ class Dropdown{
             if(menu?.classList.contains('dropdown__menu')){
                 if(mi && menu){
                     if(mi.classList.contains('event--click')){
-                        mi.addEventListener('click',(e)=>{
+                        mi.onclick = ''
+                        mi.onclick = (e) =>{
                             e.stopImmediatePropagation()
                             if(menu){
                                 if(!menu.classList.contains('menu__open')){
@@ -1240,10 +1299,11 @@ class Dropdown{
         
                                 }
                             }
-                        })
+                        }
                     }
                     if(mi.classList.contains('event--hover')){
-                        mi.addEventListener('mouseover',(e)=>{
+                        mi.onmouseover = ''
+                        mi.onmouseover = (e)=>{
                             e.stopImmediatePropagation()
                             if(menu){
                                 if(!menu.classList.contains('menu__open')){
@@ -1255,7 +1315,7 @@ class Dropdown{
         
                                 }
                             }
-                        })
+                        }
                     }
                 }
             }
@@ -1283,6 +1343,7 @@ class Dropdown{
     }
     handleCloseAll(condition){
         if(condition){
+            const allWrappers = document.querySelectorAll('.dropdown__menu-wrapper')
             this.allMenus = document.querySelectorAll('.dropdown__menu')
             this.allMenusInner = document.querySelectorAll('.dropdown__menu-inner')
             this.allSubMenus = document.querySelectorAll('.dropdown__submenu')
@@ -1293,7 +1354,7 @@ class Dropdown{
     }
     transitionControlOpen(fixOffset,offset,menu,subMenu){
         const children = menu.querySelectorAll(':scope > .dropdown__menu-item')
-        const trInAttr = menu.getAttribute('tr_')
+        const trInAttr = menu.getAttribute('data-transition_in')
         if(trInAttr === 'slideInYBottom'){
             if(children.length > 2){
                 subMenu.style.transform = `translate(${offset}px, ${children[0].clientHeight * (children.length - 1)}px)`       
@@ -1528,7 +1589,7 @@ class Dropdown{
         this.handleSetGraphic()
         this.handleDropdownItemInit()
         this.handleDropdownSubMenusInit()
-        document.addEventListener('click',(e) => this.handleCloseAll((!e.target.classList.contains('dropdown__menu-item') && !e.target.classList.contains('dropdown__button') && !e.target.classList.contains('dropdown__link'))))
+        document.addEventListener('click',(e) => this.handleCloseAll((!e.target.classList.contains('dropdown__menu-item') && !e.target.classList.contains('dropdown__button') && !e.target.classList.contains('dropdown__link') && !e.target.classList.contains('dropdown__item'))))
     }
 }
 class Card{
@@ -1657,21 +1718,26 @@ class Card{
         const shadowHeader = document.createElement('div')
         if(this.header){
             shadowHeader.classList = this.header.classList
+            shadowHeader.innerHTML = this.header.innerHTML
             this.removeBg(shadowHeader)
         }
         const shadowBody = document.createElement('div')
         if(this.body){
             shadowBody.classList = this.body.classList
+            shadowBody.innerHTML = this.body.innerHTML
             this.removeBg(shadowBody)
         }
         const shadowButton = document.createElement('button')
         if(this.button){
             shadowButton.classList = this.button.classList
+            shadowButton.innerHTML = this.button.innerHTML
             this.removeBg(shadowButton)
         }
         const shadowFooter = document.createElement('div')
-        if(this.button){
+        if(this.footer){
             shadowFooter.classList = this.footer.classList
+            shadowFooter.innerHTML = this.footer.innerHTML
+
             this.removeBg(shadowFooter)
         }
         shadowCard.style.position = 'absolute'
@@ -1691,7 +1757,7 @@ class Card{
             }else{
                 this.header.style.background = getComputedStyle(this.card).background
             }
-            if(this.headerColor.isExists){
+            if(this.headerColor?.isExists){
                 this.styles.innerHTML += `.card:nth-of-type(${this.cardIndex})  .card > .card__header:before{ background:linear-gradient(to right, rgba(${this.headerColor.borderGradient.first}, ${opacity}), rgba(${this.headerColor.borderGradient.second}, ${opacity}));\n}`
             }
             shadowHeader.innerHTML = this.header.innerHTML
@@ -1705,7 +1771,7 @@ class Card{
             }else{
                 this.button.style.background = getComputedStyle(this.card).background
             }
-            if(this.footerColor.isExists){
+            if(this.footerColor?.isExists){
                 this.styles.innerHTML += `.card:nth-of-type(${this.cardIndex})  .card > .card__header:before{ background:linear-gradient(to right, rgba(${this.headerColor.borderGradient.first}, ${opacity}), rgba(${this.headerColor.borderGradient.second}, ${opacity}))\n;}`
             }
             shadowButton.innerHTML = this.button.innerHTML
@@ -1723,7 +1789,7 @@ class Card{
             }else{
                 this.body.style.background = getComputedStyle(this.card).background
             }
-            if(this.bodyColor.isExists){
+            if(this.bodyColor?.isExists){
                 this.styles.innerHTML += `.card:nth-of-type(${this.cardIndex})  .card > .card__header:before{ background:linear-gradient(to right, rgba(${this.headerColor.borderGradient.first}, ${opacity}), rgba(${this.headerColor.borderGradient.second}, ${opacity}))\n;}`
             }
             // shadowBody.innerHTML = this.body.innerHTML
@@ -1737,13 +1803,13 @@ class Card{
             }else{
                 this.footer.style.background = getComputedStyle(this.card).background
             }
-            if(this.footerColor.isExists){
+            if(this.footerColor?.isExists){
                 this.styles.innerHTML += `.card:nth-of-type(${this.cardIndex})  .card > .card__header:before{ background:linear-gradient(to right, rgba(${this.headerColor.borderGradient.first}, ${opacity}), rgba(${this.headerColor.borderGradient.second}, ${opacity}))\n;}`
             }
             shadowFooter.innerHTML = this.footer.innerHTML
             shadowCard.appendChild(shadowFooter)
         }
-        const isOneExists = [this.headerColor.isExists,this.bodyColor.isExists,this.footerColor.isExists,this.buttonColor.isExists]
+        const isOneExists = [this.headerColor?.isExists,this.bodyColor?.isExists,this.footerColor?.isExists,this.buttonColor?.isExists]
         if(this.cardColor.isExists && !isOneExists.includes(true)){
             this.styles.innerHTML += `.card:nth-of-type(${this.cardIndex}) .card:nth-of-type(${this.nthType})::before{ 
                 background:linear-gradient(to right, rgba(${this.cardColor.borderGradient.first}, ${opacity}), rgba(${this.cardColor.borderGradient.second}, ${opacity}));
@@ -1945,45 +2011,50 @@ class Card{
     setupWithShadow(event_in,event_out){
         this.handleCardShadow()
         if(event_in !== 'click'){
-            this.card.addEventListener(event_in,()=>{
-                this.handleMainAnimation()
-            })
-            this.card.addEventListener(event_out,(e)=>{
-                this.handleRotateBack()
-            })
+            this.card[`on${event_in}`] = ''
+            this.card[`on${event_in}`] = () => this.handleMainAnimation()
+            this.card[`on${event_out}`] = ''
+            this.card[`on${event_out}`] = () => this.handleRotateBack()
+           
         }else{
-                this.card.addEventListener(event_in,(e)=>{
+                this.card[`on${event_in}`] = ''
+                this.card[`on${event_in}`] = (e) => {
                     if(!this.isClicked){
                         this.handleMainAnimation()
                         setTimeout(() => {
                             this.isClicked = true
                         }, 100);
                     }
-                })
-                this.card.addEventListener(event_out,(e)=>{
+                }
+              
+                this.card[`on${event_out}`] = ''
+                this.card[`on${event_out}`] = (e) =>{
                     if(this.isClicked){
                         this.isClicked = false
                         this.handleRotateBack()
                     }
-                })
+                }
           
         }
     }
     setupWithPaint(event_in,event_out){
         if(event_in !== 'click'){
-            this.card.parentElement.addEventListener(event_in,(e)=>{
+            this.card[`on${event_in}`] = ''
+            this.card[`on${event_in}`] = (e)=>{
                 this.handleAnimation()
                 e.stopPropagation()
                 e.stopImmediatePropagation()
                 this.handleCardShadow()
                 this.isBack = false
-            })
-            this.card.parentElement.addEventListener(event_out,(e)=>{
+            }
+            this.card[`on${event_out}`] = ''
+            this.card[`on${event_out}`] = (e)=>{
                 this.isBack = true
                 this.handleRotateBackClear()
-            })
+            }
         }else{
-            this.card.parentElement.addEventListener(event_in,(e)=>{
+            this.card[`on${event_in}`] = ''
+            this.card[`on${event_in}`] = (e)=>{
                     if(!this.isClicked){
                         this.isClicked = true
                         this.handleMainAnimation()
@@ -1992,14 +2063,15 @@ class Card{
                         this.isBack = false
                         this.handleCardShadow()
                     }
-                })
-                this.card.parentElement.addEventListener(event_out,(e)=>{
+                }
+                this.card[`on${event_out}`] = ''
+                this.card[`on${event_out}`] = (e)=>{
                     if(this.isClicked){
                         this.isBack = true
                         this.isClicked = false
                         this.handleRotateBackClear()
                     }
-                })
+                }
         }
     }
     handleSetup(event_in,event_out){
@@ -2211,21 +2283,24 @@ class Carousel{
         this.elements.forEach(el =>{
             const isButtons  = [...el.classList].filter(c => /carousel__buttons/gi.test(c))
             if(isButtons.length > 0){
-                const wrapper = document.createElement('div')
-                wrapper.classList.add('carousel__controls')
-                const chevron_prev = document.createElement('div')
-                chevron_prev.classList.add('carousel__chevron')
-                const chevron_next = document.createElement('div')
-                chevron_next.classList.add('carousel__chevron')
-                const prev = document.createElement('div')
-                prev.classList.add('carousel__prev')
-                prev.appendChild(chevron_prev)
-                wrapper.appendChild(prev)
-                const next = document.createElement('div')
-                next.classList.add('carousel__next')
-                next.appendChild(chevron_next)
-                wrapper.appendChild(next)
-                el.appendChild(wrapper)
+                const isIn = el.querySelector('[class*="carousel__buttons"]')
+                if(!isIn){
+                    const wrapper = document.createElement('div')
+                    wrapper.classList.add('carousel__controls')
+                    const chevron_prev = document.createElement('div')
+                    chevron_prev.classList.add('carousel__chevron')
+                    const chevron_next = document.createElement('div')
+                    chevron_next.classList.add('carousel__chevron')
+                    const prev = document.createElement('div')
+                    prev.classList.add('carousel__prev')
+                    prev.appendChild(chevron_prev)
+                    wrapper.appendChild(prev)
+                    const next = document.createElement('div')
+                    next.classList.add('carousel__next')
+                    next.appendChild(chevron_next)
+                    wrapper.appendChild(next)
+                    el.appendChild(wrapper)
+                }
             }
         })
     }
@@ -2239,18 +2314,17 @@ class Carousel{
                 const first = items[items.length - 1].cloneNode(true)
                 items.push(last)
                 items.unshift(first)
-                view.innerHTML = ''
-                items.forEach(i => {
-                    view.append(i)
-                })
-                const wrapper = document.createElement('div')
-                wrapper.classList.add('carousel__dots')
-                items.forEach(i => {
-                    const dot = document.createElement('div')
-                    dot.classList.add('carousel__dot')
-                    wrapper.appendChild(dot)
-                })
-                el.appendChild(wrapper)
+                const isIn = el.querySelector('.carousel__dots')
+                if(!isIn){
+                    const wrapper = document.createElement('div')
+                    wrapper.classList.add('carousel__dots')
+                    items.forEach(i => {
+                        const dot = document.createElement('div')
+                        dot.classList.add('carousel__dot')
+                        wrapper.appendChild(dot)
+                    })
+                    el.appendChild(wrapper)
+                }
                 const dots = [...document.querySelectorAll('.carousel__dot')]
                 if(dots.length > 0){
                     dots[1].classList.add('carousel__dot--active')
@@ -2266,10 +2340,12 @@ class Carousel{
 
     }
     handlePinEffect(el,index){
+
         const view = el.querySelector('.carousel__view')
         const items = view.querySelectorAll('.carousel__item')
         const isMerge = [el.classList].filter(c => /carousel__merge/.test(c)).length > 0 ? true : false
         const isFade = [el.classList].filter(c => /carousel__fade/.test(c)).length > 0 ? true : false
+        const isSlide = [el.classList].filter(c => /carousel__slide/.test(c)).length > 0 ? true : false
         const isTextEffect = [el.classList].filter(c => /carousel__with-text-effect/.test(c)).length > 0 ? true : false
         let direction = 'prev'
         this.count = index 
@@ -2357,7 +2433,7 @@ class Carousel{
                 }
             }
         }
-        if(isTextEffect && isMerge | isFade){
+        if(isTextEffect && isMerge | isFade | isSlide){
             this.handleCarouselTextEffectIn(direction,isMerge,isFade)
         }else if(isMerge){
            const body = items[2].querySelector('.carousel__item-body')
@@ -2369,58 +2445,108 @@ class Carousel{
                    body.style.opacity = 1
                 }, 1000);
             }
-        }else if(isFade){
-            const body = items[this.count+1].querySelector('.carousel__item-body')
-            if(body){
-                body.style.opacity = 0
-                body.style.transition = 'all 0s ease-in-out'
-                setTimeout(() => {
-                    body.style.transition = 'all 1s ease-in-out'
-                    body.style.opacity = 1
-                }, 2000);
-            }
+        }else if(isFade || isSlide){
+            const bodies = el.querySelectorAll('.carousel__item-body')
+            bodies.forEach(body =>{
+                if(body){
+                    body.style.opacity = 0
+                    body.style.transition = 'all 0s ease-in-out'
+                    setTimeout(() => {
+                        body.style.transition = 'all 1s ease-in-out'
+                        body.style.opacity = 1
+                        const heading = body.querySelector('.carousel__item-heading')
+                        const text = body.querySelector('.carousel__item-text')
+                        const footer = body.querySelector('.carousel__item-footer')
+                        if(heading){
+                            heading.style.opacity = 1
+                        }
+                        if(text){
+                            text.style.opacity = 1
+                        }
+                        if(footer){
+                            footer.style.opacity = 1
+                        }
+                    }, 2000);
+                }
+            })
         }
+        this.handleActivePin()
     }
-    handleCarouselTextEffectIn(direction,isMerge,isFade){
-        let nextHeading =  this.items[2].querySelector('.carousel__item-heading')
-        let nextText = this.items[2].querySelector('.carousel__item-text')
-        let nextFooter = this.items[2].querySelector('.carousel__item-footer')
-        let prevHeading = this.items[2].querySelector('.carousel__item-heading')
-        let prevText = this.items[2].querySelector('.carousel__item-text')
-        let prevFooter = this.items[2].querySelector('.carousel__item-footer')
-
+    handleCarouselTextEffectIn(direction,isMerge,isFade,el){
+        const items = el.querySelectorAll('.carousel__item')
+        let nextHeading =  items[1].querySelector('.carousel__item-heading')
+        let nextText = items[1].querySelector('.carousel__item-text')
+        let nextFooter = items[1].querySelector('.carousel__item-footer')
+        let prevHeading = items[1].querySelector('.carousel__item-heading')
+        let prevText = items[1].querySelector('.carousel__item-text')
+        let prevFooter = items[1].querySelector('.carousel__item-footer')
+    
         if(!isMerge){
+            items.forEach(item =>{
+                let heading =  item.querySelector('.carousel__item-heading')
+                let text = item.querySelector('.carousel__item-text')
+                let footer = item.querySelector('.carousel__item-footer')
+                if(heading){
+                    heading.style.opacity = 0
+                }
+                if(text){
+                    text.style.opacity = 0
+                }
+                if(footer){
+                    footer.style.opacity = 0
+                }
+            })
             if(this.count === 1 && direction === 'prev'){
+                console.log(1,'prev')
                 if(!isMerge){
-                    nextHeading = this.items[2].querySelector('.carousel__item-heading')
-                    nextText = this.items[2].querySelector('.carousel__item-text')
-                    nextFooter = this.items[2].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[3].querySelector('.carousel__item-heading')
-                    prevText = this.items[3].querySelector('.carousel__item-text')
-                    prevFooter = this.items[3].querySelector('.carousel__item-footer')
+                    nextHeading = items[this.count].querySelector('.carousel__item-heading')
+                    nextText = items[this.count].querySelector('.carousel__item-text')
+                    nextFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[this.count+1].querySelector('.carousel__item-heading')
+                    prevText = items[this.count+1].querySelector('.carousel__item-text')
+                    prevFooter = items[this.count+1].querySelector('.carousel__item-footer')
+                }
+    
+                if(nextHeading){
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.opacity = 0
+                    nextHeading.style.transform = 'translateY(-200px)'
+                }
+                if(nextText){
+                    nextText.style.transition = 'all 0s ease-in-out'
+                    nextText.style.opacity = 0
+                    nextText.style.transform = 'translateX(200px)'
+                }
+                if(nextFooter){
+                    nextFooter.style.transition = 'all 0s ease-in-out'
+                    nextFooter.style.opacity = 0
+                    nextFooter.style.transform =  'translateY(200px)'
                 }
             
                 if(prevHeading){
                     prevHeading.style.transition = 'all 1s ease-in-out'
                     prevHeading.style.transform = 'translateX(1200px)'
+                    prevHeading.style.opacity = 0
                 }
                 if(prevText){
-
+    
                     prevText.style.transition = 'all 1s ease-in-out'
                     prevText.style.transform = 'translateX(-500px)'
+                    prevText.style.opacity = 0
                 }
                 if(prevFooter){
-
+    
                     prevFooter.style.transition = 'all 1s ease-in-out'
                     setTimeout(() => {
                         prevFooter.style.transform = 'translateX(-500px)'
+                        prevFooter.style.opacity = 0
                     }, 200);
                 }
                 const handleEffectOnePrev = () =>{
                     if(nextHeading){
                         nextHeading.style.transition = 'all 1s ease-in-out'
                         nextHeading.style.opacity = 1
-                        nextHeading.style.transform = 'translateX(0px)'
+                        nextHeading.style.transform = 'translateY(0px)'
                     }
                     if(nextText){
                         nextText.style.transition = 'all 1s ease-in-out'
@@ -2444,30 +2570,51 @@ class Carousel{
                 }
             }
             if(this.count === 1 && direction === 'next'){
+                console.log(1,'next')
+                let lastHeading,lastText,lastFooter
+                
                 if(!isMerge){
-                    nextHeading = this.items[2].querySelector('.carousel__item-heading')
-                    nextText = this.items[2].querySelector('.carousel__item-text')
-                    nextFooter = this.items[2].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[4].querySelector('.carousel__item-heading')
-                    prevText = this.items[4].querySelector('.carousel__item-text')
-                    prevFooter = this.items[4].querySelector('.carousel__item-footer')
+                    nextHeading = items[this.count].querySelector('.carousel__item-heading')
+                    nextText = items[this.count].querySelector('.carousel__item-text')
+                    nextFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[3].querySelector('.carousel__item-heading')
+                    prevText = items[3].querySelector('.carousel__item-text')
+                    prevFooter = items[3].querySelector('.carousel__item-footer')
+                    lastText = items[2].querySelector('.carousel__item-text')
+                    lastFooter = items[2].querySelector('.carousel__item-footer')
+                    lastHeading = items[2].querySelector('.carousel__item-heading')
                 }
                 if(nextHeading){
-                    nextHeading.style.transition = 'all 0s ease-in-out'
                     nextHeading.style.opacity = 0
-                    nextHeading.style.transform = 'translateY(-100px)'
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.transform = 'translateY(-300px)'
                 }
                 if(nextText){
-                    nextText.style.transition = 'all 0s ease-in-out'
                     nextText.style.opacity = 0
+                    nextText.style.transition = 'all 0s ease-in-out'
                     nextText.style.transform = 'translateX(400px)'
                 }
                 if(nextFooter){
-                    nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.opacity = 0
+                    nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.transform = 'translateY(200px)'
                 }
-
+                if(lastHeading){
+                    lastHeading.style.opacity = 0
+                    lastHeading.style.transition = 'all 0s ease-in-out'
+                    lastHeading.style.transform = 'translateY(-300px)'
+                }
+                if(lastText){
+                    lastText.style.opacity = 0
+                    lastText.style.transition = 'all 0s ease-in-out'
+                    lastText.style.transform = 'translateX(400px)'
+                }
+                if(lastFooter){
+                    lastFooter.style.opacity = 0
+                    lastFooter.style.transition = 'all 0s ease-in-out'
+                    lastFooter.style.transform = 'translateY(200px)'
+                }
+    
                 if(prevHeading){
                     prevHeading.style.transform = 'translateY(-200px)'
                     prevHeading.style.opacity = 0
@@ -2480,17 +2627,22 @@ class Carousel{
                     prevFooter.style.transform = 'translateX(-400px)'
                     prevFooter.style.opacity = 0
                 }
-
-                const handleEffectOneNext = () =>{
+    
+                const handleEffectOneNext = (nextHeading,nextText,nextFooter) =>{
+                   
                     if(nextHeading){
                         nextHeading.style.transition = 'all 1.5s ease-in-out'
-                        nextHeading.style.opacity = 1
-                        nextHeading.style.transform  = 'translateY(0px)'
+                        setTimeout(() => {
+                            nextHeading.style.opacity = 1
+                            nextHeading.style.transform  = 'translateY(0px)'
+                        }, 100);
                     }
                     if(nextText){
                         nextText.style.transition = 'all 1.8s ease-in-out'
-                        nextText.style.opacity = 1
-                        nextText.style.transform = 'translateX(0px)'
+                        setTimeout(() => {
+                            nextText.style.opacity = 1
+                            nextText.style.transform = 'translateX(0px)'
+                        }, 100);
                     }
                     if(nextFooter){
                         nextFooter.style.transition = 'all 1.8s ease-in-out'
@@ -2502,24 +2654,27 @@ class Carousel{
                 }
                 if(!isFade){
                     setTimeout(() => {
-                        handleEffectOneNext()
+                        handleEffectOneNext(nextHeading,nextText,nextFooter)
+                        handleEffectOneNext(lastHeading,lastText,lastFooter)
                     }, 100);
                 }else{
                     setTimeout(() => {
-                        handleEffectOneNext()
+                        handleEffectOneNext(nextHeading,nextText,nextFooter)
+                        handleEffectOneNext(lastHeading,lastText,lastFooter)
                     }, 1000);
                 }
             }
             if(this.count % 2 === 0 && direction === 'prev'){
+                console.log(2,'prev')
                 if(!isMerge){
-                    prevHeading = this.items[3].querySelector('.carousel__item-heading')
-                    prevText = this.items[3].querySelector('.carousel__item-text')
-                    prevFooter = this.items[3].querySelector('.carousel__item-footer')
-                    nextHeading = this.items[4].querySelector('.carousel__item-heading')
-                    nextText = this.items[4].querySelector('.carousel__item-text')
-                    nextFooter = this.items[4].querySelector('.carousel__item-footer')
+                    prevHeading = items[this.count].querySelector('.carousel__item-heading')
+                    prevText = items[this.count].querySelector('.carousel__item-text')
+                    prevFooter = items[this.count].querySelector('.carousel__item-footer')
+                    nextHeading = items[3].querySelector('.carousel__item-heading')
+                    nextText = items[3].querySelector('.carousel__item-text')
+                    nextFooter = items[3].querySelector('.carousel__item-footer')
                 }
-
+    
                 if(prevHeading){
                     prevHeading.style.transition = 'all 0s ease-in-out'
                     prevHeading.style.transform = 'translateY(200px)'
@@ -2532,7 +2687,7 @@ class Carousel{
                     prevFooter.style.transition = 'all 0s ease-in-out'
                     prevFooter.style.transform = 'translateY(-500px)'
                 }
-
+    
                 if(nextHeading){
                     nextHeading.style.transform = 'translateX(200px)'
                     nextHeading.style.opacity = 0
@@ -2545,7 +2700,7 @@ class Carousel{
                     nextFooter.style.transform = 'translateX(400px)'
                     nextFooter.style.opacity = 0
                 }
-
+    
                 const handleEffectTwoPrev = () =>{
                     if(prevHeading){
                         prevHeading.style.transition = 'all 1s ease-in-out'
@@ -2563,7 +2718,7 @@ class Carousel{
                         prevFooter.style.transform =  'translateY(0px)'
                     }
                 }
-
+    
                 if(!isFade){
                     setTimeout(() => {
                         handleEffectTwoPrev()
@@ -2575,13 +2730,14 @@ class Carousel{
                 }
             }
             if(this.count % 2 === 0 && direction === 'next'){
+                console.log(2,'next')
                 if(!isMerge){
-                    nextHeading = this.items[3].querySelector('.carousel__item-heading')
-                    nextText = this.items[3].querySelector('.carousel__item-text')
-                    nextFooter = this.items[3].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[2].querySelector('.carousel__item-heading')
-                    prevText = this.items[2].querySelector('.carousel__item-text')
-                    prevFooter = this.items[2].querySelector('.carousel__item-footer')
+                    nextHeading = items[this.count].querySelector('.carousel__item-heading')
+                    nextText = items[this.count].querySelector('.carousel__item-text')
+                    nextFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[1].querySelector('.carousel__item-heading')
+                    prevText = items[1].querySelector('.carousel__item-text')
+                    prevFooter = items[1].querySelector('.carousel__item-footer')
                 }
                 if(nextHeading){
                     nextHeading.style.transition = 'all 0s ease-in-out'
@@ -2596,14 +2752,17 @@ class Carousel{
                     nextFooter.style.transform = 'translateY(500px)'
                 }
                 if(prevHeading){
+                    prevHeading.style.transition = 'all 1s ease-in-out'
                     prevHeading.style.transform = 'translateY(-200px)'
                     prevHeading.style.opacity = 0
                 }
                 if(prevText){
+                    prevText.style.transition = 'all 1s ease-in-out'
                     prevText.style.transform = 'translateX(-400px)'
                     prevText.style.opacity = 0
                 }
                 if(prevFooter){
+                     prevHeading.style.transition = 'all 1s ease-in-out'
                     prevFooter.style.transform = 'translateY(400px)'
                     prevFooter.style.opacity = 0
                 }
@@ -2624,7 +2783,7 @@ class Carousel{
                         nextFooter.style.transform =  'translateY(0px)'
                     }
                 }
-
+    
                 if(!isFade){
                     setTimeout(() => {
                         handleEffectTwoNext()
@@ -2636,13 +2795,18 @@ class Carousel{
                 }
             }
             if(this.count % 3 === 0 && direction === 'prev'){
+                console.log(3,'prev')
+                let lastHeading,lastText,lastFooter
                 if(!isMerge){
-                    nextHeading = this.items[4].querySelector('.carousel__item-heading')
-                    nextText = this.items[4].querySelector('.carousel__item-text')
-                    nextFooter = this.items[4].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[2].querySelector('.carousel__item-heading')
-                    prevText = this.items[2].querySelector('.carousel__item-text')
-                    prevFooter = this.items[2].querySelector('.carousel__item-footer')
+                    nextHeading = items[0].querySelector('.carousel__item-heading')
+                    nextText = items[0].querySelector('.carousel__item-text')
+                    nextFooter = items[0].querySelector('.carousel__item-footer')
+                    lastHeading = items[this.count].querySelector('.carousel__item-heading')
+                    lastText = items[this.count].querySelector('.carousel__item-text')
+                    lastFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[1].querySelector('.carousel__item-heading')
+                    prevText = items[1].querySelector('.carousel__item-text')
+                    prevFooter = items[1].querySelector('.carousel__item-footer')
                 }
                 if(nextHeading){
                     nextHeading.style.transition = 'all 0s ease-in-out'
@@ -2656,22 +2820,43 @@ class Carousel{
                     nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.transform = 'translateX(-500px)'
                 }
-
+                if(lastHeading){
+                    lastHeading.style.transition = 'all 0s ease-in-out'
+                    lastHeading.style.transform = 'translateX(-500px)'
+                }
+                if(lastText){
+                    lastText.style.transition = 'all 0s ease-in-out'
+                    lastText.style.transform = 'translateX(500px)'
+                }
+                if(lastFooter){
+                    lastFooter.style.transition = 'all 0s ease-in-out'
+                    lastFooter.style.transform = 'translateX(-500px)'
+                }
+    
                 if(prevHeading){
-                    prevHeading.style.transform = 'translateY(-200px)'
-                    prevHeading.style.opacity = 0
+                    prevHeading.style.transition = 'all 1s ease-in-out'
+                    setTimeout(() => {
+                        prevHeading.style.transform = 'translateY(-200px)'
+                        prevHeading.style.opacity = 0
+                    }, 100);
                 }
                 if(prevText){
-                    prevText.style.transform = 'translateX(400px)'
-                    prevText.style.opacity = 0
+                    prevText.style.transition = 'all 1s ease-in-out'
+                    setTimeout(() => {
+                        prevText.style.transform = 'translateX(400px)'
+                        prevText.style.opacity = 0
+                    }, 100);
                 }
                 if(prevFooter){
-                    prevFooter.style.transform = 'translateX(-400px)'
-                    prevFooter.style.opacity = 0
+                    prevFooter.style.transition = 'all 1s ease-in-out'
+                    setTimeout(() => {
+                        prevFooter.style.transform = 'translateX(-400px)'
+                        prevFooter.style.opacity = 0
+                    }, 100);
                 }
-
-
-                const handleEffectThreePrev = () =>{
+    
+    
+                const handleEffectThreePrev = (nextHeading,nextText,nextFooter) =>{
                     if(nextHeading){
                         nextHeading.style.transition = 'all 1.5s ease-in-out'
                         nextHeading.style.opacity = 1
@@ -2690,25 +2875,28 @@ class Carousel{
                         }, 200);
                     }
                 }
-
+    
                 if(!isFade){
                     setTimeout(() => {
-                        handleEffectThreePrev()
+                        handleEffectThreePrev(nextHeading,nextText,nextFooter)
+                        handleEffectThreePrev(lastHeading,lastText,lastFooter)
                     }, 100);
                 }else{
                     setTimeout(() => {
-                        handleEffectThreePrev()
+                        handleEffectThreePrev(nextHeading,nextText,nextFooter)
+                        handleEffectThreePrev(lastHeading,lastText,lastFooter)
                     }, 1000);
                 }
             }
             if(this.count % 3 === 0 && direction === 'next'){
+                console.log(3,'next')
                 if(!isMerge){
-                    nextHeading = this.items[4].querySelector('.carousel__item-heading')
-                    nextText = this.items[4].querySelector('.carousel__item-text')
-                    nextFooter = this.items[4].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[3].querySelector('.carousel__item-heading')
-                    prevText = this.items[3].querySelector('.carousel__item-text')
-                    prevFooter = this.items[3].querySelector('.carousel__item-footer')
+                    nextHeading = items[this.count].querySelector('.carousel__item-heading')
+                    nextText = items[this.count].querySelector('.carousel__item-text')
+                    nextFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[2].querySelector('.carousel__item-heading')
+                    prevText = items[2].querySelector('.carousel__item-text')
+                    prevFooter = items[2].querySelector('.carousel__item-footer')
                 }
                 if(nextHeading){
                     nextHeading.style.transition = 'all 0s ease-in-out'
@@ -2722,7 +2910,7 @@ class Carousel{
                     nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.transform = 'translateX(500px)'
                 }
-
+    
                 if(prevHeading){
                     prevHeading.style.transform = 'translateY(800px)'
                     prevHeading.style.opacity = 0
@@ -2735,7 +2923,7 @@ class Carousel{
                     prevFooter.style.transform = 'translateX(-800px)'
                     prevFooter.style.opacity = 0
                 }
-
+    
                 const handleEffectThreeNext = () =>{
                     if(nextHeading){
                         nextHeading.style.transition = 'all 1s ease-in-out'
@@ -2755,7 +2943,7 @@ class Carousel{
                         }, 200);
                     }
                 }
-
+    
                 if(!isFade){
                     setTimeout(() => {
                         handleEffectThreeNext()
@@ -2768,6 +2956,1250 @@ class Carousel{
             }
         }else{
             if(this.count === 1 && direction==='prev'){
+                if(nextHeading){
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.transform = 'translateY(0px)'
+                }
+                if(nextText){
+                    nextText.style.transition = 'all 0s ease-in-out'
+                    nextText.style.transform = 'translateX(0px)'
+                }
+                if(nextFooter){
+                    nextFooter.style.transition = 'all 0s ease-in-out'
+                    nextFooter.style.transform = 'translateX(0px)'
+                }
+                setTimeout(() => {
+                    if(nextHeading){
+                        nextHeading.style.opacity = 0
+                        nextHeading.style.transition = 'all 1s ease-in-out'
+                        nextHeading.style.transform = 'translateY(-500px)'
+                    }
+                    if(nextText){
+    
+                        nextText.style.opacity = 0
+                        nextText.style.transition = 'all 1s ease-in-out'
+                        nextText.style.transform = 'translateX(500px)'
+                    }
+                    if(nextFooter){
+    
+                        nextFooter.style.opacity = 0
+                        nextFooter.style.transition = 'all 1s ease-in-out'
+                        nextFooter.style.transform = 'translateX(500px)'
+                    }
+                }, 100);
+                setTimeout(() => {
+                    if(nextHeading){
+    
+                        nextHeading.style.transition = 'all 0s ease-in-out'
+                        nextHeading.style.transform = 'translateX(-500px)'
+                    }
+                    if(nextText){
+    
+                        nextText.style.transition = 'all 0s ease-in-out'
+                        nextText.style.transform = 'translateX(500px)'
+                    }
+                    if(nextFooter){
+    
+                        nextFooter.style.transition = 'all 0s ease-in-out'
+                        nextFooter.style.transform = 'translateX(-500px)'
+                    }
+                    setTimeout(() => {
+                        if(nextHeading){
+    
+                            nextHeading.style.opacity = 1
+                            nextHeading.style.transition = 'all 1s ease-in-out'
+                            nextHeading.style.transform = 'translateX(0px)'
+                        }
+                        setTimeout(() => {
+                            if(nextText){
+    
+                                nextText.style.opacity = 1
+                                nextText.style.transition = 'all 1s ease-in-out'
+                                nextText.style.transform = 'translateX(0px)'
+                            }
+                        }, 200);
+                        if(nextFooter){
+    
+                            nextFooter.style.opacity = 1
+                            nextFooter.style.transition = 'all 1s ease-in-out'
+                            nextFooter.style.transform = 'translateX(0px)'
+                        }
+                    }, 100);
+                }, 1000);
+            }
+            if(this.count === 1 && direction==='next'){
+                if(nextHeading){
+    
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.transform = 'translateY(0px)'
+                }
+                if(nextText){
+    
+                    nextText.style.transition = 'all 0s ease-in-out'
+                    nextText.style.transform = 'translateX(0px)'
+                }
+                if(nextFooter){
+    
+                    nextFooter.style.transition = 'all 0s ease-in-out'
+                    nextFooter.style.transform = 'translateX(0px)'
+                }
+                setTimeout(() => {
+                    if(nextHeading){
+    
+                        nextHeading.style.opacity = 0
+                        nextHeading.style.transition = 'all 1s ease-in-out'
+                        nextHeading.style.transform = 'translateX(-500px)'
+                    }
+                    setTimeout(() => {
+                        if(nextText){
+    
+                            nextText.style.opacity = 0
+                            nextText.style.transition = 'all 1s ease-in-out'
+                            nextText.style.transform = 'translateX(500px)'
+                        }
+                    }, 200);
+                    setTimeout(() => {
+                        if(nextFooter){
+    
+                            nextFooter.style.opacity = 0
+                            nextFooter.style.transition = 'all 1s ease-in-out'
+                            nextFooter.style.transform = 'translateX(500px)'
+                        }
+                    }, 400);
+                }, 100);
+                setTimeout(() => {
+                    if(nextHeading){
+    
+                        nextHeading.style.transition = 'all 0s ease-in-out'
+                        nextHeading.style.transform = 'translateY(800px)'
+                    }
+                    if(nextText){
+    
+                        nextText.style.transition = 'all 0s ease-in-out'
+                        nextText.style.transform = 'translateX(800px)'
+                    }
+                    if(nextFooter){
+    
+                        nextFooter.style.transition = 'all 0s ease-in-out'
+                        nextFooter.style.transform = 'translateY(-800px)'
+                    }
+                    setTimeout(() => {
+                        if(nextHeading){
+    
+                            nextHeading.style.opacity = 1
+                            nextHeading.style.transition = 'all 1s ease-in-out'
+                            nextHeading.style.transform = 'translateY(0px)'
+                        }
+                        setTimeout(() => {
+                            if(nextText){
+    
+                                nextText.style.opacity = 1
+                                nextText.style.transition = 'all 1s ease-in-out'
+                                nextText.style.transform = 'translateX(0px)'
+                            }
+                        }, 400);
+                        setTimeout(() => {
+                            if(nextFooter){
+    
+                                nextFooter.style.opacity = 1
+                                nextFooter.style.transition = 'all 1s ease-in-out'
+                                nextFooter.style.transform = 'translateY(0px)'
+                            }
+                        }, 400);
+                    }, 100);
+                }, 1600);
+            }
+            if(this.count % 2 === 0 && direction==='prev'){
+                if(nextHeading){
+    
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.transform = 'translateY(0px)'
+                }
+                if(nextText){
+    
+                    nextText.style.transition = 'all 0s ease-in-out'
+                    nextText.style.transform = 'translateX(0px)'
+                }
+                if(nextFooter){
+    
+                    nextFooter.style.transition = 'all 0s ease-in-out'
+                    nextFooter.style.transform = 'translateX(0px)'
+                }
+                setTimeout(() => {
+                    if(nextHeading){
+                        nextHeading.style.opacity = 0
+                        nextHeading.style.transition = 'all 1s ease-in-out'    
+                        nextHeading.style.transform = 'translateX(800px)'
+                    }
+                    if(nextText){
+                        nextText.style.opacity = 0
+                        nextText.style.transition = 'all 1s ease-in-out'
+                        nextText.style.transform = 'translateX(-500px)'
+                    }
+                    setTimeout(() => {
+                        if(nextFooter){
+                            nextFooter.style.opacity = 0
+                            nextFooter.style.transition = 'all 1s ease-in-out'
+                            nextFooter.style.transform = 'translateX(800px)'
+                        }
+                    }, 200);
+                }, 100);
+                setTimeout(() => {
+                    if(nextHeading){
+    
+                        nextHeading.style.transition = 'all 0s ease-in-out'
+                        nextHeading.style.transform = 'translateX(400px)'
+                    }
+                    if(nextText){
+    
+                        nextText.style.transition = 'all 0s ease-in-out'
+                        nextText.style.transform = 'translateX(800px)'
+                    }
+                    if(nextFooter){
+    
+                        nextFooter.style.transition = 'all 0s ease-in-out'
+                        nextFooter.style.transform = 'translateX(900px)'
+                    }
+                    setTimeout(() => {
+                        if(nextHeading){
+    
+                            nextHeading.style.opacity = 1
+                            nextHeading.style.transition = 'all 1s ease-in-out'
+                            nextHeading.style.transform = 'translateX(0px)'
+                        }
+                        setTimeout(() => {
+                            if(nextText){
+    
+                                nextText.style.opacity = 1
+                                nextText.style.transition = 'all 1s ease-in-out'
+                                nextText.style.transform = 'translateX(0px)'
+                            }
+                        }, 200);
+                        setTimeout(() => {
+                            if(nextFooter){
+    
+                                nextFooter.style.opacity = 1
+                                nextFooter.style.transition = 'all 1s ease-in-out'
+                                nextFooter.style.transform = 'translateX(0px)'
+                            }
+                        }, 400);
+                    }, 100);
+                }, 1000);
+            }
+            if(this.count % 2 === 0 && direction==='next'){
+                if(nextHeading){
+    
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.transform = 'translateY(0px)'
+                }
+                if(nextText){
+    
+                    nextText.style.transition = 'all 0s ease-in-out'
+                    nextText.style.transform = 'translateX(0px)'
+                }
+                if(nextFooter){
+    
+                    nextFooter.style.transition = 'all 0s ease-in-out'
+                    nextFooter.style.transform = 'translateX(0px)'
+                }
+                setTimeout(() => {
+                    if(nextHeading){
+    
+                        nextHeading.style.opacity = 0
+                        nextHeading.style.transition = 'all 1s ease-in-out'
+                        nextHeading.style.transform = 'translatY(800px)'
+                    }
+                    if(nextText){
+    
+                        nextText.style.opacity = 0
+                        nextText.style.transition = 'all 1s ease-in-out'
+                        nextText.style.transform = 'translateX(-500px)'
+                    }
+                    if(nextFooter){
+    
+                        nextFooter.style.opacity = 0
+                        nextFooter.style.transition = 'all 1s ease-in-out'
+                        nextFooter.style.transform = 'translateY(-800px)'
+                    }
+                }, 100);
+                setTimeout(() => {
+                    if(nextHeading){
+    
+                        nextHeading.style.transition = 'all 0s ease-in-out'
+                        nextHeading.style.transform = 'translateX(-400px)'
+                    }
+                    if(nextText){
+    
+                        nextText.style.transition = 'all 0s ease-in-out'
+                        nextText.style.transform = 'translateX(-400px)'
+                    }
+                    if(nextFooter){
+    
+                        nextFooter.style.transition = 'all 0s ease-in-out'
+                        nextFooter.style.transform = 'translateX(-400px)'
+                    }
+                    setTimeout(() => {
+                        if(nextHeading){
+    
+                            nextHeading.style.opacity = 1
+                            nextHeading.style.transition = 'all 1s ease-in-out'
+                            nextHeading.style.transform = 'translateX(0px)'
+                        }
+                        setTimeout(() => {
+                            if(nextText){
+                                nextText.style.opacity = 1
+                                nextText.style.transition = 'all 1s ease-in-out'
+                                nextText.style.transform = 'translateX(0px)'
+                            }
+                        }, 200);
+                        setTimeout(() => {
+                            if(nextFooter){
+                                nextFooter.style.opacity = 1
+                                nextFooter.style.transition = 'all 1s ease-in-out'
+                                nextFooter.style.transform = 'translateX(0px)'
+                            }
+                        }, 400);
+                    }, 100);
+                }, 1400);
+            }
+            if(this.count % 3 === 0 && direction==='prev'){
+                if(nextHeading){
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.transform = 'translateY(0px)'
+                }
+                if(nextText){
+                    nextText.style.transition = 'all 0s ease-in-out'
+                    nextText.style.transform = 'translateX(0px)'
+                }
+                if(nextFooter){
+                    nextFooter.style.transition = 'all 0s ease-in-out'
+                    nextFooter.style.transform = 'translateX(0px)'
+                }
+                setTimeout(() => {
+                    if(nextHeading){
+                        nextHeading.style.opacity = 0
+                        nextHeading.style.transition = 'all 1s ease-in-out'
+                        nextHeading.style.transform = 'translateX(800px)'
+                    }
+                    if(nextText){
+                        nextText.style.opacity = 0
+                        nextText.style.transition = 'all 1s ease-in-out'
+                        nextText.style.transform = 'translateY(-500px)'
+                    }
+                    setTimeout(() => {
+                        if(nextFooter){
+                            nextFooter.style.opacity = 0
+                            nextFooter.style.transition = 'all 1s ease-in-out'
+                            nextFooter.style.transform = 'translateY(800px)'
+                        }
+                    }, 200);
+                }, 100);
+                setTimeout(() => {
+                    if(nextHeading){
+                        nextHeading.style.transition = 'all 0s ease-in-out'
+                        nextHeading.style.transform = 'translateY(400px)'
+                    }
+                    if(nextText){
+                        nextText.style.transition = 'all 0s ease-in-out'
+                        nextText.style.transform = 'translateY(800px)'
+                    }
+                    if(nextFooter){
+                        nextFooter.style.transition = 'all 0s ease-in-out'
+                        nextFooter.style.transform = 'translateY(900px)'
+                    }
+                    setTimeout(() => {
+                        if(nextHeading){
+                            nextHeading.style.opacity = 1
+                            nextHeading.style.transition = 'all 1s ease-in-out'
+                            nextHeading.style.transform = 'translateY(0px)'
+                        }
+                        setTimeout(() => {
+                            if(nextText){
+                                nextText.style.opacity = 1
+                                nextText.style.transition = 'all 1s ease-in-out'
+                                nextText.style.transform = 'translateY(0px)'
+                            }
+                        }, 200);
+                        setTimeout(() => {
+                            if(nextFooter){
+                                nextFooter.style.opacity = 1
+                                nextFooter.style.transition = 'all 1s ease-in-out'
+                                nextFooter.style.transform = 'translateY(0px)'
+                            }
+                        }, 400);
+                    }, 100);
+                }, 1000);
+            }
+            if(this.count % 3 === 0 && direction==='next'){
+                if(nextHeading){
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.transform = 'translateY(0px)'
+                }
+                if(nextText){
+                    nextText.style.transition = 'all 0s ease-in-out'
+                    nextText.style.transform = 'translateX(0px)'
+                }
+                if(nextFooter){
+                    nextFooter.style.transition = 'all 0s ease-in-out'
+                    nextFooter.style.transform = 'translateX(0px)'
+                }
+                setTimeout(() => {
+                    if(nextHeading){
+                        nextHeading.style.opacity = 0
+                        nextHeading.style.transition = 'all 1s ease-in-out'
+                        nextHeading.style.transform = 'translateY(-400px)'
+                    }
+                    if(nextText){    
+                        nextText.style.opacity = 0
+                        nextText.style.transition = 'all 1s ease-in-out'
+                        nextText.style.transform = 'translateY(-800px)'
+                    }
+                    setTimeout(() => {
+                        if(nextFooter){
+                            nextFooter.style.opacity = 0
+                            nextFooter.style.transition = 'all 1s ease-in-out'
+                            nextFooter.style.transform = 'translateY(-1200px)'
+                        }
+                    }, 200);
+                }, 100);
+                setTimeout(() => {
+                    if(nextHeading){
+                        nextHeading.style.transition = 'all 0s ease-in-out'
+                        nextHeading.style.transform = 'translateY(400px)'
+                    }
+                    if(nextText){
+                        nextText.style.transition = 'all 0s ease-in-out'
+                        nextText.style.transform = 'translateX(-800px)'
+                    }
+                    if(nextFooter){
+                        nextFooter.style.transition = 'all 0s ease-in-out'
+                        nextFooter.style.transform = 'translateY(900px)'
+                    }
+                    setTimeout(() => {
+                        if(nextHeading){
+                            nextHeading.style.opacity = 1
+                            nextHeading.style.transition = 'all 1s ease-in-out'
+                            nextHeading.style.transform = 'translateY(0px)'
+                        }
+                        setTimeout(() => {
+                            if(nextText){
+                                nextText.style.opacity = 1
+                                nextText.style.transition = 'all 1s ease-in-out'
+                                nextText.style.transform = 'translateX(0px)'
+                            }
+                        }, 200);
+                        setTimeout(() => {
+                            if(nextFooter){
+                                nextFooter.style.opacity = 1
+                                nextFooter.style.transition = 'all 1s ease-in-out'
+                                nextFooter.style.transform = 'translateY(0px)'
+                            }
+                        }, 400);
+                    }, 100);
+                }, 1000);
+            }
+        }
+    }
+    handleCarouselEffect(el,direction,isVertical){
+        const view  = el.querySelector('.carousel__view')
+        const isFade = [...el.classList].filter(c => /carousel__fade/.test(c)).length > 0 ? true : false
+        const isMerge = [...el.classList].filter(c => /carousel__merge/.test(c)).length > 0 ? true : false
+        const isSlide = [...el.classList].filter(c => /carousel__slide/.test(c)).length > 0 ? true : false
+        const isTextEffect = [...el.classList].filter(c => /carousel__with-text-effect/.test(c)).length > 0 ? true : false
+        let items = [...view.querySelectorAll('.carousel__item')]
+        let max = items.length - 2
+        let stepX = 0
+        let stepY = 0
+
+        if(items.length > 0){
+            stepX = items[0].clientWidth
+            stepY = items[0].clientHeight
+        }
+        if(!isMerge){
+            if(direction ==='prev' && !isVertical){
+                if(this.count < 2){
+                    this.moveX = -stepX * (this.count - 1)
+                    this.count = max
+                    if(view){
+                        view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateX(${this.moveX}px)`
+                        }else{
+                            view.style.opacity = 0
+                        }
+                        setTimeout(() => {
+                            this.moveX = -stepX * max
+                            view.style.transition = 'all 0s ease-in-out'
+                            view.style.transform = `translateX(${this.moveX}px)`
+                            if(isFade){
+                                setTimeout(() => {
+                                    view.style.transition = 'all 1s ease-in-out'
+                                    view.style.opacity = 1
+                                },200);
+                            }
+                        }, 1000);
+                    }
+                }else{
+                    this.count -= 1
+                    if(view){
+                        this.moveX = -stepX * this.count
+                        console.log(this.moveX)
+                        view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateX(${this.moveX}px)`
+                        }else{
+                            view.style.opacity = 0
+                            setTimeout(() => {
+                                view.style.transition = 'all 0s ease-in-out'
+                                view.style.transform = `translateX(${this.moveX}px)`
+                                if(isFade){
+                                    setTimeout(() => {
+                                        view.style.transition = 'all 1s ease-in-out'
+                                        view.style.opacity = 1
+                                    },200);
+                                }
+                            }, 1000);
+                        }
+                    }
+                }
+            }
+            if(direction ==='next' && !isVertical){
+                if(this.count > max - 1){
+                    this.moveX = -stepX * (this.count + 1)
+                    this.count = 1
+                    if(view){
+                    view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateX(${this.moveX}px)`
+                        }else{
+                            view.style.opacity = 0
+                        }
+                        setTimeout(() => {
+                            view.style.transition = 'all 0s ease-in-out'
+                            this.moveX = -stepX * this.count
+                            view.style.transform = `translateX(${this.moveX}px)`
+                            if(isFade){
+                                setTimeout(() => {
+                                    view.style.transition = 'all 1s ease-in-out'
+                                    view.style.opacity = 1
+                                },200);
+                            }
+                        }, 1000);
+                    }
+                }else{
+                    this.count += 1
+                    this.moveX = -stepX * this.count
+                    if(view){
+                    view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateX(${this.moveX}px)`
+                        }else{
+                            view.style.opacity = 0
+                            setTimeout(() => {
+                                view.style.transition = 'all 0s ease-in-out'
+                                view.style.transform = `translateX(${this.moveX}px)`
+                                if(isFade){
+                                    setTimeout(() => {
+                                        view.style.transition = 'all 1s ease-in-out'
+                                        view.style.opacity = 1
+                                    },200);
+                                }
+                            }, 1000);
+                        }
+                    }
+                }
+            }
+            if(direction ==='prev' && isVertical){
+                if(this.count < 2){
+                    this.moveY = -stepY * (this.count - 1)
+                    this.count = max
+                    if(view){
+                        view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateY(${this.moveY}px)`
+                        }else{
+                            view.style.opacity = 0
+                        }
+                        setTimeout(() => {
+                            this.moveY = -stepY * max
+                            view.style.transition = 'all 0s ease-in-out'
+                            view.style.transform = `translateY(${this.moveY}px)`
+                            if(isFade){
+                                setTimeout(() => {
+                                    view.style.transition = 'all 1s ease-in-out'
+                                    view.style.opacity = 1
+                                },200);
+                            }
+                        }, 1000);
+                    }
+                }else{
+                    this.count -= 1
+                    if(view){
+                        this.moveY = -stepY * this.count
+                        view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateY(${this.moveY}px)`
+                        }else{
+                            view.style.opacity = 0
+                            setTimeout(() => {
+                                view.style.transition = 'all 0s ease-in-out'
+                                view.style.transform = `translateY(${this.moveY}px)`
+                                if(isFade){
+                                    setTimeout(() => {
+                                        view.style.transition = 'all 1s ease-in-out'
+                                        view.style.opacity = 1
+                                    },200);
+                                }
+                            }, 1000);
+                        }
+                    }
+                }
+            }
+            if(direction ==='next' && isVertical){
+                if(this.count > max - 1){
+                    this.moveY = -stepY * (this.count + 1)
+                    this.count = 1
+                    if(view){
+                    view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateY(${this.moveY}px)`
+                        }else{
+                            view.style.opacity = 0
+                        }
+                        setTimeout(() => {
+                            view.style.transition = 'all 0s ease-in-out'
+                            this.moveY = -stepY * this.count
+                            view.style.transform = `translateY(${this.moveY}px)`
+                            if(isFade){
+                                setTimeout(() => {
+                                    view.style.transition = 'all 1s ease-in-out'
+                                    view.style.opacity = 1
+                                },200);
+                            }
+                        }, 1000);
+                    }
+                }else{
+                    this.count += 1
+                    this.moveY = -stepY * this.count
+                    if(view){
+                    view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateY(${this.moveY}px)`
+                        }else{
+                            view.style.opacity = 0
+                            setTimeout(() => {
+                                view.style.transition = 'all 0s ease-in-out'
+                                view.style.transform = `translateY(${this.moveY}px)`
+                                if(isFade){
+                                    setTimeout(() => {
+                                        view.style.transition = 'all 1s ease-in-out'
+                                        view.style.opacity = 1
+                                    },200);
+                                }
+                            }, 1000);
+                        }
+                    }
+                }
+            }
+        }else{
+            const item = items[1]
+            item.style.transition = 'all 1s ease-in-out'
+            item.style.backgroundSize = 'cover'
+            if(direction ==='prev'){
+                if(item){
+                    if(this.count < 2){
+                        this.count = max
+                        item.style.backgroundImage = `url(${this.srcs[this.count]})`
+                    }else{
+                        this.count -= 1
+                        item.style.backgroundImage = `url(${this.srcs[this.count]})`
+                    }    
+                }
+            }
+            if(direction ==='next'){
+                if(item){
+                    if(this.count > max - 1){
+                        this.count = 1
+                        item.style.backgroundImage = `url(${this.srcs[this.count]})`
+                    }else{
+                        this.count += 1
+                        item.style.backgroundImage = `url(${this.srcs[this.count]})`
+                    }
+                }
+            }
+            let body = item.querySelector('.carousel__item-body')
+            let heading = item.querySelector('.carousel__item-heading')
+            let text = item.querySelector('.carousel__item-text')
+            let footer = item.querySelector('.carousel__item-footer')
+            if(!body){
+                body = document.createElement('div')
+                body.classList.add('carousel__item-body')
+                item.appendChild(body)
+            }
+            if(!heading){
+                heading = document.createElement('div')
+                heading.classList.add('carousel__item-heading')
+                body.appendChild(heading)
+            }
+            if(!text){
+                text = document.createElement('div')
+                text.classList.add('carousel__item-text')
+                body.appendChild(text)
+            }
+            if(!footer){
+                footer = document.createElement('div')
+                footer.classList.add('carousel__item-footer')
+                body.appendChild(footer)
+            }
+            const nextHeadings = items[this.count].querySelectorAll('.carousel__item-heading > *')
+            const nextTexts = items[this.count].querySelectorAll('.carousel__item-text > *')
+            const nextFooters = items[this.count].querySelectorAll('.carousel__item-footer > *')
+            if(this.count !== 1){
+                let tempHeadings = []
+                let tempTexts = []
+                let tempFooters = []
+                nextHeadings.forEach(h => {
+                    tempHeadings.push({tag:h.tagName.toLowerCase(),text:h.textContent})
+                })
+                nextTexts.forEach(t => {
+                    tempTexts.push({tag:t.tagName.toLowerCase(),text:t.textContent})
+                })
+                nextFooters.forEach(f => {
+                    tempFooters.push({tag:f.tagName.toLowerCase(),text:f.textContent})
+                })
+                this.headings[this.count - 1] = [...tempHeadings]
+                this.texts[this.count - 1] = [...tempTexts]
+                this.footers[this.count - 1] = [...tempFooters]
+            }
+            setTimeout(() =>{
+            if(heading){
+                heading.innerHTML = ''
+                this.headings[this.count-1].forEach(h =>{
+                    const el = document.createElement(`${h.tag}`)
+                    el.textContent = h.text
+                    heading.appendChild(el)
+                })
+            }
+            if(text){
+                text.innerHTML = ''
+                this.texts[this.count-1].forEach(t =>{
+                    const el = document.createElement(`${t.tag}`)
+                    el.textContent = t.text
+                    text.appendChild(el)
+                })
+            }
+            if(footer){
+                footer.innerHTML = ''
+                this.footers[this.count-1].forEach(f =>{
+                    const el = document.createElement(`${f.tag}`)
+                    el.textContent = f.text
+                    footer.appendChild(el)
+                })
+            }
+        },1000)
+
+        }
+
+        const setTimeoutTime = (isFade) =>{
+            if(isFade){
+                return 2000
+            }else{
+                return 1000
+            }
+        }
+        if(isTextEffect && isMerge || isTextEffect && isFade || isTextEffect && isSlide){
+            this.handleCarouselTextEffectIn(direction,isMerge,isFade,el)
+
+        }else if(isMerge && !isTextEffect){
+           const body = items[1].querySelector('.carousel__item-body')
+           if(body){
+               body.style.opacity = 0
+               body.style.transition = 'all 0s ease-in-out'
+               setTimeout(() => {
+                   body.style.transition = 'all 1s ease-in-out'
+                   body.style.opacity = 1
+                }, 1000);
+            }
+        }else if(!isTextEffect && isFade || !isTextEffect && isSlide){
+            const body = items[this.count].querySelector('.carousel__item-body')
+            if(body){
+                body.style.opacity = 0
+                body.style.transition = 'all 0s ease-in-out'
+                setTimeout(() => {
+                    const heading = body.querySelector('.carousel__item-heading')
+                    const text = body.querySelector('.carousel__item-text')
+                    const footer = body.querySelector('.carousel__item-footer')
+                    if(heading){
+                        heading.style.opacity = 1
+                    }
+                    if(text){
+                        text.style.opacity = 1
+                    }
+                    if(footer){
+                        footer.style.opacity = 1
+                    }
+                    body.style.transition = 'all 1s ease-in-out'
+                    body.style.opacity = 1
+                }, setTimeoutTime(isFade));
+            }
+        }
+        this.handleActivePin()
+    }
+    handleCarousel(){
+        this.elements.forEach((el,index) =>{
+            const prev = el.querySelector('.carousel__prev')
+            const next = el.querySelector('.carousel__next')
+            const view  = el.querySelector('.carousel__view')
+            const isMerge = [...el.classList].filter(c => /carousel__merge/.test(c)).length > 0 ? true : false
+            const first_heading = view.querySelectorAll('.carousel__item-heading')
+            const first_text = view.querySelectorAll('.carousel__item-text')
+            const first_footer = view.querySelectorAll('.carousel__item-footer')
+            if(first_heading[0]){
+                first_heading[0].style.opacity = 1
+            }
+            if(first_text[0]){
+                first_text[0].style.opacity = 1
+            }
+            if(first_footer[0]){
+                first_footer[0].style.opacity = 1
+            }
+            let items = [...el.querySelectorAll('.carousel__item')]
+            const last = document.createElement('div')
+            last.classList.add('carousel__item' )
+            last.classList.add('carousel__item-last' )
+            last.innerHTML = items[0].innerHTML
+            const first = document.createElement('div')
+            first.classList.add('carousel__item')
+            first.classList.add('carousel__item-first')
+            first.innerHTML = items[items.length - 1].innerHTML
+            let stepX
+            let stepY
+            items.push(last)
+            items.unshift(first)
+            view.innerHTML = ''
+            let order = 2
+            items.forEach(i => {
+                if(view){
+                    i.style.order = order
+                    view.appendChild(i)
+                    order++
+                }
+            })
+            const isVertical  = [...el.classList].filter(c => /carousel__vertical/gi.test(c))
+            if(items.length > 0 && isVertical.length === 0){
+                stepX = items[0].clientWidth
+                this.moveX = -stepX * 1
+                if(view){
+                    view.style.transition = 'all 0s ease-in-out'
+                    view.style.transform = `translateX(${this.moveX}px)`
+                }
+            }else if(items.length > 0 && isVertical.length > 0 && !isMerge){
+                stepY = items[0].clientHeight
+                this.moveY -= stepY * 1
+                if(view){
+                    view.style.transition = 'all 0s ease-in-out'
+                    view.style.transform = `translateY(${this.moveY}px)`
+                    const bodies = view.querySelectorAll('.carousel__item-body')
+                    bodies.forEach(b => {
+                        b.style.transform = 'translateX(-25%)'
+                        b.style.maxWidth = '30%'
+                    });
+                }
+            }
+            if(isMerge){
+                const first_heading = view.querySelectorAll('.carousel__item-heading')
+                const first_text = view.querySelectorAll('.carousel__item-text')
+                const first_footer = view.querySelectorAll('.carousel__item-footer')
+                if(first_heading[1]){
+                    first_heading[1].style.opacity = 1
+                }
+                if(first_text[1]){
+                    first_text[1].style.opacity = 1
+                }
+                if(first_footer[1]){
+                    first_footer[1].style.opacity = 1
+                }
+                this.srcs = items.map(i =>{
+                    const img = i.querySelector('img')
+                    img.style.visibility = 'hidden'
+                    const src = img.src
+                    return src
+                })
+                items.forEach(i => {
+                    const img = i.querySelector('img')
+                    img.style.visibility = 'hidden'
+                })
+                const image = items[1].querySelector('img')
+                items[1].style.backgroundImage = `url(${image.src})`
+                items[1].style.backgroundSize = 'cover'
+                const nextHeadings = items[1].querySelectorAll('.carousel__item-heading > *')
+                const nextTexts = items[1].querySelectorAll('.carousel__item-text > *')
+                const nextFooters = items[1].querySelectorAll('.carousel__item-footer > *')
+                let tempHeadings = []
+                let tempTexts = []
+                let tempFooters = []
+                nextHeadings.forEach(h => {
+                    tempHeadings.push({tag:h.tagName.toLowerCase(),text:h.textContent})
+                })
+                nextTexts.forEach(t => {
+                    tempTexts.push({tag:t.tagName.toLowerCase(),text:t.textContent})
+                })
+                nextFooters.forEach(f => {
+                    tempFooters.push({tag:f.tagName.toLowerCase(),text:f.textContent})
+                })
+                this.headings[0] = [...tempHeadings]
+                this.texts[0] = [...tempTexts]
+                this.footers[0] = [...tempFooters]
+            }
+            if(isVertical.length > 0){
+                if(prev){
+                    prev.onclick = ''
+                    prev.onclick = (e) => {
+                        if(!this.isPlay){
+                            this.handleCarouselEffect(el,'prev',true)
+                        this.isPlay = true
+                        setTimeout(() => {
+                            this.isPlay = false
+                        }, 1000);
+                    }
+                }
+            }
+            if(next){
+                next.onclick = ''
+                next.onclick = (e) => {
+                    if(!this.isPlay){
+                        this.handleCarouselEffect(el,'next',true)
+                        this.isPlay = true
+                        setTimeout(() => {
+                            this.isPlay = false
+                        }, 1000);
+                    }
+                }
+            }
+            }else{
+                if(prev){
+                    prev.onclick = ''
+                    prev.onclick = (e) =>  {
+                        if(!this.isPlay){
+                            this.handleCarouselEffect(el,'prev',false,this.items[index])
+                            this.isPlay = true
+                            setTimeout(() => {
+                                this.isPlay = false
+                            }, 1000);
+                        }
+                    }
+                }
+                if(next){
+                    next.onclick = ''
+                    next.onclick = (e) =>  {
+                        if(!this.isPlay){
+                            this.handleCarouselEffect(el,'next',false,this.items[index])
+                            this.isPlay = true
+                            setTimeout(() => {
+                                this.isPlay = false
+                            }, 1000);
+                        }
+                    }
+                }
+            }
+        }) 
+    }
+    handleSetup(){
+        this.handleSetButtons()
+        this.handleSetPins()
+        this.handleCarousel()
+    }
+}
+class CarouselEffect{
+    constructor(){
+        this.elements = document.querySelectorAll('.carousel-effect')
+        this.count = 1;
+        this.srcs = []
+        this.isClicked = false
+    }
+    handleCreateCarousel(){
+        this.elements.forEach(el =>{
+            this.handleCreateButtons()
+            this.handleCreatePins()
+            this.handleCreateElements(el)
+        })
+    }
+    handleDrawCarousel(el,direction){
+        const prevs = el.querySelectorAll('.carousel-effect__item-prev')
+        const nexts = el.querySelectorAll('.carousel-effect__item-next')
+        const handleAnimOut = async(i,img) =>{
+            if(i % 2 === 0){
+                img.style.transition = 'all 0s ease-in-out'
+                img.style.left = '35%'
+            }else{
+                img.style.transition = 'all 0s ease-in-out'
+                img.style.left = '65%'
+            }
+            setTimeout(() => {
+                img.style.transition = 'all 1s ease-out'
+                img.style.left = '50%'
+            }, 100);
+        }
+        prevs.forEach((prev) =>{
+            prev.style.transition = 'all 0.3s linear'
+            setTimeout(() => {
+                prev.style.opacity = 0
+            }, 100);
+        })
+        nexts.forEach((next,i) =>{
+            const img = next.querySelector('img')
+            if(this.srcs[this.count - 1]){
+                img.src = this.srcs[this.count - 1]
+                handleAnimOut(i,img)
+            }else{
+                img.src = this.srcs[0]
+                handleAnimOut(i,img)
+            }
+        })
+        setTimeout(() => {
+            prevs.forEach(prev =>{
+                const img = prev.querySelector('img')
+                prev.style.transition = 'all 0s linear'
+                img.src = this.srcs[this.count - 1]
+                setTimeout(() => {
+                    prev.style.opacity = 1
+                }, 100);
+            })
+        }, 1000);
+        this.handleCarouselTextEffectIn(el,direction)
+    }
+    handleCreateElements(el){
+        const carousel_view = el.querySelector('.carousel-effect__view')
+        const carousel_items = el.querySelectorAll('.carousel-effect__item')
+        this.srcs = [...carousel_items].map(el =>{
+            const img = el.querySelector('img')
+            return img.src
+        })
+        let zIndexPrev = 9997
+        let zIndexNext = 9996
+        let width = 35
+        let height = 75
+
+        const createItem = (width,height,zIndexPrev,zIndexNext,isRadius,i) =>{
+            const carousel_item_prev = document.createElement('div')
+            carousel_item_prev.classList.add('carousel-effect__item-prev')
+            carousel_item_prev.style.zIndex = zIndexPrev
+            carousel_item_prev.style.width = width + '%'
+            carousel_item_prev.style.height = height + '%'
+           
+            if(!isRadius){
+                carousel_item_prev.style.borderRadius = '0px'
+            }
+            if(this.srcs[0]){
+                const carousel_item_prev_img = document.createElement('img')
+                carousel_item_prev_img.src = this.srcs[0]
+                if(i % 2 === 0){
+                    carousel_item_prev_img.style.transition = 'all 0s ease-in-out'
+                    carousel_item_prev_img.style.left = '40%'
+                }else{
+                    carousel_item_prev_img.style.transition = 'all 0s ease-in-out'
+                    carousel_item_prev_img.style.left = '60%'
+                }
+                setTimeout(() => {
+                    carousel_item_prev_img.style.transition = 'all 1s ease-in-out'
+                    carousel_item_prev_img.style.left = '50%'
+                }, 100);
+                carousel_item_prev_img.onload = () =>{
+                    carousel_item_prev.appendChild(carousel_item_prev_img)
+                    carousel_view.appendChild(carousel_item_prev)
+                }
+            }
+            const carousel_item_next = document.createElement('div')
+            carousel_item_next.classList.add('carousel-effect__item-next')
+            carousel_item_next.style.zIndex = zIndexNext
+            carousel_item_next.style.width = width + '%'
+            carousel_item_next.style.height = height + '%'
+            if(!isRadius){
+                carousel_item_next.style.borderRadius = '0px'
+            }
+            if(this.srcs[0]){
+                const carousel_item_next_img = document.createElement('img')
+                carousel_item_next_img.src = this.srcs[0]
+                carousel_item_next_img.onload = () =>{
+                    carousel_item_next.appendChild(carousel_item_next_img)
+                    carousel_view.appendChild(carousel_item_next)
+                }
+            }else{
+                const carousel_item_next_img = document.createElement('img')
+                carousel_item_next_img.src = this.srcs[0]
+                carousel_item_next_img.onload = () =>{
+                    carousel_item_next.appendChild(carousel_item_next_img)
+                    carousel_view.appendChild(carousel_item_next)
+                }
+            }
+        }
+        createItem(100,100,1,1,false)
+        for(let i = 0; i < 4; i++){
+            createItem(width,height,zIndexPrev,zIndexNext,true,i)
+            zIndexPrev--
+            zIndexNext--
+            width += 30
+            height += 30
+        }
+        const current_body = carousel_items[this.count - 1].querySelector('.carousel-effect__body')
+        const carousel_created_body = document.createElement('div')
+        carousel_created_body.classList.add('carousel-effect__body')
+        carousel_created_body.classList.add('carousel-effect__body-to-remove')
+        carousel_created_body.innerHTML = current_body.innerHTML
+        carousel_view.appendChild(carousel_created_body)
+    }
+    handleCreateButtons(){
+        this.elements.forEach(el =>{
+            const isButtons  = [...el.classList].filter(c => /carousel-effect__buttons/gi.test(c))
+            if(isButtons.length > 0){
+                const wrapper = document.createElement('div')
+                wrapper.classList.add('carousel-effect__controls')
+                const chevron_prev = document.createElement('div')
+                chevron_prev.classList.add('carousel-effect__chevron')
+                const chevron_next = document.createElement('div')
+                chevron_next.classList.add('carousel-effect__chevron')
+                const prev = document.createElement('div')
+                prev.classList.add('carousel-effect__prev')
+                prev.appendChild(chevron_prev)
+                wrapper.appendChild(prev)
+                const next = document.createElement('div')
+                next.classList.add('carousel-effect__next')
+                next.appendChild(chevron_next)
+                wrapper.appendChild(next)
+                el.appendChild(wrapper)
+            }
+        })
+    }
+    handleCreatePins(){
+        this.elements.forEach(el =>{
+            const isPins  = [...el.classList].filter(c => /carousel-effect__pins/gi.test(c))
+            const view = el.querySelector('.carousel-effect__view')
+            if(isPins.length > 0){
+                let items = [...el.querySelectorAll('.carousel-effect__item')]
+                const last = items[0].cloneNode(true)
+                const first = items[items.length - 1].cloneNode(true)
+                items.forEach(i => {
+                    view.append(i)
+                })
+                const wrapper = document.createElement('div')
+                wrapper.classList.add('carousel-effect__dots')
+                items.forEach(i => {
+                    const dot = document.createElement('div')
+                    dot.classList.add('carousel-effect__dot')
+                    wrapper.appendChild(dot)
+                })
+                el.appendChild(wrapper)
+                const dots = [...document.querySelectorAll('.carousel-effect__dot')]
+                if(dots.length > 0){
+                    dots[0].classList.add('carousel-effect__dot--active')
+                }
+                dots.forEach((d,i) => d.addEventListener('click',()=>{this.handlePinEffect(el,i)}))
+            }
+        })
+    }
+    handleCarousel(){
+        this.elements.forEach(el =>{
+            const prev = el.querySelector('.carousel-effect__prev')
+            const next = el.querySelector('.carousel-effect__next')
+            const max = el.querySelectorAll('.carousel-effect__item').length
+            prev.onclick = ''
+            prev.onclick = () => {
+                if(!this.isClicked){
+                    if(this.count > 1){   
+                        this.count -= 1
+                    }else{
+                        this.count = max
+                    }
+                    this.handleActivePin()
+                    this.handleDrawCarousel(el,'prev')
+                    setTimeout(() => {
+                        this.isClicked = false
+                    }, 1100);
+                }
+                this.isClicked = true
+            }
+            next.onclick = ''
+            next.onclick = () => {
+                if(!this.isClicked){
+                    if(this.count < max){   
+                        this.count += 1
+                    }else{
+                        this.count = 1
+                    }
+                    this.handleActivePin()
+                    this.handleDrawCarousel(el,'next')
+                    setTimeout(() => {
+                        this.isClicked = false
+                    }, 1100);
+                }
+                this.isClicked = true
+            }
+        })
+    }
+    handleActivePin(){
+        const dots = document.querySelectorAll('.carousel-effect__dot')
+        dots.forEach(d => d.classList.remove('carousel-effect__dot--active'))
+        dots[this.count-1].classList.add('carousel-effect__dot--active')
+    }
+    handleCarouselTextEffectIn(el,direction){
+        const isTextEffect = [...el.classList].filter(c => /carousel-effect__with-text-effect/.test(c)).length > 0 ? true : false
+        const carousel_items = el.querySelectorAll('.carousel-effect__item')
+        const carousel_view = el.querySelector('.carousel-effect__view')
+        const carousel_prev_body = carousel_view.querySelector('.carousel-effect__body-to-remove')
+        const current_body = carousel_items[this.count - 1].querySelector('.carousel-effect__body')
+        const carousel_created_body = document.createElement('div')
+        carousel_created_body.classList.add('carousel-effect__body')
+        carousel_created_body.classList.add('carousel-effect__body-to-remove')
+        
+        if(carousel_prev_body){
+            carousel_created_body.innerHTML = carousel_prev_body.innerHTML
+            carousel_view.appendChild(carousel_created_body)
+            carousel_prev_body.remove()
+        }
+
+        const currentHeading = current_body.querySelector('.carousel-effect__heading')
+        const currentText = current_body.querySelector('.carousel-effect__text')
+        const currentFooter = current_body.querySelector('.carousel-effect__footer')
+        const prevHeading = carousel_created_body.querySelector('.carousel-effect__heading')
+        const prevText = carousel_created_body.querySelector('.carousel-effect__text')
+        const prevFooter = carousel_created_body.querySelector('.carousel-effect__footer')
+
+        if(isTextEffect){
+            setTimeout(() => {
+                if(carousel_prev_body){
+                    prevHeading.innerHTML = currentHeading.innerHTML
+                    prevText.innerHTML = currentText.innerHTML
+                    prevFooter.innerHTML = currentFooter.innerHTML
+                }
+            }, 1100);
+        }else{
+            prevHeading.innerHTML = currentHeading.innerHTML
+            prevText.innerHTML = currentText.innerHTML
+            prevFooter.innerHTML = currentFooter.innerHTML
+            
+            prevHeading.style.transition = 'all 0s ease-in-out'
+            prevHeading.style.opacity = '0'
+            prevText.style.transition = 'all 0s ease-in-out'
+            prevText.style.opacity = '0'
+            prevFooter.style.transition = 'all 0s ease-in-out'
+            prevFooter.style.opacity = '0'
+
+            setTimeout(() => {
+                prevHeading.style.transition = 'all 1s ease-in-out'
+                prevHeading.style.opacity = '1'
+                prevText.style.transition = 'all 1s ease-in-out'
+                prevText.style.opacity = '1'
+                prevFooter.style.transition = 'all 1s ease-in-out'
+                prevFooter.style.opacity = '1'
+            }, 100);
+        }
+       
+       
+        const nextHeading = carousel_created_body.querySelector('.carousel-effect__heading')
+        const nextText = carousel_created_body.querySelector('.carousel-effect__text')
+        const nextFooter = carousel_created_body.querySelector('.carousel-effect__footer')
+        if(isTextEffect){
+            if(this.count === 1 && direction ==='prev'){
                 if(nextHeading){
                     nextHeading.style.transition = 'all 0s ease-in-out'
                     nextHeading.style.transform = 'translateY(0px)'
@@ -2841,7 +4273,7 @@ class Carousel{
             }
             if(this.count === 1 && direction==='next'){
                 if(nextHeading){
-
+                    
                     nextHeading.style.transition = 'all 0s ease-in-out'
                     nextHeading.style.transform = 'translateY(0px)'
                 }
@@ -2923,7 +4355,6 @@ class Carousel{
             }
             if(this.count % 2 === 0 && direction==='prev'){
                 if(nextHeading){
-
                     nextHeading.style.transition = 'all 0s ease-in-out'
                     nextHeading.style.transform = 'translateY(0px)'
                 }
@@ -3212,532 +4643,8 @@ class Carousel{
             }
         }
     }
-    handleCarouselEffect(el,direction,isVertical){
-        const view  = el.querySelector('.carousel__view')
-        const isFade = [...el.classList].filter(c => /carousel__fade/.test(c)).length > 0 ? true : false
-        const isMerge = [...el.classList].filter(c => /carousel__merge/.test(c)).length > 0 ? true : false
-        const isSlide = [...el.classList].filter(c => /carousel__slide/.test(c)).length > 0 ? true : false
-        const isTextEffect = [...el.classList].filter(c => /carousel__with-text-effect/.test(c)).length > 0 ? true : false
-        let items = [...view.querySelectorAll('.carousel__item')]
-
-        let maxLengthX = 0
-        let maxLengthY = 0
-        let stepX = 0
-        let stepY = 0
-
-        items.forEach(el => maxLengthX += el.clientWidth)
-        items.forEach(el => maxLengthY += el.clientHeight)
-        if(items.length > 0){
-            stepX = items[0].clientWidth
-            stepY = items[0].clientHeight
-        }
-        if(!isMerge){
-            if(direction ==='prev' && !isVertical){
-                this.moveX += stepX
-                if(this.moveX >= -stepX){
-                    this.count = items.length - 4
-                    if(view){
-                        view.style.transition = 'all 1s ease-in-out'
-                        if(!isFade){
-                            view.style.transform = `translateX(${this.moveX}px)`
-                        }else{
-                            view.style.opacity = 0
-                        }
-                        setTimeout(() => {
-                            view.style.transition = 'all 0s ease-in-out'
-                            this.moveX = -maxLengthX + stepX * 3 
-                            view.style.transform = `translateX(${this.moveX}px)`
-                            if(isFade){
-                                setTimeout(() => {
-                                    view.style.transition = 'all 1s ease-in-out'
-                                    view.style.opacity = 1
-                                },200);
-                            }
-                        }, 1000);
-                    }
-                }else{
-                    this.count -= 1
-                    if(view){
-                    view.style.transition = 'all 1s ease-in-out'
-                        if(!isFade){
-                            view.style.transform = `translateX(${this.moveX}px)`
-                        }else{
-                            view.style.opacity = 0
-                            setTimeout(() => {
-                                view.style.transition = 'all 0s ease-in-out'
-                                view.style.transform = `translateX(${this.moveX}px)`
-                                if(isFade){
-                                    setTimeout(() => {
-                                        view.style.transition = 'all 1s ease-in-out'
-                                        view.style.opacity = 1
-                                    },200);
-                                }
-                            }, 1000);
-                        }
-                    }
-                }
-            }
-            if(direction ==='next' && !isVertical){
-                this.moveX -= stepX
-                if(this.moveX < -maxLengthX + stepX * 3){
-                    if(view){
-                    view.style.transition = 'all 1s ease-in-out'
-                        if(!isFade){
-                            view.style.transform = `translateX(${this.moveX}px)`
-                        }else{
-                            view.style.opacity = 0
-                        }
-                        this.count = 1
-                        setTimeout(() => {
-                            view.style.transition = 'all 0s ease-in-out'
-                            this.moveX = -stepX * 2
-                            view.style.transform = `translateX(${this.moveX}px)`
-                            if(isFade){
-                                setTimeout(() => {
-                                    view.style.transition = 'all 1s ease-in-out'
-                                    view.style.opacity = 1
-                                },200);
-                            }
-                        }, 1000);
-                    }
-                }else{
-                    this.count += 1
-                    if(view){
-                    view.style.transition = 'all 1s ease-in-out'
-                        if(!isFade){
-                            view.style.transform = `translateX(${this.moveX}px)`
-                        }else{
-                            view.style.opacity = 0
-                            setTimeout(() => {
-                                view.style.transition = 'all 0s ease-in-out'
-                                view.style.transform = `translateX(${this.moveX}px)`
-                                if(isFade){
-                                    setTimeout(() => {
-                                        view.style.transition = 'all 1s ease-in-out'
-                                        view.style.opacity = 1
-                                    },200);
-                                }
-                            }, 1000);
-                        }
-                    }
-                }
-            }
-            if(direction ==='prev' && isVertical){
-            this.moveY += stepY
-            if(this.moveY >= -stepY){
-                if(view){
-                    view.style.transition = 'all 1s ease-in-out'
-                    this.count = items.length - 4
-                    if(!isFade){
-                        view.style.transform = `translateY(${this.moveY}px)`
-                    }else{
-                        view.style.opacity = 0
-                    }
-                    setTimeout(() => {
-                        view.style.transition = 'all 0s ease-in-out'
-                        this.moveY = -maxLengthY + stepY * 3
-                        view.style.transform = `translateY(${this.moveY}px)`
-                        if(isFade){
-                            setTimeout(() => {
-                                view.style.transition = 'all 1s ease-in-out'
-                                view.style.opacity = 1
-                            }, 200);
-                        }
-                    }, 1000);
-                }
-            }else{
-                this.count -= 1
-                if(view){
-                    view.style.transition = 'all 1s ease-in-out'
-                    if(!isFade){
-                        view.style.transform = `translateY(${this.moveY}px)`
-                    }else{
-                        view.style.opacity = 0
-                        setTimeout(() => {
-                            view.style.transition = 'all 0s ease-in-out'
-                            view.style.transform = `translateY(${this.moveY}px)`
-                            setTimeout(() => {
-                                view.style.transition = 'all 1s ease-in-out'
-                                view.style.opacity = 1
-                            }, 200);
-                        }, 1000);
-                    }
-                }
-            }
-            }
-            if(direction ==='next' && isVertical){
-            this.moveY -= stepY
-            if(this.moveY < -maxLengthY + stepY * 3){
-                if(view){
-
-                    view.style.transition = 'all 1s ease-in-out'
-                    if(!isFade){
-                        view.style.transform = `translateY(${this.moveY}px)`
-                    }else{
-                        view.style.opacity = 0
-                    }
-                    this.count = 1
-                    setTimeout(() => {
-                        view.style.transition = 'all 0s ease-in-out'
-                        this.moveY = -stepY * 2
-                        view.style.transform = `translateY(${this.moveY}px)`
-                        if(isFade){
-                            setTimeout(() => {
-                                view.style.transition = 'all 1s ease-in-out'
-                                view.style.opacity = 1
-                            }, 200);
-                        }else{
-                            
-                        }
-                    }, 1000);
-                }
-            }else{
-                this.count += 1
-                if(view){
-                    view.style.transition = 'all 1s ease-in-out'
-                    if(!isFade){
-                        view.style.transform = `translateY(${this.moveY}px)`
-                    }else{
-                        view.style.opacity = 0
-                        setTimeout(() => {
-                            view.style.transition = 'all 0s ease-in-out'
-                            view.style.transform = `translateY(${this.moveY}px)`
-                            setTimeout(() => {
-                                view.style.transition = 'all 1s ease-in-out'
-                                view.style.opacity = 1
-                            }, 200);
-                        }, 1000);
-                    }
-                }
-            }
-            }
-        }else{
-            const item = items[2]
-            item.style.transition = 'all 1s ease-in-out'
-            item.style.backgroundSize = 'cover'
-            if(direction ==='prev' && !isVertical){
-                this.moveX += stepX
-                if(item){
-                    if(this.moveX >= -stepX){
-                        this.count = items.length - 4
-                        item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                        setTimeout(() => {
-                            this.moveX = -maxLengthX + stepX * 3 
-                        },1000)
-                    }else{
-                        this.count -= 1
-                        item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    }    
-                }
-            }
-            if(direction ==='next' && !isVertical){
-                this.moveX -= stepX
-                if(item){
-                    if(this.moveX < -maxLengthX + stepX * 3){
-                        item.style.backgroundImage = `url(${this.srcs[this.count-1]})`
-                        this.count = 1
-                        setTimeout(() => {
-                            this.moveX = -stepX * 2
-                        }, 1000);
-                    }else{
-                        this.count += 1
-                        item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    }
-                }
-            }
-            if(direction ==='prev' && isVertical){
-                this.moveY += stepY
-                if(item){
-                    if(this.moveY >= -stepY){
-                        this.count = items.length - 4
-                    item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    setTimeout(() => {
-                        this.moveY = -maxLengthY + stepY * 3
-                    }, 1000);
-                }else{
-                        this.count -= 1
-                        item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    }
-                }
-            }
-            if(direction ==='next' && isVertical){
-                this.moveY -= stepY
-                if(item){
-                    if(this.moveY < -maxLengthY + stepY * 3){
-                        this.count = 1
-                    item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    setTimeout(() => {
-                        this.moveY = -stepY * 2
-                    }, 1000);
-                }else{
-                    this.count += 1
-                    item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    }
-                }
-            }
-            let body = item.querySelector('.carousel__item-body')
-            let heading = item.querySelector('.carousel__item-heading')
-            let text = item.querySelector('.carousel__item-text')
-            let footer = item.querySelector('.carousel__item-footer')
-            if(!body){
-                body = document.createElement('div')
-                body.classList.add('carousel__item-body')
-                item.appendChild(body)
-            }
-            if(!heading){
-                heading = document.createElement('div')
-                heading.classList.add('carousel__item-heading')
-                body.appendChild(heading)
-            }
-            if(!text){
-                text = document.createElement('div')
-                text.classList.add('carousel__item-text')
-                body.appendChild(text)
-            }
-            if(!footer){
-                footer = document.createElement('div')
-                footer.classList.add('carousel__item-footer')
-                body.appendChild(footer)
-            }
-            const nextHeadings = items[this.count+1].querySelectorAll('.carousel__item-heading > *')
-            const nextTexts = items[this.count+1].querySelectorAll('.carousel__item-text > *')
-            const nextFooters = items[this.count+1].querySelectorAll('.carousel__item-footer > *')
-            if(this.count !== 1){
-                let tempHeadings = []
-                let tempTexts = []
-                let tempFooters = []
-                nextHeadings.forEach(h => {
-                    tempHeadings.push({tag:h.tagName.toLowerCase(),text:h.textContent})
-                })
-                nextTexts.forEach(t => {
-                    tempTexts.push({tag:t.tagName.toLowerCase(),text:t.textContent})
-                })
-                nextFooters.forEach(f => {
-                    tempFooters.push({tag:f.tagName.toLowerCase(),text:f.textContent})
-                })
-                this.headings[this.count - 1] = [...tempHeadings]
-                this.texts[this.count - 1] = [...tempTexts]
-                this.footers[this.count - 1] = [...tempFooters]
-            }
-            if(heading){
-                heading.innerHTML = ''
-                this.headings[this.count-1].forEach(h =>{
-                    const el = document.createElement(`${h.tag}`)
-                    el.textContent = h.text
-                    heading.appendChild(el)
-                })
-            }
-            if(text){
-                text.innerHTML = ''
-                this.texts[this.count-1].forEach(t =>{
-                    const el = document.createElement(`${t.tag}`)
-                    el.textContent = t.text
-                    text.appendChild(el)
-                })
-            }
-            if(footer){
-                footer.innerHTML = ''
-                this.footers[this.count-1].forEach(f =>{
-                    const el = document.createElement(`${f.tag}`)
-                    el.textContent = f.text
-                    footer.appendChild(el)
-                })
-            }
-        }
-
-        const setTimeoutTime = (isFade) =>{
-            if(isFade){
-                return 2000
-            }else{
-                return 1000
-            }
-        }
-
-        if(isTextEffect && isMerge | isFade | isSlide){
-            this.handleCarouselTextEffectIn(direction,isMerge,isFade)
-        }else if(isMerge){
-           const body = items[2].querySelector('.carousel__item-body')
-           if(body){
-               body.style.opacity = 0
-               body.style.transition = 'all 0s ease-in-out'
-               setTimeout(() => {
-                   body.style.transition = 'all 1s ease-in-out'
-                   body.style.opacity = 1
-                }, 1000);
-            }
-        }else if(isFade | isSlide){
-            const body = items[this.count+1].querySelector('.carousel__item-body')
-            if(body){
-                body.style.opacity = 0
-                body.style.transition = 'all 0s ease-in-out'
-                setTimeout(() => {
-                    const heading = body.querySelector('.carousel__item-heading')
-                    const text = body.querySelector('.carousel__item-text')
-                    const footer = body.querySelector('.carousel__item-footer')
-                    if(heading){
-                        heading.style.opacity = 1
-                    }
-                    if(text){
-                        text.style.opacity = 1
-                    }
-                    if(footer){
-                        footer.style.opacity = 1
-                    }
-                    body.style.transition = 'all 1s ease-in-out'
-                    body.style.opacity = 1
-                }, setTimeoutTime(isFade));
-            }
-        }
-        this.handleActivePin()
-    }
-    handleCarousel(){
-        this.elements.forEach(el =>{
-            const prev = el.querySelector('.carousel__prev')
-            const next = el.querySelector('.carousel__next')
-            const view  = el.querySelector('.carousel__view')
-            const isMerge = [...el.classList].filter(c => /carousel__merge/.test(c)).length > 0 ? true : false
-            const first_heading = view.querySelectorAll('.carousel__item-heading')
-            const first_text = view.querySelectorAll('.carousel__item-text')
-            const first_footer = view.querySelectorAll('.carousel__item-footer')
-            if(first_heading[1]){
-                first_heading[1].style.opacity = 1
-            }
-            if(first_text[1]){
-                first_text[1].style.opacity = 1
-            }
-            if(first_footer[1]){
-                first_footer[1].style.opacity = 1
-            }
-            let items = [...view.querySelectorAll('.carousel__item')]
-            const last = items[0].cloneNode(true)
-            const first = items[items.length - 1].cloneNode(true)
-            let stepX
-            let stepY
-            items.push(last)
-            items.unshift(first)
-            view.innerHTML = ''
-            items.forEach(i => {
-                if(view){
-                    view.append(i)
-                }
-            })
-            this.items = items
-            const isVertical  = [...el.classList].filter(c => /carousel__vertical/gi.test(c))
-            if(items.length > 0 && isVertical.length === 0){
-                stepX = items[0].clientWidth
-                this.moveX -= stepX * 2
-                if(view){
-                    view.style.transition = 'all 0s ease-in-out'
-                    view.style.transform = `translateX(${this.moveX}px)`
-                }
-            }else if(items.length > 0 && isVertical.length > 0){
-                stepY = items[0].clientHeight
-                this.moveY -= stepY * 2
-                if(view){
-                    view.style.transition = 'all 0s ease-in-out'
-                    view.style.transform = `translateY(${this.moveY}px)`
-                }
-            }
-            if(isMerge){
-                const first_heading = view.querySelectorAll('.carousel__item-heading')
-                const first_text = view.querySelectorAll('.carousel__item-text')
-                const first_footer = view.querySelectorAll('.carousel__item-footer')
-                if(first_heading[2]){
-                    first_heading[2].style.opacity = 1
-                }
-                if(first_text[2]){
-                    first_text[2].style.opacity = 1
-                }
-                if(first_footer[2]){
-                    first_footer[2].style.opacity = 1
-                }
-                this.srcs = items.map(i =>{
-                    const img = i.querySelector('img')
-                    img.style.visibility = 'hidden'
-                    const src = img.src
-                    return src
-                })
-                items.forEach(i => {
-                    const img = i.querySelector('img')
-                    img.style.visibility = 'hidden'
-                })
-                const image = items[2].querySelector('img')
-                items[2].style.backgroundImage = `url(${image.src})`
-                items[2].style.backgroundSize = 'cover'
-                const nextHeadings = items[2].querySelectorAll('.carousel__item-heading > *')
-                const nextTexts = items[2].querySelectorAll('.carousel__item-text > *')
-                const nextFooters = items[2].querySelectorAll('.carousel__item-footer > *')
-                let tempHeadings = []
-                let tempTexts = []
-                let tempFooters = []
-                nextHeadings.forEach(h => {
-                    tempHeadings.push({tag:h.tagName.toLowerCase(),text:h.textContent})
-                })
-                nextTexts.forEach(t => {
-                    tempTexts.push({tag:t.tagName.toLowerCase(),text:t.textContent})
-                })
-                nextFooters.forEach(f => {
-                    tempFooters.push({tag:f.tagName.toLowerCase(),text:f.textContent})
-                })
-                this.headings[0] = [...tempHeadings]
-                this.texts[0] = [...tempTexts]
-                this.footers[0] = [...tempFooters]
-            }
-            if(isVertical.length > 0){
-                if(prev){
-
-                    prev.addEventListener('click',(e) => {
-                        if(!this.isPlay){
-                            this.handleCarouselEffect(el,'prev',true)
-                        this.isPlay = true
-                        setTimeout(() => {
-                            this.isPlay = false
-                        }, 1000);
-                    }
-                })
-            }
-            if(next){
-
-                next.addEventListener('click',(e) => {
-                    if(!this.isPlay){
-                        this.handleCarouselEffect(el,'next',true)
-                        this.isPlay = true
-                        setTimeout(() => {
-                            this.isPlay = false
-                        }, 1000);
-                    }
-                })
-            }
-            }else{
-                if(prev){
-
-                    prev.addEventListener('click',(e) => {
-                        if(!this.isPlay){
-                            this.handleCarouselEffect(el,'prev',false)
-                            this.isPlay = true
-                            setTimeout(() => {
-                                this.isPlay = false
-                            }, 1000);
-                        }
-                    })
-                }
-                if(next){
-                    next.addEventListener('click',(e) => {
-                        if(!this.isPlay){
-                            this.handleCarouselEffect(el,'next',false)
-                            this.isPlay = true
-                            setTimeout(() => {
-                                this.isPlay = false
-                            }, 1000);
-                        }
-                    })
-                }
-            }
-        }) 
-    }
     handleSetup(){
-        this.handleSetButtons()
-        this.handleSetPins()
+        this.handleCreateCarousel()
         this.handleCarousel()
     }
 }
@@ -3771,7 +4678,8 @@ class Divider{
             }
             const isAnimation = [...el.classList].filter(c => /divider__with-animation/.test(c)).length > 0 ? true : false
             if(isAnimation){
-                content.addEventListener('mouseenter',(e) => {
+                content.onmouseenter = ''
+                content.onmouseenter = (e) =>  {
                     if(dividersHorizontal[0] || dividersVertical[0] ){
                         if(dividersHorizontal[0]){
                             dividersHorizontal[0].style.transform = 'translateX(-10px)'
@@ -3788,8 +4696,9 @@ class Divider{
                             dividersVertical[1].style.transform = 'translateY(10px)'
                         }
                     }
-                })
-                content.addEventListener('mouseout',(e) => {
+                }
+                content.onmouseout = ''
+                content.onmouseout = (e) => {
                     if(dividersHorizontal[0] || dividersVertical[0] ){
                         if(dividersHorizontal[0]){
                             dividersHorizontal[0].style.transform = 'translateX(0px)'
@@ -3806,7 +4715,7 @@ class Divider{
                             dividersVertical[1].style.transform = 'translateY(0px)'
                         }
                     }
-                })
+                }
             }
         })
     }
@@ -3822,62 +4731,70 @@ class Tooltip{
             if(child.classList.contains('tooltip__content-left')){
                 child.style.top = el.offsetTop + el.clientHeight / 2 + 'px'
                 child.style.left = el.offsetLeft - child.clientWidth - 100 + 'px'
-                el.addEventListener('mouseenter',()=>{
+                el.onmouseenter = ''
+                el.onmouseenter = (e) => {
                     if(child){
                         child.style.top = el.offsetTop + el.clientHeight / 2 + 'px'
                         child.style.left = el.offsetLeft - child.clientWidth - 10 + 'px'
                     }
-                })
-                el.addEventListener('mouseleave',()=>{
+                }
+                el.mouseleave = ''
+                el.onmouseleave = (e) => {
                     if(child){
                         child.style.left = el.offsetLeft - child.clientWidth - 100 + 'px'
                     }
-                })
+                }
             }
             if(child.classList.contains('tooltip__content-right')){
                 child.style.left = el.offsetLeft + el.clientWidth + 100 + 'px'
                 child.style.top = el.offsetTop + el.clientHeight / 2 + 'px'
-                el.addEventListener('mouseenter',()=>{
+                el.onclick = ''
+                el.onmouseenter = (e) =>{
                     if(child){
                         child.style.left = el.offsetLeft + el.clientWidth  + 10 + 'px'
                     }
-                })
-                el.addEventListener('mouseleave',()=>{
+                }
+                el.mouseleave = ''
+                el.onmouseleave = (e) => {
                     if(child){
                         child.style.left = el.offsetLeft + el.clientWidth + 100 + 'px'
                     }
-                })
+                }
             }
             if(child.classList.contains('tooltip__content-top')){
                 child.style.top = el.offsetTop - 200 + 'px'
                 child.style.left = el.offsetLeft + el.clientWidth / 2 + 'px'
-                el.addEventListener('mouseenter',()=>{
+                el.onclick = ''
+                el.onmouseenter = (e) =>{
                     if(child){
                         child.style.top = el.offsetTop - child.clientHeight - 10 + 'px'
 
                     }
-                })
-                el.addEventListener('mouseleave',()=>{
+                }
+                el.mouseleave = ''
+                el.onmouseleave = (e) => {
                     if(child){
                         child.style.top = el.offsetTop - 200 + 'px'
 
                     }
-                })
+                }
             }
             if(child.classList.contains('tooltip__content-bottom')){
                 child.style.top = el.offsetTop + el.clientHeight + 100 + 'px'
                 child.style.left = el.offsetLeft + el.clientWidth / 2 + 'px'
-                el.addEventListener('mouseenter',()=>{
+                el.onclick = ''
+                el.onmouseenter = (e) =>{
                     if(child){
                         child.style.top = el.offsetTop + el.clientHeight + 10 + 'px'
                         child.style.left = el.offsetLeft + el.clientWidth / 2 + 'px'
                     }
-                })
-                el.addEventListener('mouseleave',()=>{
+                }
+                el.mouseleave = ''
+                el.onmouseleave = (e) => {
                     if(child){
                         child.style.top = el.offsetTop + el.clientHeight + 100 + 'px'
                     }
-                })
+                }
             }
         })
     }
@@ -3886,8 +4803,7 @@ class Tabs{
     constructor() {
         this.elements = document.querySelectorAll('.tabs')
     }
-    handleTab(e,dataTab){
-        this.elements.forEach(el =>{
+    handleTab(e,el,dataTab){
             const links = el.querySelectorAll('.tabs__nav-item')
             const tabs = el.querySelectorAll('.tabs__tab')
             const view = el.querySelector('.tabs__view')
@@ -3930,7 +4846,6 @@ class Tabs{
                 tabs.forEach(t => t.style.transition = 'all 0s ease-in-out')
                 handleTabIn()
             }
-        })
         
     }
     handleTabs(){
@@ -3956,7 +4871,8 @@ class Tabs{
             }
             links.forEach(link => {
                 const dataTab = link.getAttribute('data-tab')
-                link.addEventListener('click',(e)=>this.handleTab(e,dataTab))
+                link.onclick = ''
+                link.onclick = (e)=> this.handleTab(e,el,dataTab)
             })
         })
     }
@@ -3973,7 +4889,9 @@ class Input {
             const label = el.querySelector('label')
             const input = el.querySelector('input')
             const textarea = el.querySelector('textarea')
-            el.style.borderBottom = `1px solid var(--light-black)`
+            if(!el.classList.contains('input__field') && !el.classList.contains('input__field-normal')){
+                el.style.borderBottom = `1px solid var(--light-black)`
+            }
             if(label && input){
                 label.style.top = input.clientHeight / 2 - 8  + 'px'
                 label.style.left = input.offsetLeft / 2 + 5 + 'px'
@@ -3984,6 +4902,10 @@ class Input {
                 label.style.left = textarea.offsetLeft / 25 + 'px'
                 label.style.transform = 'scale(1)'
             }
+            const current = el.querySelector('.input__underscore-line-effect')
+            if(current){
+                current.style.width = '0%'
+            }
         })
     }
     handleLabel(label){
@@ -3992,6 +4914,7 @@ class Input {
             label.style.transform = 'scale(0.7)'
             label.style.fontStyle = 'normal'
         }
+        
     }
     handleInput(el,label){
         this.handleResetLabel()
@@ -4023,16 +4946,18 @@ class Input {
             if(label && input){
                 label.style.top = input.clientHeight / 2 - 8  + 'px'
                 label.style.left = input.offsetLeft / 2 + 5 + 'px'
-                input.addEventListener('click',(e)=>{
+                input.onclick = ''
+                input.onclick = (e)=>{
                     e.stopImmediatePropagation()
                     this.handleInput(el,label)
-                })
+                }
             }
             if(textarea){
-                textarea.addEventListener('click',(e)=>{
+                textarea.onclick = ''
+                textarea.onclick = (e)=>{
                     e.stopImmediatePropagation()
                     this.handleInput(el,label)
-                })
+                }
             }
         })
         const html = document.querySelector('html')
@@ -4048,10 +4973,10 @@ class Modal{
     handleModal(btn){
         this.elements.forEach(el => {
             const modal = el.querySelector('.modal')
-            const btn_id = btn.getAttribute('data-target')
-            const el_id = btn.getAttribute('data-target')
+            const btn_id = btn.getAttribute('data-target-id')
+            const modal_el = document.querySelector(`#${btn_id}`)
+            const el_id = modal_el.id
             if(btn_id === el_id){
-                
                 const isCombine = [...modal.classList].filter(c => /modal__combine/.test(c)).length > 0 ? true : false
                 const modal_wrapper = el
                 const modal_overlay = modal_wrapper.querySelector('.modal__overlay')
@@ -4167,10 +5092,17 @@ class Modal{
     }
     handleSetup(){
         this.open_modal_btns.forEach(button => {
-            button.addEventListener('click',()=>this.handleModal(button))
+            button.addEventListener('click',(e)=>{
+                e.stopImmediatePropagation()
+                this.handleModal(button)
+            })
         })
         this.close_modal_btns.forEach(button => {
-            button.addEventListener('click',() => this.handleCloseModal(button))
+            button.addEventListener('click',(e)=>{
+                e.stopImmediatePropagation()
+                this.handleCloseModal(button)
+            })
+
         })
     }
 }
@@ -4190,10 +5122,10 @@ class Parallax {
         const isFade = [...el.classList].filter(c => /parallax__fade/.test(c)).length > 0 ? true : false
         if(isSlide){
             if(parallax_content_header){
-                parallax_content_header.style.transform = `translateX(${parallax_content_header.getBoundingClientRect().top * 2.15}px)`
+                parallax_content_header.style.transform = `translateX(${parallax_content_header.getBoundingClientRect().top * 2.15 + 250}px)`
             }
             if(parallax_content_text){
-                parallax_content_text.style.transform = `translateX(-${parallax_content_text.getBoundingClientRect().top * 2.4}px)`
+                parallax_content_text.style.transform = `translateX(-${parallax_content_text.getBoundingClientRect().top * 2.4 + 250}px)`
             }
         }
         if(isFade){
@@ -4209,7 +5141,7 @@ class Parallax {
         }
         
         parallax_imgs.forEach(img =>{
-            if(img.offsetTop + img.clientHeight + el.clientHeight / 3.5 > offesetBottom){
+            if(img.offsetTop + img.clientHeight + el.clientHeight > offesetBottom){
                 img.style.transform = `translateY(${scrollY}px)`
             }     
         })
@@ -4409,9 +5341,10 @@ class Sidebar{
     constructor(){
         this.elements = document.querySelectorAll('.sidebar')
         this.open_buttons = document.querySelectorAll('.sidebar__open-sidebar')
-        this.html = document.querySelector('html')
+        this.close_buttons = document.querySelectorAll('.sidebar__close')
     }
     handleSidebarOpen(btn){
+        console.log(btn)
         const sidebar_target = btn.getAttribute('data-target-id')
         const sidebar = document.querySelector(`#${sidebar_target}`)
         const isCircle = [...sidebar.classList].filter(c => /sidebar__circle/.test(c)).length > 0 ? true : false
@@ -4489,18 +5422,20 @@ class Sidebar{
     }
     handlePreventClose(){
         this.elements.forEach(el =>{
-            el.addEventListener('click',(e)=> e.stopImmediatePropagation())
+            el.addEventListener('click', (e) =>{e.stopImmediatePropagation()})
         })
     }
     handleSetup(){
-        this.open_buttons.forEach(btn => btn.addEventListener('click',(e) => {
+        this.open_buttons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
             e.stopImmediatePropagation()
             this.handleSidebarOpen(btn)
-        }))
-        this.html.addEventListener('click',(e)=>{
+        })})
+        this.close_buttons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
             e.stopImmediatePropagation()
-            this.open_buttons.forEach(btn => this.handleSidebarOpen(btn))
-        })
+            this.handleSidebarOpen(btn)
+        })})
     }
 }
 class Nav{
@@ -4512,18 +5447,20 @@ class Nav{
         if(typeof window !== 'undefined'){
             if(window.innerWidth <= 1024){
                 this.elements.forEach(el => {
-                    const nav_menu = el.querySelector('.nav__menu')
+                    const nav_menu = el.querySelector('.nav__menu-wrapper')
                     nav_menu.style.transition = 'all 0s ease-in-out'
                     nav_menu.style.top = el.clientHeight + 'px'
                 })
             }
         }
     }
-    handleActive(e){
+    handleActive(){
         this.elements.forEach(el =>{
             const nav_items = el.querySelectorAll('.nav__menu-item')
             nav_items.forEach(i =>{
-                i.addEventListener('click',(e)=>{
+                var clone = i.cloneNode(true);
+                i.replaceWith(clone)
+                clone.addEventListener('click',(e)=>{
                     nav_items.forEach(item => item.classList.remove('active'))
                     if(e.target.tagName === 'A'){
                         e.target.parentElement.classList.add('active')
@@ -4616,9 +5553,10 @@ class Nav{
         this.handleMenuSetup()
         this.handleActive()
         this.hamburgers.forEach(h => {
-            h.addEventListener('click',(e)=>{
+            h.onclick = ''
+            h.onclick =(e)=>{
                 this.handleMenu(e)
-            })
+            }
         })
     }
 }
@@ -4764,18 +5702,18 @@ class Toast{
     handleSetup(){
         this.elements.forEach(el => {
             const toast_close = el.querySelector('.toast__close')
-            toast_close.addEventListener('click', (e)=>{
+            toast_close.onclick = ''
+            toast_close.onclick = (e)=>{
                 const toast = e.target.parentElement.parentElement
                 toast.style.opacity = 0
                 toast.style.transform = 'translateY(-20px)'
                 setTimeout(() => {
                     toast.style.display = 'none'
                 }, 1000);
-            })
+            }
         })
     }
 }
-
 class Framework{
     constructor(){
         this.globalSetup = new GlobalSetup(
@@ -4805,6 +5743,9 @@ class Framework{
         }
         if(typeof Carousel === 'function'){
             this.carousel = new Carousel()
+        }
+        if(typeof CarouselEffect === 'function'){
+            this.canvas_carousel = new CarouselEffect()
         }
         if(typeof Divider === 'function'){
             this.divider = new Divider()
@@ -4929,6 +5870,7 @@ class Framework{
         this.dropdown?.handleSetup()
         this.handleCardWithShadow()
         this.carousel?.handleSetup()
+        this.canvas_carousel?.handleSetup()
         this.divider?.handleSetup()
         this.tooltip?.handleSetup()
         this.tabs?.handleSetup()
@@ -4950,8 +5892,9 @@ class Framework{
     }
 }
 
-const framework = new Framework()
+let framework = new Framework()
+
+window.JellyFramework = framework
 
 framework.handleSetupAll()
-
 

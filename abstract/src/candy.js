@@ -5341,7 +5341,9 @@ class Accordion_Component extends HTMLElement{
             accordion_body_wrapper_div.classList.add('accordion__body')
             accordion_body_wrapper_div.classList.add(accordion_body_isVisible)
             accordion_body_wrapper_div.classList.add(accordion_transtion_control)
-            if(accordion_body_isVisible){
+            if(accordion_body_isVisible === 'true'){
+                accordion_heading_div.classList.add('accordion__open')
+            }else{
                 accordion_heading_div.classList.add('accordion__open')
             }
             accordion_body_div.innerHTML = accordion_body.innerHTML
@@ -7335,3 +7337,6 @@ class Framework{
     }
 }
 
+const framework = new Framework()
+
+window.CandyFramework = framework

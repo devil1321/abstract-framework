@@ -8,7 +8,7 @@
     position: relative;
     top:0px;
     left:0px;
-    z-index: 99999;
+    z-index: 9998;
     padding:0px 50px;
     box-sizing:border-box;
     min-height:50px;
@@ -64,6 +64,9 @@
     }
     &__menu{
         @include createFlex(row,center,center,wrap);
+        @include breakpoint-down(medium-sm){
+            display: block;
+        }
     }
     &__menu-fade{
         @include breakpoint-down(medium-sm){
