@@ -1038,14 +1038,15 @@ class Accordion{
         this.headings = document.querySelectorAll('.accordion__heading')
     }
     handleAccordions(h){
-        const handleAccordion = () =>{
+       
+        const handleAccordion = (d) =>{
             const animationIn = framework.utils.handleTransitionIn(h)
             const animationOut = framework.utils.handleTransitionOut(h)
             const chevron = document.querySelector('.chevron')
             const chevronLight = document.querySelector('.chevron-liht')
             let body
             if(!h.getAttribute('data-number')){
-                body = h.nextSibling.nextSibling
+                body = h.nextSibling
                 if(body.getAttribute('data-number')){ 
                     body = null
                 }
@@ -1075,7 +1076,8 @@ class Accordion{
                         }
                     }
             }else{
-                    h.classList.remove('accordion__open')
+                h.classList.remove('accordion__open')
+                body.classList.remove('visible')
                     if(body){
                         if(chevron){
                             chevron.classList.remove('chevron-up')
@@ -1100,10 +1102,14 @@ class Accordion{
                     }
             }
         }
-        h.addEventListener('click',handleAccordion)
+   
+        h.onclick = 
+        h.onclick = () => handleAccordion()
     }
     handleSetup(){
-        this.headings.forEach(h => this.handleAccordions(h))
+        this.headings.forEach(h => {
+            this.handleAccordions(h)
+        })
     }
 }
 class Breadcrumb{
@@ -2211,21 +2217,24 @@ class Carousel{
         this.elements.forEach(el =>{
             const isButtons  = [...el.classList].filter(c => /carousel__buttons/gi.test(c))
             if(isButtons.length > 0){
-                const wrapper = document.createElement('div')
-                wrapper.classList.add('carousel__controls')
-                const chevron_prev = document.createElement('div')
-                chevron_prev.classList.add('carousel__chevron')
-                const chevron_next = document.createElement('div')
-                chevron_next.classList.add('carousel__chevron')
-                const prev = document.createElement('div')
-                prev.classList.add('carousel__prev')
-                prev.appendChild(chevron_prev)
-                wrapper.appendChild(prev)
-                const next = document.createElement('div')
-                next.classList.add('carousel__next')
-                next.appendChild(chevron_next)
-                wrapper.appendChild(next)
-                el.appendChild(wrapper)
+                const isIn = el.querySelector('[class*="carousel__buttons"]')
+                if(!isIn){
+                    const wrapper = document.createElement('div')
+                    wrapper.classList.add('carousel__controls')
+                    const chevron_prev = document.createElement('div')
+                    chevron_prev.classList.add('carousel__chevron')
+                    const chevron_next = document.createElement('div')
+                    chevron_next.classList.add('carousel__chevron')
+                    const prev = document.createElement('div')
+                    prev.classList.add('carousel__prev')
+                    prev.appendChild(chevron_prev)
+                    wrapper.appendChild(prev)
+                    const next = document.createElement('div')
+                    next.classList.add('carousel__next')
+                    next.appendChild(chevron_next)
+                    wrapper.appendChild(next)
+                    el.appendChild(wrapper)
+                }
             }
         })
     }
@@ -2239,18 +2248,17 @@ class Carousel{
                 const first = items[items.length - 1].cloneNode(true)
                 items.push(last)
                 items.unshift(first)
-                view.innerHTML = ''
-                items.forEach(i => {
-                    view.append(i)
-                })
-                const wrapper = document.createElement('div')
-                wrapper.classList.add('carousel__dots')
-                items.forEach(i => {
-                    const dot = document.createElement('div')
-                    dot.classList.add('carousel__dot')
-                    wrapper.appendChild(dot)
-                })
-                el.appendChild(wrapper)
+                const isIn = el.querySelector('.carousel__dots')
+                if(!isIn){
+                    const wrapper = document.createElement('div')
+                    wrapper.classList.add('carousel__dots')
+                    items.forEach(i => {
+                        const dot = document.createElement('div')
+                        dot.classList.add('carousel__dot')
+                        wrapper.appendChild(dot)
+                    })
+                    el.appendChild(wrapper)
+                }
                 const dots = [...document.querySelectorAll('.carousel__dot')]
                 if(dots.length > 0){
                     dots[1].classList.add('carousel__dot--active')
@@ -2266,10 +2274,12 @@ class Carousel{
 
     }
     handlePinEffect(el,index){
+
         const view = el.querySelector('.carousel__view')
         const items = view.querySelectorAll('.carousel__item')
         const isMerge = [el.classList].filter(c => /carousel__merge/.test(c)).length > 0 ? true : false
         const isFade = [el.classList].filter(c => /carousel__fade/.test(c)).length > 0 ? true : false
+        const isSlide = [el.classList].filter(c => /carousel__slide/.test(c)).length > 0 ? true : false
         const isTextEffect = [el.classList].filter(c => /carousel__with-text-effect/.test(c)).length > 0 ? true : false
         let direction = 'prev'
         this.count = index 
@@ -2357,7 +2367,7 @@ class Carousel{
                 }
             }
         }
-        if(isTextEffect && isMerge | isFade){
+        if(isTextEffect && isMerge | isFade | isSlide){
             this.handleCarouselTextEffectIn(direction,isMerge,isFade)
         }else if(isMerge){
            const body = items[2].querySelector('.carousel__item-body')
@@ -2369,58 +2379,108 @@ class Carousel{
                    body.style.opacity = 1
                 }, 1000);
             }
-        }else if(isFade){
-            const body = items[this.count+1].querySelector('.carousel__item-body')
-            if(body){
-                body.style.opacity = 0
-                body.style.transition = 'all 0s ease-in-out'
-                setTimeout(() => {
-                    body.style.transition = 'all 1s ease-in-out'
-                    body.style.opacity = 1
-                }, 2000);
-            }
+        }else if(isFade || isSlide){
+            const bodies = el.querySelectorAll('.carousel__item-body')
+            bodies.forEach(body =>{
+                if(body){
+                    body.style.opacity = 0
+                    body.style.transition = 'all 0s ease-in-out'
+                    setTimeout(() => {
+                        body.style.transition = 'all 1s ease-in-out'
+                        body.style.opacity = 1
+                        const heading = body.querySelector('.carousel__item-heading')
+                        const text = body.querySelector('.carousel__item-text')
+                        const footer = body.querySelector('.carousel__item-footer')
+                        if(heading){
+                            heading.style.opacity = 1
+                        }
+                        if(text){
+                            text.style.opacity = 1
+                        }
+                        if(footer){
+                            footer.style.opacity = 1
+                        }
+                    }, 2000);
+                }
+            })
         }
+        this.handleActivePin()
     }
-    handleCarouselTextEffectIn(direction,isMerge,isFade){
-        let nextHeading =  this.items[2].querySelector('.carousel__item-heading')
-        let nextText = this.items[2].querySelector('.carousel__item-text')
-        let nextFooter = this.items[2].querySelector('.carousel__item-footer')
-        let prevHeading = this.items[2].querySelector('.carousel__item-heading')
-        let prevText = this.items[2].querySelector('.carousel__item-text')
-        let prevFooter = this.items[2].querySelector('.carousel__item-footer')
-
+    handleCarouselTextEffectIn(direction,isMerge,isFade,el){
+        const items = el.querySelectorAll('.carousel__item')
+        let nextHeading =  items[1].querySelector('.carousel__item-heading')
+        let nextText = items[1].querySelector('.carousel__item-text')
+        let nextFooter = items[1].querySelector('.carousel__item-footer')
+        let prevHeading = items[1].querySelector('.carousel__item-heading')
+        let prevText = items[1].querySelector('.carousel__item-text')
+        let prevFooter = items[1].querySelector('.carousel__item-footer')
+    
         if(!isMerge){
+            items.forEach(item =>{
+                let heading =  item.querySelector('.carousel__item-heading')
+                let text = item.querySelector('.carousel__item-text')
+                let footer = item.querySelector('.carousel__item-footer')
+                if(heading){
+                    heading.style.opacity = 0
+                }
+                if(text){
+                    text.style.opacity = 0
+                }
+                if(footer){
+                    footer.style.opacity = 0
+                }
+            })
             if(this.count === 1 && direction === 'prev'){
+                console.log(1,'prev')
                 if(!isMerge){
-                    nextHeading = this.items[2].querySelector('.carousel__item-heading')
-                    nextText = this.items[2].querySelector('.carousel__item-text')
-                    nextFooter = this.items[2].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[3].querySelector('.carousel__item-heading')
-                    prevText = this.items[3].querySelector('.carousel__item-text')
-                    prevFooter = this.items[3].querySelector('.carousel__item-footer')
+                    nextHeading = items[this.count].querySelector('.carousel__item-heading')
+                    nextText = items[this.count].querySelector('.carousel__item-text')
+                    nextFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[this.count+1].querySelector('.carousel__item-heading')
+                    prevText = items[this.count+1].querySelector('.carousel__item-text')
+                    prevFooter = items[this.count+1].querySelector('.carousel__item-footer')
+                }
+    
+                if(nextHeading){
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.opacity = 0
+                    nextHeading.style.transform = 'translateY(-200px)'
+                }
+                if(nextText){
+                    nextText.style.transition = 'all 0s ease-in-out'
+                    nextText.style.opacity = 0
+                    nextText.style.transform = 'translateX(200px)'
+                }
+                if(nextFooter){
+                    nextFooter.style.transition = 'all 0s ease-in-out'
+                    nextFooter.style.opacity = 0
+                    nextFooter.style.transform =  'translateY(200px)'
                 }
             
                 if(prevHeading){
                     prevHeading.style.transition = 'all 1s ease-in-out'
                     prevHeading.style.transform = 'translateX(1200px)'
+                    prevHeading.style.opacity = 0
                 }
                 if(prevText){
-
+    
                     prevText.style.transition = 'all 1s ease-in-out'
                     prevText.style.transform = 'translateX(-500px)'
+                    prevText.style.opacity = 0
                 }
                 if(prevFooter){
-
+    
                     prevFooter.style.transition = 'all 1s ease-in-out'
                     setTimeout(() => {
                         prevFooter.style.transform = 'translateX(-500px)'
+                        prevFooter.style.opacity = 0
                     }, 200);
                 }
                 const handleEffectOnePrev = () =>{
                     if(nextHeading){
                         nextHeading.style.transition = 'all 1s ease-in-out'
                         nextHeading.style.opacity = 1
-                        nextHeading.style.transform = 'translateX(0px)'
+                        nextHeading.style.transform = 'translateY(0px)'
                     }
                     if(nextText){
                         nextText.style.transition = 'all 1s ease-in-out'
@@ -2444,30 +2504,51 @@ class Carousel{
                 }
             }
             if(this.count === 1 && direction === 'next'){
+                console.log(1,'next')
+                let lastHeading,lastText,lastFooter
+                
                 if(!isMerge){
-                    nextHeading = this.items[2].querySelector('.carousel__item-heading')
-                    nextText = this.items[2].querySelector('.carousel__item-text')
-                    nextFooter = this.items[2].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[4].querySelector('.carousel__item-heading')
-                    prevText = this.items[4].querySelector('.carousel__item-text')
-                    prevFooter = this.items[4].querySelector('.carousel__item-footer')
+                    nextHeading = items[this.count].querySelector('.carousel__item-heading')
+                    nextText = items[this.count].querySelector('.carousel__item-text')
+                    nextFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[3].querySelector('.carousel__item-heading')
+                    prevText = items[3].querySelector('.carousel__item-text')
+                    prevFooter = items[3].querySelector('.carousel__item-footer')
+                    lastText = items[2].querySelector('.carousel__item-text')
+                    lastFooter = items[2].querySelector('.carousel__item-footer')
+                    lastHeading = items[2].querySelector('.carousel__item-heading')
                 }
                 if(nextHeading){
-                    nextHeading.style.transition = 'all 0s ease-in-out'
                     nextHeading.style.opacity = 0
-                    nextHeading.style.transform = 'translateY(-100px)'
+                    nextHeading.style.transition = 'all 0s ease-in-out'
+                    nextHeading.style.transform = 'translateY(-300px)'
                 }
                 if(nextText){
-                    nextText.style.transition = 'all 0s ease-in-out'
                     nextText.style.opacity = 0
+                    nextText.style.transition = 'all 0s ease-in-out'
                     nextText.style.transform = 'translateX(400px)'
                 }
                 if(nextFooter){
-                    nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.opacity = 0
+                    nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.transform = 'translateY(200px)'
                 }
-
+                if(lastHeading){
+                    lastHeading.style.opacity = 0
+                    lastHeading.style.transition = 'all 0s ease-in-out'
+                    lastHeading.style.transform = 'translateY(-300px)'
+                }
+                if(lastText){
+                    lastText.style.opacity = 0
+                    lastText.style.transition = 'all 0s ease-in-out'
+                    lastText.style.transform = 'translateX(400px)'
+                }
+                if(lastFooter){
+                    lastFooter.style.opacity = 0
+                    lastFooter.style.transition = 'all 0s ease-in-out'
+                    lastFooter.style.transform = 'translateY(200px)'
+                }
+    
                 if(prevHeading){
                     prevHeading.style.transform = 'translateY(-200px)'
                     prevHeading.style.opacity = 0
@@ -2480,17 +2561,22 @@ class Carousel{
                     prevFooter.style.transform = 'translateX(-400px)'
                     prevFooter.style.opacity = 0
                 }
-
-                const handleEffectOneNext = () =>{
+    
+                const handleEffectOneNext = (nextHeading,nextText,nextFooter) =>{
+                   
                     if(nextHeading){
                         nextHeading.style.transition = 'all 1.5s ease-in-out'
-                        nextHeading.style.opacity = 1
-                        nextHeading.style.transform  = 'translateY(0px)'
+                        setTimeout(() => {
+                            nextHeading.style.opacity = 1
+                            nextHeading.style.transform  = 'translateY(0px)'
+                        }, 100);
                     }
                     if(nextText){
                         nextText.style.transition = 'all 1.8s ease-in-out'
-                        nextText.style.opacity = 1
-                        nextText.style.transform = 'translateX(0px)'
+                        setTimeout(() => {
+                            nextText.style.opacity = 1
+                            nextText.style.transform = 'translateX(0px)'
+                        }, 100);
                     }
                     if(nextFooter){
                         nextFooter.style.transition = 'all 1.8s ease-in-out'
@@ -2502,24 +2588,27 @@ class Carousel{
                 }
                 if(!isFade){
                     setTimeout(() => {
-                        handleEffectOneNext()
+                        handleEffectOneNext(nextHeading,nextText,nextFooter)
+                        handleEffectOneNext(lastHeading,lastText,lastFooter)
                     }, 100);
                 }else{
                     setTimeout(() => {
-                        handleEffectOneNext()
+                        handleEffectOneNext(nextHeading,nextText,nextFooter)
+                        handleEffectOneNext(lastHeading,lastText,lastFooter)
                     }, 1000);
                 }
             }
             if(this.count % 2 === 0 && direction === 'prev'){
+                console.log(2,'prev')
                 if(!isMerge){
-                    prevHeading = this.items[3].querySelector('.carousel__item-heading')
-                    prevText = this.items[3].querySelector('.carousel__item-text')
-                    prevFooter = this.items[3].querySelector('.carousel__item-footer')
-                    nextHeading = this.items[4].querySelector('.carousel__item-heading')
-                    nextText = this.items[4].querySelector('.carousel__item-text')
-                    nextFooter = this.items[4].querySelector('.carousel__item-footer')
+                    prevHeading = items[this.count].querySelector('.carousel__item-heading')
+                    prevText = items[this.count].querySelector('.carousel__item-text')
+                    prevFooter = items[this.count].querySelector('.carousel__item-footer')
+                    nextHeading = items[3].querySelector('.carousel__item-heading')
+                    nextText = items[3].querySelector('.carousel__item-text')
+                    nextFooter = items[3].querySelector('.carousel__item-footer')
                 }
-
+    
                 if(prevHeading){
                     prevHeading.style.transition = 'all 0s ease-in-out'
                     prevHeading.style.transform = 'translateY(200px)'
@@ -2532,7 +2621,7 @@ class Carousel{
                     prevFooter.style.transition = 'all 0s ease-in-out'
                     prevFooter.style.transform = 'translateY(-500px)'
                 }
-
+    
                 if(nextHeading){
                     nextHeading.style.transform = 'translateX(200px)'
                     nextHeading.style.opacity = 0
@@ -2545,7 +2634,7 @@ class Carousel{
                     nextFooter.style.transform = 'translateX(400px)'
                     nextFooter.style.opacity = 0
                 }
-
+    
                 const handleEffectTwoPrev = () =>{
                     if(prevHeading){
                         prevHeading.style.transition = 'all 1s ease-in-out'
@@ -2563,7 +2652,7 @@ class Carousel{
                         prevFooter.style.transform =  'translateY(0px)'
                     }
                 }
-
+    
                 if(!isFade){
                     setTimeout(() => {
                         handleEffectTwoPrev()
@@ -2575,13 +2664,14 @@ class Carousel{
                 }
             }
             if(this.count % 2 === 0 && direction === 'next'){
+                console.log(2,'next')
                 if(!isMerge){
-                    nextHeading = this.items[3].querySelector('.carousel__item-heading')
-                    nextText = this.items[3].querySelector('.carousel__item-text')
-                    nextFooter = this.items[3].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[2].querySelector('.carousel__item-heading')
-                    prevText = this.items[2].querySelector('.carousel__item-text')
-                    prevFooter = this.items[2].querySelector('.carousel__item-footer')
+                    nextHeading = items[this.count].querySelector('.carousel__item-heading')
+                    nextText = items[this.count].querySelector('.carousel__item-text')
+                    nextFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[1].querySelector('.carousel__item-heading')
+                    prevText = items[1].querySelector('.carousel__item-text')
+                    prevFooter = items[1].querySelector('.carousel__item-footer')
                 }
                 if(nextHeading){
                     nextHeading.style.transition = 'all 0s ease-in-out'
@@ -2596,14 +2686,17 @@ class Carousel{
                     nextFooter.style.transform = 'translateY(500px)'
                 }
                 if(prevHeading){
+                    prevHeading.style.transition = 'all 1s ease-in-out'
                     prevHeading.style.transform = 'translateY(-200px)'
                     prevHeading.style.opacity = 0
                 }
                 if(prevText){
+                    prevText.style.transition = 'all 1s ease-in-out'
                     prevText.style.transform = 'translateX(-400px)'
                     prevText.style.opacity = 0
                 }
                 if(prevFooter){
+                     prevHeading.style.transition = 'all 1s ease-in-out'
                     prevFooter.style.transform = 'translateY(400px)'
                     prevFooter.style.opacity = 0
                 }
@@ -2624,7 +2717,7 @@ class Carousel{
                         nextFooter.style.transform =  'translateY(0px)'
                     }
                 }
-
+    
                 if(!isFade){
                     setTimeout(() => {
                         handleEffectTwoNext()
@@ -2636,13 +2729,18 @@ class Carousel{
                 }
             }
             if(this.count % 3 === 0 && direction === 'prev'){
+                console.log(3,'prev')
+                let lastHeading,lastText,lastFooter
                 if(!isMerge){
-                    nextHeading = this.items[4].querySelector('.carousel__item-heading')
-                    nextText = this.items[4].querySelector('.carousel__item-text')
-                    nextFooter = this.items[4].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[2].querySelector('.carousel__item-heading')
-                    prevText = this.items[2].querySelector('.carousel__item-text')
-                    prevFooter = this.items[2].querySelector('.carousel__item-footer')
+                    nextHeading = items[0].querySelector('.carousel__item-heading')
+                    nextText = items[0].querySelector('.carousel__item-text')
+                    nextFooter = items[0].querySelector('.carousel__item-footer')
+                    lastHeading = items[this.count].querySelector('.carousel__item-heading')
+                    lastText = items[this.count].querySelector('.carousel__item-text')
+                    lastFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[1].querySelector('.carousel__item-heading')
+                    prevText = items[1].querySelector('.carousel__item-text')
+                    prevFooter = items[1].querySelector('.carousel__item-footer')
                 }
                 if(nextHeading){
                     nextHeading.style.transition = 'all 0s ease-in-out'
@@ -2656,22 +2754,43 @@ class Carousel{
                     nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.transform = 'translateX(-500px)'
                 }
-
+                if(lastHeading){
+                    lastHeading.style.transition = 'all 0s ease-in-out'
+                    lastHeading.style.transform = 'translateX(-500px)'
+                }
+                if(lastText){
+                    lastText.style.transition = 'all 0s ease-in-out'
+                    lastText.style.transform = 'translateX(500px)'
+                }
+                if(lastFooter){
+                    lastFooter.style.transition = 'all 0s ease-in-out'
+                    lastFooter.style.transform = 'translateX(-500px)'
+                }
+    
                 if(prevHeading){
-                    prevHeading.style.transform = 'translateY(-200px)'
-                    prevHeading.style.opacity = 0
+                    prevHeading.style.transition = 'all 1s ease-in-out'
+                    setTimeout(() => {
+                        prevHeading.style.transform = 'translateY(-200px)'
+                        prevHeading.style.opacity = 0
+                    }, 100);
                 }
                 if(prevText){
-                    prevText.style.transform = 'translateX(400px)'
-                    prevText.style.opacity = 0
+                    prevText.style.transition = 'all 1s ease-in-out'
+                    setTimeout(() => {
+                        prevText.style.transform = 'translateX(400px)'
+                        prevText.style.opacity = 0
+                    }, 100);
                 }
                 if(prevFooter){
-                    prevFooter.style.transform = 'translateX(-400px)'
-                    prevFooter.style.opacity = 0
+                    prevFooter.style.transition = 'all 1s ease-in-out'
+                    setTimeout(() => {
+                        prevFooter.style.transform = 'translateX(-400px)'
+                        prevFooter.style.opacity = 0
+                    }, 100);
                 }
-
-
-                const handleEffectThreePrev = () =>{
+    
+    
+                const handleEffectThreePrev = (nextHeading,nextText,nextFooter) =>{
                     if(nextHeading){
                         nextHeading.style.transition = 'all 1.5s ease-in-out'
                         nextHeading.style.opacity = 1
@@ -2690,25 +2809,28 @@ class Carousel{
                         }, 200);
                     }
                 }
-
+    
                 if(!isFade){
                     setTimeout(() => {
-                        handleEffectThreePrev()
+                        handleEffectThreePrev(nextHeading,nextText,nextFooter)
+                        handleEffectThreePrev(lastHeading,lastText,lastFooter)
                     }, 100);
                 }else{
                     setTimeout(() => {
-                        handleEffectThreePrev()
+                        handleEffectThreePrev(nextHeading,nextText,nextFooter)
+                        handleEffectThreePrev(lastHeading,lastText,lastFooter)
                     }, 1000);
                 }
             }
             if(this.count % 3 === 0 && direction === 'next'){
+                console.log(3,'next')
                 if(!isMerge){
-                    nextHeading = this.items[4].querySelector('.carousel__item-heading')
-                    nextText = this.items[4].querySelector('.carousel__item-text')
-                    nextFooter = this.items[4].querySelector('.carousel__item-footer')
-                    prevHeading = this.items[3].querySelector('.carousel__item-heading')
-                    prevText = this.items[3].querySelector('.carousel__item-text')
-                    prevFooter = this.items[3].querySelector('.carousel__item-footer')
+                    nextHeading = items[this.count].querySelector('.carousel__item-heading')
+                    nextText = items[this.count].querySelector('.carousel__item-text')
+                    nextFooter = items[this.count].querySelector('.carousel__item-footer')
+                    prevHeading = items[2].querySelector('.carousel__item-heading')
+                    prevText = items[2].querySelector('.carousel__item-text')
+                    prevFooter = items[2].querySelector('.carousel__item-footer')
                 }
                 if(nextHeading){
                     nextHeading.style.transition = 'all 0s ease-in-out'
@@ -2722,7 +2844,7 @@ class Carousel{
                     nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.transform = 'translateX(500px)'
                 }
-
+    
                 if(prevHeading){
                     prevHeading.style.transform = 'translateY(800px)'
                     prevHeading.style.opacity = 0
@@ -2735,7 +2857,7 @@ class Carousel{
                     prevFooter.style.transform = 'translateX(-800px)'
                     prevFooter.style.opacity = 0
                 }
-
+    
                 const handleEffectThreeNext = () =>{
                     if(nextHeading){
                         nextHeading.style.transition = 'all 1s ease-in-out'
@@ -2755,7 +2877,7 @@ class Carousel{
                         }, 200);
                     }
                 }
-
+    
                 if(!isFade){
                     setTimeout(() => {
                         handleEffectThreeNext()
@@ -2787,13 +2909,13 @@ class Carousel{
                         nextHeading.style.transform = 'translateY(-500px)'
                     }
                     if(nextText){
-
+    
                         nextText.style.opacity = 0
                         nextText.style.transition = 'all 1s ease-in-out'
                         nextText.style.transform = 'translateX(500px)'
                     }
                     if(nextFooter){
-
+    
                         nextFooter.style.opacity = 0
                         nextFooter.style.transition = 'all 1s ease-in-out'
                         nextFooter.style.transform = 'translateX(500px)'
@@ -2801,37 +2923,37 @@ class Carousel{
                 }, 100);
                 setTimeout(() => {
                     if(nextHeading){
-
+    
                         nextHeading.style.transition = 'all 0s ease-in-out'
                         nextHeading.style.transform = 'translateX(-500px)'
                     }
                     if(nextText){
-
+    
                         nextText.style.transition = 'all 0s ease-in-out'
                         nextText.style.transform = 'translateX(500px)'
                     }
                     if(nextFooter){
-
+    
                         nextFooter.style.transition = 'all 0s ease-in-out'
                         nextFooter.style.transform = 'translateX(-500px)'
                     }
                     setTimeout(() => {
                         if(nextHeading){
-
+    
                             nextHeading.style.opacity = 1
                             nextHeading.style.transition = 'all 1s ease-in-out'
                             nextHeading.style.transform = 'translateX(0px)'
                         }
                         setTimeout(() => {
                             if(nextText){
-
+    
                                 nextText.style.opacity = 1
                                 nextText.style.transition = 'all 1s ease-in-out'
                                 nextText.style.transform = 'translateX(0px)'
                             }
                         }, 200);
                         if(nextFooter){
-
+    
                             nextFooter.style.opacity = 1
                             nextFooter.style.transition = 'all 1s ease-in-out'
                             nextFooter.style.transform = 'translateX(0px)'
@@ -2841,30 +2963,30 @@ class Carousel{
             }
             if(this.count === 1 && direction==='next'){
                 if(nextHeading){
-
+    
                     nextHeading.style.transition = 'all 0s ease-in-out'
                     nextHeading.style.transform = 'translateY(0px)'
                 }
                 if(nextText){
-
+    
                     nextText.style.transition = 'all 0s ease-in-out'
                     nextText.style.transform = 'translateX(0px)'
                 }
                 if(nextFooter){
-
+    
                     nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.transform = 'translateX(0px)'
                 }
                 setTimeout(() => {
                     if(nextHeading){
-
+    
                         nextHeading.style.opacity = 0
                         nextHeading.style.transition = 'all 1s ease-in-out'
                         nextHeading.style.transform = 'translateX(-500px)'
                     }
                     setTimeout(() => {
                         if(nextText){
-
+    
                             nextText.style.opacity = 0
                             nextText.style.transition = 'all 1s ease-in-out'
                             nextText.style.transform = 'translateX(500px)'
@@ -2872,7 +2994,7 @@ class Carousel{
                     }, 200);
                     setTimeout(() => {
                         if(nextFooter){
-
+    
                             nextFooter.style.opacity = 0
                             nextFooter.style.transition = 'all 1s ease-in-out'
                             nextFooter.style.transform = 'translateX(500px)'
@@ -2881,30 +3003,30 @@ class Carousel{
                 }, 100);
                 setTimeout(() => {
                     if(nextHeading){
-
+    
                         nextHeading.style.transition = 'all 0s ease-in-out'
                         nextHeading.style.transform = 'translateY(800px)'
                     }
                     if(nextText){
-
+    
                         nextText.style.transition = 'all 0s ease-in-out'
                         nextText.style.transform = 'translateX(800px)'
                     }
                     if(nextFooter){
-
+    
                         nextFooter.style.transition = 'all 0s ease-in-out'
                         nextFooter.style.transform = 'translateY(-800px)'
                     }
                     setTimeout(() => {
                         if(nextHeading){
-
+    
                             nextHeading.style.opacity = 1
                             nextHeading.style.transition = 'all 1s ease-in-out'
                             nextHeading.style.transform = 'translateY(0px)'
                         }
                         setTimeout(() => {
                             if(nextText){
-
+    
                                 nextText.style.opacity = 1
                                 nextText.style.transition = 'all 1s ease-in-out'
                                 nextText.style.transform = 'translateX(0px)'
@@ -2912,7 +3034,7 @@ class Carousel{
                         }, 400);
                         setTimeout(() => {
                             if(nextFooter){
-
+    
                                 nextFooter.style.opacity = 1
                                 nextFooter.style.transition = 'all 1s ease-in-out'
                                 nextFooter.style.transform = 'translateY(0px)'
@@ -2923,17 +3045,17 @@ class Carousel{
             }
             if(this.count % 2 === 0 && direction==='prev'){
                 if(nextHeading){
-
+    
                     nextHeading.style.transition = 'all 0s ease-in-out'
                     nextHeading.style.transform = 'translateY(0px)'
                 }
                 if(nextText){
-
+    
                     nextText.style.transition = 'all 0s ease-in-out'
                     nextText.style.transform = 'translateX(0px)'
                 }
                 if(nextFooter){
-
+    
                     nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.transform = 'translateX(0px)'
                 }
@@ -2958,30 +3080,30 @@ class Carousel{
                 }, 100);
                 setTimeout(() => {
                     if(nextHeading){
-
+    
                         nextHeading.style.transition = 'all 0s ease-in-out'
                         nextHeading.style.transform = 'translateX(400px)'
                     }
                     if(nextText){
-
+    
                         nextText.style.transition = 'all 0s ease-in-out'
                         nextText.style.transform = 'translateX(800px)'
                     }
                     if(nextFooter){
-
+    
                         nextFooter.style.transition = 'all 0s ease-in-out'
                         nextFooter.style.transform = 'translateX(900px)'
                     }
                     setTimeout(() => {
                         if(nextHeading){
-
+    
                             nextHeading.style.opacity = 1
                             nextHeading.style.transition = 'all 1s ease-in-out'
                             nextHeading.style.transform = 'translateX(0px)'
                         }
                         setTimeout(() => {
                             if(nextText){
-
+    
                                 nextText.style.opacity = 1
                                 nextText.style.transition = 'all 1s ease-in-out'
                                 nextText.style.transform = 'translateX(0px)'
@@ -2989,7 +3111,7 @@ class Carousel{
                         }, 200);
                         setTimeout(() => {
                             if(nextFooter){
-
+    
                                 nextFooter.style.opacity = 1
                                 nextFooter.style.transition = 'all 1s ease-in-out'
                                 nextFooter.style.transform = 'translateX(0px)'
@@ -3000,35 +3122,35 @@ class Carousel{
             }
             if(this.count % 2 === 0 && direction==='next'){
                 if(nextHeading){
-
+    
                     nextHeading.style.transition = 'all 0s ease-in-out'
                     nextHeading.style.transform = 'translateY(0px)'
                 }
                 if(nextText){
-
+    
                     nextText.style.transition = 'all 0s ease-in-out'
                     nextText.style.transform = 'translateX(0px)'
                 }
                 if(nextFooter){
-
+    
                     nextFooter.style.transition = 'all 0s ease-in-out'
                     nextFooter.style.transform = 'translateX(0px)'
                 }
                 setTimeout(() => {
                     if(nextHeading){
-
+    
                         nextHeading.style.opacity = 0
                         nextHeading.style.transition = 'all 1s ease-in-out'
                         nextHeading.style.transform = 'translatY(800px)'
                     }
                     if(nextText){
-
+    
                         nextText.style.opacity = 0
                         nextText.style.transition = 'all 1s ease-in-out'
                         nextText.style.transform = 'translateX(-500px)'
                     }
                     if(nextFooter){
-
+    
                         nextFooter.style.opacity = 0
                         nextFooter.style.transition = 'all 1s ease-in-out'
                         nextFooter.style.transform = 'translateY(-800px)'
@@ -3036,23 +3158,23 @@ class Carousel{
                 }, 100);
                 setTimeout(() => {
                     if(nextHeading){
-
+    
                         nextHeading.style.transition = 'all 0s ease-in-out'
                         nextHeading.style.transform = 'translateX(-400px)'
                     }
                     if(nextText){
-
+    
                         nextText.style.transition = 'all 0s ease-in-out'
                         nextText.style.transform = 'translateX(-400px)'
                     }
                     if(nextFooter){
-
+    
                         nextFooter.style.transition = 'all 0s ease-in-out'
                         nextFooter.style.transform = 'translateX(-400px)'
                     }
                     setTimeout(() => {
                         if(nextHeading){
-
+    
                             nextHeading.style.opacity = 1
                             nextHeading.style.transition = 'all 1s ease-in-out'
                             nextHeading.style.transform = 'translateX(0px)'
@@ -3219,23 +3341,19 @@ class Carousel{
         const isSlide = [...el.classList].filter(c => /carousel__slide/.test(c)).length > 0 ? true : false
         const isTextEffect = [...el.classList].filter(c => /carousel__with-text-effect/.test(c)).length > 0 ? true : false
         let items = [...view.querySelectorAll('.carousel__item')]
-
-        let maxLengthX = 0
-        let maxLengthY = 0
+        let max = items.length - 2
         let stepX = 0
         let stepY = 0
 
-        items.forEach(el => maxLengthX += el.clientWidth)
-        items.forEach(el => maxLengthY += el.clientHeight)
         if(items.length > 0){
             stepX = items[0].clientWidth
             stepY = items[0].clientHeight
         }
         if(!isMerge){
             if(direction ==='prev' && !isVertical){
-                this.moveX += stepX
-                if(this.moveX >= -stepX){
-                    this.count = items.length - 4
+                if(this.count < 2){
+                    this.moveX = -stepX * (this.count - 1)
+                    this.count = max
                     if(view){
                         view.style.transition = 'all 1s ease-in-out'
                         if(!isFade){
@@ -3244,8 +3362,8 @@ class Carousel{
                             view.style.opacity = 0
                         }
                         setTimeout(() => {
+                            this.moveX = -stepX * max
                             view.style.transition = 'all 0s ease-in-out'
-                            this.moveX = -maxLengthX + stepX * 3 
                             view.style.transform = `translateX(${this.moveX}px)`
                             if(isFade){
                                 setTimeout(() => {
@@ -3258,7 +3376,9 @@ class Carousel{
                 }else{
                     this.count -= 1
                     if(view){
-                    view.style.transition = 'all 1s ease-in-out'
+                        this.moveX = -stepX * this.count
+                        console.log(this.moveX)
+                        view.style.transition = 'all 1s ease-in-out'
                         if(!isFade){
                             view.style.transform = `translateX(${this.moveX}px)`
                         }else{
@@ -3278,8 +3398,9 @@ class Carousel{
                 }
             }
             if(direction ==='next' && !isVertical){
-                this.moveX -= stepX
-                if(this.moveX < -maxLengthX + stepX * 3){
+                if(this.count > max - 1){
+                    this.moveX = -stepX * (this.count + 1)
+                    this.count = 1
                     if(view){
                     view.style.transition = 'all 1s ease-in-out'
                         if(!isFade){
@@ -3287,10 +3408,9 @@ class Carousel{
                         }else{
                             view.style.opacity = 0
                         }
-                        this.count = 1
                         setTimeout(() => {
                             view.style.transition = 'all 0s ease-in-out'
-                            this.moveX = -stepX * 2
+                            this.moveX = -stepX * this.count
                             view.style.transform = `translateX(${this.moveX}px)`
                             if(isFade){
                                 setTimeout(() => {
@@ -3302,6 +3422,7 @@ class Carousel{
                     }
                 }else{
                     this.count += 1
+                    this.moveX = -stepX * this.count
                     if(view){
                     view.style.transition = 'all 1s ease-in-out'
                         if(!isFade){
@@ -3323,155 +3444,120 @@ class Carousel{
                 }
             }
             if(direction ==='prev' && isVertical){
-            this.moveY += stepY
-            if(this.moveY >= -stepY){
-                if(view){
-                    view.style.transition = 'all 1s ease-in-out'
-                    this.count = items.length - 4
-                    if(!isFade){
-                        view.style.transform = `translateY(${this.moveY}px)`
-                    }else{
-                        view.style.opacity = 0
-                    }
-                    setTimeout(() => {
-                        view.style.transition = 'all 0s ease-in-out'
-                        this.moveY = -maxLengthY + stepY * 3
-                        view.style.transform = `translateY(${this.moveY}px)`
-                        if(isFade){
-                            setTimeout(() => {
-                                view.style.transition = 'all 1s ease-in-out'
-                                view.style.opacity = 1
-                            }, 200);
+                if(this.count < 2){
+                    this.moveY = -stepY * (this.count - 1)
+                    this.count = max
+                    if(view){
+                        view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateY(${this.moveY}px)`
+                        }else{
+                            view.style.opacity = 0
                         }
-                    }, 1000);
-                }
-            }else{
-                this.count -= 1
-                if(view){
-                    view.style.transition = 'all 1s ease-in-out'
-                    if(!isFade){
-                        view.style.transform = `translateY(${this.moveY}px)`
-                    }else{
-                        view.style.opacity = 0
                         setTimeout(() => {
+                            this.moveY = -stepY * max
                             view.style.transition = 'all 0s ease-in-out'
                             view.style.transform = `translateY(${this.moveY}px)`
-                            setTimeout(() => {
-                                view.style.transition = 'all 1s ease-in-out'
-                                view.style.opacity = 1
-                            }, 200);
+                            if(isFade){
+                                setTimeout(() => {
+                                    view.style.transition = 'all 1s ease-in-out'
+                                    view.style.opacity = 1
+                                },200);
+                            }
                         }, 1000);
                     }
+                }else{
+                    this.count -= 1
+                    if(view){
+                        this.moveY = -stepY * this.count
+                        view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateY(${this.moveY}px)`
+                        }else{
+                            view.style.opacity = 0
+                            setTimeout(() => {
+                                view.style.transition = 'all 0s ease-in-out'
+                                view.style.transform = `translateY(${this.moveY}px)`
+                                if(isFade){
+                                    setTimeout(() => {
+                                        view.style.transition = 'all 1s ease-in-out'
+                                        view.style.opacity = 1
+                                    },200);
+                                }
+                            }, 1000);
+                        }
+                    }
                 }
-            }
             }
             if(direction ==='next' && isVertical){
-            this.moveY -= stepY
-            if(this.moveY < -maxLengthY + stepY * 3){
-                if(view){
-
-                    view.style.transition = 'all 1s ease-in-out'
-                    if(!isFade){
-                        view.style.transform = `translateY(${this.moveY}px)`
-                    }else{
-                        view.style.opacity = 0
-                    }
+                if(this.count > max - 1){
+                    this.moveY = -stepY * (this.count + 1)
                     this.count = 1
-                    setTimeout(() => {
-                        view.style.transition = 'all 0s ease-in-out'
-                        this.moveY = -stepY * 2
-                        view.style.transform = `translateY(${this.moveY}px)`
-                        if(isFade){
-                            setTimeout(() => {
-                                view.style.transition = 'all 1s ease-in-out'
-                                view.style.opacity = 1
-                            }, 200);
-                        }else{
-                            
-                        }
-                    }, 1000);
-                }
-            }else{
-                this.count += 1
-                if(view){
+                    if(view){
                     view.style.transition = 'all 1s ease-in-out'
-                    if(!isFade){
-                        view.style.transform = `translateY(${this.moveY}px)`
-                    }else{
-                        view.style.opacity = 0
+                        if(!isFade){
+                            view.style.transform = `translateY(${this.moveY}px)`
+                        }else{
+                            view.style.opacity = 0
+                        }
                         setTimeout(() => {
                             view.style.transition = 'all 0s ease-in-out'
+                            this.moveY = -stepY * this.count
                             view.style.transform = `translateY(${this.moveY}px)`
-                            setTimeout(() => {
-                                view.style.transition = 'all 1s ease-in-out'
-                                view.style.opacity = 1
-                            }, 200);
+                            if(isFade){
+                                setTimeout(() => {
+                                    view.style.transition = 'all 1s ease-in-out'
+                                    view.style.opacity = 1
+                                },200);
+                            }
                         }, 1000);
+                    }
+                }else{
+                    this.count += 1
+                    this.moveY = -stepY * this.count
+                    if(view){
+                    view.style.transition = 'all 1s ease-in-out'
+                        if(!isFade){
+                            view.style.transform = `translateY(${this.moveY}px)`
+                        }else{
+                            view.style.opacity = 0
+                            setTimeout(() => {
+                                view.style.transition = 'all 0s ease-in-out'
+                                view.style.transform = `translateY(${this.moveY}px)`
+                                if(isFade){
+                                    setTimeout(() => {
+                                        view.style.transition = 'all 1s ease-in-out'
+                                        view.style.opacity = 1
+                                    },200);
+                                }
+                            }, 1000);
+                        }
                     }
                 }
             }
-            }
         }else{
-            const item = items[2]
+            const item = items[1]
             item.style.transition = 'all 1s ease-in-out'
             item.style.backgroundSize = 'cover'
-            if(direction ==='prev' && !isVertical){
-                this.moveX += stepX
+            if(direction ==='prev'){
                 if(item){
-                    if(this.moveX >= -stepX){
-                        this.count = items.length - 4
-                        item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                        setTimeout(() => {
-                            this.moveX = -maxLengthX + stepX * 3 
-                        },1000)
+                    if(this.count < 2){
+                        this.count = max
+                        item.style.backgroundImage = `url(${this.srcs[this.count]})`
                     }else{
                         this.count -= 1
-                        item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
+                        item.style.backgroundImage = `url(${this.srcs[this.count]})`
                     }    
                 }
             }
-            if(direction ==='next' && !isVertical){
-                this.moveX -= stepX
+            if(direction ==='next'){
                 if(item){
-                    if(this.moveX < -maxLengthX + stepX * 3){
-                        item.style.backgroundImage = `url(${this.srcs[this.count-1]})`
+                    if(this.count > max - 1){
                         this.count = 1
-                        setTimeout(() => {
-                            this.moveX = -stepX * 2
-                        }, 1000);
+                        item.style.backgroundImage = `url(${this.srcs[this.count]})`
                     }else{
                         this.count += 1
-                        item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    }
-                }
-            }
-            if(direction ==='prev' && isVertical){
-                this.moveY += stepY
-                if(item){
-                    if(this.moveY >= -stepY){
-                        this.count = items.length - 4
-                    item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    setTimeout(() => {
-                        this.moveY = -maxLengthY + stepY * 3
-                    }, 1000);
-                }else{
-                        this.count -= 1
-                        item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    }
-                }
-            }
-            if(direction ==='next' && isVertical){
-                this.moveY -= stepY
-                if(item){
-                    if(this.moveY < -maxLengthY + stepY * 3){
-                        this.count = 1
-                    item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
-                    setTimeout(() => {
-                        this.moveY = -stepY * 2
-                    }, 1000);
-                }else{
-                    this.count += 1
-                    item.style.backgroundImage = `url(${this.srcs[this.count+1]})`
+                        item.style.backgroundImage = `url(${this.srcs[this.count]})`
                     }
                 }
             }
@@ -3499,9 +3585,9 @@ class Carousel{
                 footer.classList.add('carousel__item-footer')
                 body.appendChild(footer)
             }
-            const nextHeadings = items[this.count+1].querySelectorAll('.carousel__item-heading > *')
-            const nextTexts = items[this.count+1].querySelectorAll('.carousel__item-text > *')
-            const nextFooters = items[this.count+1].querySelectorAll('.carousel__item-footer > *')
+            const nextHeadings = items[this.count].querySelectorAll('.carousel__item-heading > *')
+            const nextTexts = items[this.count].querySelectorAll('.carousel__item-text > *')
+            const nextFooters = items[this.count].querySelectorAll('.carousel__item-footer > *')
             if(this.count !== 1){
                 let tempHeadings = []
                 let tempTexts = []
@@ -3519,6 +3605,7 @@ class Carousel{
                 this.texts[this.count - 1] = [...tempTexts]
                 this.footers[this.count - 1] = [...tempFooters]
             }
+            setTimeout(() =>{
             if(heading){
                 heading.innerHTML = ''
                 this.headings[this.count-1].forEach(h =>{
@@ -3543,6 +3630,8 @@ class Carousel{
                     footer.appendChild(el)
                 })
             }
+        },1000)
+
         }
 
         const setTimeoutTime = (isFade) =>{
@@ -3552,11 +3641,11 @@ class Carousel{
                 return 1000
             }
         }
+        if(isTextEffect && isMerge || isTextEffect && isFade || isTextEffect && isSlide){
+            this.handleCarouselTextEffectIn(direction,isMerge,isFade,el)
 
-        if(isTextEffect && isMerge | isFade | isSlide){
-            this.handleCarouselTextEffectIn(direction,isMerge,isFade)
-        }else if(isMerge){
-           const body = items[2].querySelector('.carousel__item-body')
+        }else if(isMerge && !isTextEffect){
+           const body = items[1].querySelector('.carousel__item-body')
            if(body){
                body.style.opacity = 0
                body.style.transition = 'all 0s ease-in-out'
@@ -3565,8 +3654,8 @@ class Carousel{
                    body.style.opacity = 1
                 }, 1000);
             }
-        }else if(isFade | isSlide){
-            const body = items[this.count+1].querySelector('.carousel__item-body')
+        }else if(!isTextEffect && isFade || !isTextEffect && isSlide){
+            const body = items[this.count].querySelector('.carousel__item-body')
             if(body){
                 body.style.opacity = 0
                 body.style.transition = 'all 0s ease-in-out'
@@ -3591,7 +3680,7 @@ class Carousel{
         this.handleActivePin()
     }
     handleCarousel(){
-        this.elements.forEach(el =>{
+        this.elements.forEach((el,index) =>{
             const prev = el.querySelector('.carousel__prev')
             const next = el.querySelector('.carousel__next')
             const view  = el.querySelector('.carousel__view')
@@ -3599,57 +3688,78 @@ class Carousel{
             const first_heading = view.querySelectorAll('.carousel__item-heading')
             const first_text = view.querySelectorAll('.carousel__item-text')
             const first_footer = view.querySelectorAll('.carousel__item-footer')
-            if(first_heading){
-                first_heading[1].style.opacity = 1
+            if(first_heading[0]){
+                first_heading[0].style.opacity = 1
             }
-            if(first_text){
-                first_text[1].style.opacity = 1
+            if(first_text[0]){
+                first_text[0].style.opacity = 1
             }
-            if(first_footer){
-                first_footer[1].style.opacity = 1
+            if(first_footer[0]){
+                first_footer[0].style.opacity = 1
             }
-            let items = [...view.querySelectorAll('.carousel__item')]
-            const last = items[0].cloneNode(true)
-            const first = items[items.length - 1].cloneNode(true)
+            let items = [...el.querySelectorAll('.carousel__item')]
+            const last = document.createElement('div')
+            last.classList.add('carousel__item' )
+            last.classList.add('carousel__item-last' )
+            last.innerHTML = items[0].innerHTML
+            const first = document.createElement('div')
+            first.classList.add('carousel__item')
+            first.classList.add('carousel__item-first')
+            first.innerHTML = items[items.length - 1].innerHTML
             let stepX
             let stepY
             items.push(last)
             items.unshift(first)
             view.innerHTML = ''
+            let order = 2
             items.forEach(i => {
                 if(view){
-                    view.append(i)
+                    i.style.order = order
+                    view.appendChild(i)
+                    order++
                 }
             })
-            this.items = items
             const isVertical  = [...el.classList].filter(c => /carousel__vertical/gi.test(c))
             if(items.length > 0 && isVertical.length === 0){
                 stepX = items[0].clientWidth
-                this.moveX -= stepX * 2
+                this.moveX = -stepX * 1
                 if(view){
                     view.style.transition = 'all 0s ease-in-out'
                     view.style.transform = `translateX(${this.moveX}px)`
                 }
-            }else if(items.length > 0 && isVertical.length > 0){
+            }else if(items.length > 0 && isVertical.length > 0 && !isMerge){
                 stepY = items[0].clientHeight
-                this.moveY -= stepY * 2
+                this.moveY -= stepY * 1
                 if(view){
                     view.style.transition = 'all 0s ease-in-out'
                     view.style.transform = `translateY(${this.moveY}px)`
+                    const bodies = view.querySelectorAll('.carousel__item-body')
+                    if(bodies[1]){
+                        const heading = bodies[1].querySelector('.carousel__item-heading')
+                        const text = bodies[1].querySelector('.carousel__item-text')
+                        const footer = bodies[1].querySelector('.carousel__item-footer')
+                        if(heading){
+                            heading.stt
+                        }
+                    }
+                    bodies.forEach(b => {
+                        b.style.transform = 'translateX(-25%)'
+                        b.style.maxWidth = '30%'
+                    });
                 }
             }
             if(isMerge){
                 const first_heading = view.querySelectorAll('.carousel__item-heading')
                 const first_text = view.querySelectorAll('.carousel__item-text')
                 const first_footer = view.querySelectorAll('.carousel__item-footer')
-                if(first_heading){
-                    first_heading[2].style.opacity = 1
+                if(first_heading[1]){
+                    first_heading[1].style.opacity = 1
                 }
-                if(first_text){
-                    first_text[2].style.opacity = 1
+                if(first_text[1]){
+                    first_text[1].style.opacity = 1
                 }
-                if(first_footer){
-                    first_footer[2].style.opacity = 1
+                if(first_footer[1]){
+                    first_footer[1].style.opacity = 1
                 }
                 this.srcs = items.map(i =>{
                     const img = i.querySelector('img')
@@ -3661,12 +3771,12 @@ class Carousel{
                     const img = i.querySelector('img')
                     img.style.visibility = 'hidden'
                 })
-                const image = items[2].querySelector('img')
-                items[2].style.backgroundImage = `url(${image.src})`
-                items[2].style.backgroundSize = 'cover'
-                const nextHeadings = items[2].querySelectorAll('.carousel__item-heading > *')
-                const nextTexts = items[2].querySelectorAll('.carousel__item-text > *')
-                const nextFooters = items[2].querySelectorAll('.carousel__item-footer > *')
+                const image = items[1].querySelector('img')
+                items[1].style.backgroundImage = `url(${image.src})`
+                items[1].style.backgroundSize = 'cover'
+                const nextHeadings = items[1].querySelectorAll('.carousel__item-heading > *')
+                const nextTexts = items[1].querySelectorAll('.carousel__item-text > *')
+                const nextFooters = items[1].querySelectorAll('.carousel__item-footer > *')
                 let tempHeadings = []
                 let tempTexts = []
                 let tempFooters = []
@@ -3685,8 +3795,8 @@ class Carousel{
             }
             if(isVertical.length > 0){
                 if(prev){
-
-                    prev.addEventListener('click',(e) => {
+                    prev.onclick = ''
+                    prev.onclick = (e) => {
                         if(!this.isPlay){
                             this.handleCarouselEffect(el,'prev',true)
                         this.isPlay = true
@@ -3694,11 +3804,11 @@ class Carousel{
                             this.isPlay = false
                         }, 1000);
                     }
-                })
+                }
             }
             if(next){
-
-                next.addEventListener('click',(e) => {
+                next.onclick = ''
+                next.onclick = (e) => {
                     if(!this.isPlay){
                         this.handleCarouselEffect(el,'next',true)
                         this.isPlay = true
@@ -3706,31 +3816,32 @@ class Carousel{
                             this.isPlay = false
                         }, 1000);
                     }
-                })
+                }
             }
             }else{
                 if(prev){
-
-                    prev.addEventListener('click',(e) => {
+                    prev.onclick = ''
+                    prev.onclick = (e) =>  {
                         if(!this.isPlay){
-                            this.handleCarouselEffect(el,'prev',false)
+                            this.handleCarouselEffect(el,'prev',false,this.items[index])
                             this.isPlay = true
                             setTimeout(() => {
                                 this.isPlay = false
                             }, 1000);
                         }
-                    })
+                    }
                 }
                 if(next){
-                    next.addEventListener('click',(e) => {
+                    next.onclick = ''
+                    next.onclick = (e) =>  {
                         if(!this.isPlay){
-                            this.handleCarouselEffect(el,'next',false)
+                            this.handleCarouselEffect(el,'next',false,this.items[index])
                             this.isPlay = true
                             setTimeout(() => {
                                 this.isPlay = false
                             }, 1000);
                         }
-                    })
+                    }
                 }
             }
         }) 
@@ -5315,6 +5426,10 @@ class Accordion_Component extends HTMLElement{
         const accordion_transtion_in = this.candy_utils.handleGetTransitionIn(this)
         const accordion_transtion_out = this.candy_utils.handleGetTransitionOut(this)
         accordion.classList.add('accordion')
+        const shadowed = this.getAttribute('shadowed')
+        if(shadowed){
+            accordion.classList.add(`accordion__shadowed-${shadowed}`)
+        }
         this.candy_utils.handlePassClass(this,accordion)
         this.candy_utils.handlePassId(this,accordion)
         this.candy_utils.handleSetAttributes(this,accordion)
@@ -5329,7 +5444,6 @@ class Accordion_Component extends HTMLElement{
             this.candy_utils.handlePassClass(accordion_heading,accordion_heading_div)
             this.candy_utils.handlePassId(accordion_heading,accordion_heading_div)
             this.candy_utils.handleSetAttributes(accordion_heading,accordion_heading_div)
-            accordion_heading.outerHTML = accordion_heading_div.outerHTML 
         }
 
         const accordion_body = this.querySelector('ui-accordion-body')
@@ -5338,19 +5452,18 @@ class Accordion_Component extends HTMLElement{
         if(accordion_body){
             const accordion_transtion_control = this.candy_utils.handleGetTransitionControl(this)
             const accordion_body_isVisible = accordion_body.getAttribute('isVisible')
-            accordion_body_wrapper_div.classList.add('accordion__body')
-            accordion_body_wrapper_div.classList.add(accordion_body_isVisible)
+            accordion_body_wrapper_div.classList.add('accordion__body-wrapper')
             accordion_body_wrapper_div.classList.add(accordion_transtion_control)
             if(accordion_body_isVisible === 'true'){
                 accordion_heading_div.classList.add('accordion__open')
-            }else{
-                accordion_heading_div.classList.add('accordion__open')
+                accordion_body_wrapper_div.classList.add('visible')
+                accordion_heading_div.style.borderBottom = '1px solid var(--medium-white)'
             }
-            accordion_body_div.innerHTML = accordion_body.innerHTML
             this.candy_utils.handlePassId(accordion_body,accordion_body_div)
             this.candy_utils.handlePassClass(accordion_body,accordion_body_div)
             this.candy_utils.handleSetAttributes(accordion_body,accordion_body_div)
-            accordion_body.outerHTML = accordion_body_wrapper_div.outerHTML
+            accordion_body_div.innerHTML = accordion_body.innerHTML
+            accordion_body_wrapper_div.appendChild(accordion_body_div)
         }
             
         const accordion_footer = this.querySelector('ui-accordion-footer')
@@ -5361,18 +5474,17 @@ class Accordion_Component extends HTMLElement{
             this.candy_utils.handlePassId(accordion_footer,accordion_footer_div)
             this.candy_utils.handlePassClass(accordion_footer,accordion_footer_div)
             this.candy_utils.handleSetAttributes(accordion_footer,accordion_footer_div)
-            accordion_footer.outerHTML = accordion_footer_div.outerHTML
         }
             
         this.innerHTML = ''
         if(accordion_heading){
-            accordion.appendChild(accordion_heading)
+            accordion.appendChild(accordion_heading_div)
         }
         if(accordion_body){
-            accordion.appendChild(accordion_body)
+            accordion.appendChild(accordion_body_wrapper_div)
         }
         if(accordion_footer){
-            accordion.appendChild(accordion_footer)
+            accordion.appendChild(accordion_footer_div)
         }
         this.appendChild(accordion)
 
@@ -5884,6 +5996,12 @@ class Carousel_Component extends HTMLElement{
         const carousel = document.createElement('div')
         carousel.classList.add('carousel')
 
+        const isVertical = this.getAttribute('isVertical')
+
+        if(isVertical === 'true'){
+            carousel.classList.add('carousel__vertical')
+        }
+
         const transition_control = this.getAttribute('transition-control')
         if(transition_control){
             carousel.classList.add(`carousel__${transition_control}`)
@@ -6029,8 +6147,12 @@ class Divider_Component extends HTMLElement{
         const type = this.getAttribute('type')
         const color_type = this.getAttribute('color-type')
         const color = this.getAttribute('color')
+        const isAnimated = this.getAttribute('isAnimated')
         const divider = document.createElement('div')
         divider.classList.add('divider')
+        if(isAnimated === 'true'){
+            divider.classList.add('divider__with-animation')
+        }
         const divider_line_1 = document.createElement('div')
         const divider_line_2 = document.createElement('div')
         let divider_text
@@ -6179,6 +6301,12 @@ class Tabs_Component extends HTMLElement{
             tabs.classList.add('tabs__pills')
         }
 
+        const tabs_transition = this.getAttribute("transition-control")
+
+        if(tabs_transition){
+            tabs.classList.add(`tabs__${tabs_transition}`)
+        }
+
         const tabs_nav = this.querySelector('ui-tabs-nav')
         const tabs_nav_div = document.createElement('div')
 
@@ -6233,7 +6361,7 @@ class Tabs_Component extends HTMLElement{
         tabs_tabs.forEach((tab,index) =>{
             const tabs_tab_div = document.createElement('div')
             tabs_tab_div.classList.add('tabs__tab')
-            const isActive = tab.getAttribute('active')
+            const isActive = tab.getAttribute('isActive')
             if(isActive === 'true'){
                 tabs_tab_div.classList.add('active')
             }
@@ -6764,6 +6892,12 @@ class Sidebar_Component extends HTMLElement{
         if(transition_control){
             sidebar.classList.add(`sidebar__${transition_control}`)
         }
+        const circle_side = this.getAttribute('circle-side')
+        
+        if(circle_side){
+            sidebar.classList.add(`sidebar__${circle_side}`)
+        }
+
         const circle = this.getAttribute('circle')
         if(circle){
             sidebar.classList.add(`sidebar__circle-${circle}`)
@@ -7253,6 +7387,7 @@ class Framework{
             0.7,
             0.5
         )
+        this.utils = new Utils()
     }
     handleMakeCustomSetup(classes,root,animationTime,cssAnimationTime,cssShadowAnimationTime){
         this.globalSetup = new GlobalSetup(classes,root,animationTime,cssAnimationTime,cssShadowAnimationTime)

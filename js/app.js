@@ -127,19 +127,19 @@ class UI_Select_Accordion{
         if(type !== 'Type'){
             this.accordion_body_wrapper.classList = 'accordion__body-wrapper'
             this.accordion_body_wrapper.classList.add(type)
-            framework.accordion.handleSetup()
+            JellyFramework.accordion.handleSetup()
         }
     }
     handleTypeAccordionIn(type){
         this.accordion_heading.setAttribute('data-transition_in',type)
-        framework.accordion.handleSetup()
+        JellyFramework.accordion.handleSetup()
 
     }
     handleTypeAccordionOut(type){
         if(type !== 'Transition Out'){
             this.accordion_heading.setAttribute('data-transition_out',type)
         }
-        framework.accordion.handleSetup()
+        JellyFramework.accordion.handleSetup()
     }
     handleSelect(el){
         if(!el.classList.contains('select--open')){
@@ -160,4 +160,3 @@ class UI_Select_Accordion{
 
 const ui_select_accordion = new UI_Select_Accordion()
 ui_select_accordion.handleSetup()
-

@@ -862,6 +862,7 @@ class Effects {
             const elsActiveDouble = document.querySelectorAll(`.pulse-outside-${c}--active-double`)
             const elsActiveInverted = document.querySelectorAll(`.pulse-outside-${c}--active-inverted`)
             const animation = (e,transition) =>{
+                console.log('anim')
                 e.target.style.animation = 'none'
                 let anim 
                 clearTimeout(anim)    
@@ -876,16 +877,13 @@ class Effects {
             }
     
             elsActive.forEach(el => {
-                el.onclick = ''
-                el.onclick = () => animation(e,`pulseOutlineActive${c} 0.7s ease`)
+                el.addEventListener('click', (e) => animation(e,`pulseOutlineActive${c} 0.7s ease`))
             })
             elsActiveDouble.forEach(el => {
-                el.onclick = ''
-                el.onclick = () => animation(e,`pulseOueActiveDouble${c} 0.7s ease`)
+                el.addEventListener('click',(e) => animation(e,`pulseOueActiveDouble${c} 0.7s ease`))
             })
             elsActiveInverted.forEach(el => {
-                el.onclick = ''
-                el.onclick = () =>  animation(e,`pulseOutlineActiveInverted${c} 0.7s ease`)
+                el.addEventListener('click', (e) =>  animation(e,`pulseOutlineActiveInverted${c} 0.7s ease`))
             })
         })
     }
@@ -962,7 +960,11 @@ class Effects {
         if(targets){
             targets.forEach(t => {
                 if(t.parentElement?.classList.contains('pulse') || t.classList.contains('pulse')){
-                const pulse = t.querySelector('span')
+                    const span = document.createElement('span')
+                    t.appendChild(span)
+                    t.style.overflow = "hidden"
+                    const pulse = t.querySelector('span')
+                    pulse.classList.add('pulse-inside')
                     let c = getComputedStyle(t).backgroundColor
                     const luma = framework.utils.handleColorLuma(c)
                     if (luma.color === "ffffff") {
@@ -979,19 +981,19 @@ class Effects {
                     if(pulse){
                         const handlePulse = (e) =>{
                             e.stopPropagation();
-                            const x = e.clientX - e.target.offsetLeft 
-                            const y = e.clientY - e.target.offsetTop 
+                            const x = e.pageX - e.target.getBoundingClientRect().left 
+                            const y = e.clientY - e.target.getBoundingClientRect().top 
                             pulse.style.left = x + 'px'
                             pulse.style.top = y + 'px'
-                            t.appendChild(pulse)
+                            pulse.remove()
                             if(pulse.classList.contains('pulse-inside')){
                                 pulse.classList.add('pulse-inside--active')
                             }else if(pulse.classList.contains('pulse-inside-big')){
                                 pulse.classList.add('pulse-inside--active-big')
                             }
+                            t.appendChild(pulse)
                         }
-                        t.onclick = ''
-                        t.onclick = (e) => handlePulse(e) 
+                        t.addEventListener('click',(e) => handlePulse(e))
                     }
                 }
             })
@@ -1129,6 +1131,7 @@ class Accordion{
                     }
             }else{
                 h.classList.remove('accordion__open')
+                body.classList.remove('visible')
                     if(body){
                         if(chevron){
                             chevron.classList.remove('chevron-up')
@@ -1820,24 +1823,7 @@ class Card{
         return shadowCard
     }
     // anim
-    handleAnimation = () =>{
-        framework.utils.cancelAllAnimationFrames()
-        this.card.style.transition = 'all 0s ease'
-        this.card.style.transform = `rotate3d(1,-1,1,${this.angle}deg)`
-        const shadowCard = this.createShadowCard(1)
-        shadowCard.style.position = 'absolute'
-        shadowCard.style.left = this.card.offsetLeft + 'px'
-        shadowCard.style.top = this.card.offsetTop + 'px'
-        shadowCard.style.transform = `rotate3d(1,-1,1,${this.angle}deg)`
-        shadowCard.style.color = 'transparent'
-        shadowCard.previousAngle = this.angle
-        this.card.parentElement.insertBefore(shadowCard,this.card)
-        this.angle -=  2
-        this.previousAngle = this.angle
-        if(this.angle >= 0 && !this.isBack){
-            window.requestAnimationFrame(this.handleAnimation)
-        }
-    }
+    
     handleCardShadow(){
         if(Array.isArray(this.cards)){
             this.cardIndex = this.cards.indexOf(this.card) + 1
@@ -1858,46 +1844,9 @@ class Card{
               }else{
                 this.angle = 0
               }
-              if(this.isLeft){
-                this.handleAnimation()
-              }else{
             
-                }
             }
         }
-    }
-    handleRotateBackClearAnimation = () =>{
-        framework.utils.cancelAllAnimationFrames()
-        if(this.angle < 100){
-            if(this.card){
-                this.card.style.transform = `rotate3d(1,-1,1,${this.angle}deg)`
-                this.card.style.transition = 'all 0s ease-in-out'
-                
-                const children = [...this.card.parentElement.querySelectorAll('.card')].filter(c => this.card !== c)
-                if(children[children.length - 1]){
-                    this.card.parentElement.removeChild(children[children.length - 1])
-                }
-                this.angle += 1.85
-                this.previousAngle = this.angle 
-            }
-            requestAnimationFrame(this.handleRotateBackClearAnimation)
-        }
-        else if(this.angle >= 95){
-            if(this.card){
-                const children = [...this.card.parentElement.querySelectorAll('.card')].filter(c=> this.card !== c)
-                children.forEach(c => c.remove())
-            }
-        }
-    }
-    handleRotateBackClear(){
-        if(this.previousAngle > 0){
-            this.angle = this.previousAngle 
-        }else{
-            this.angle = 0
-        }
-        if(this.isBack){
-            this.handleRotateBackClearAnimation()
-        }   
     }
     handleRotateBack = () =>{
         let card = this.card
@@ -1983,29 +1932,17 @@ class Card{
                 c.style.transform = `translate(0px ,0px)`
             })
         }
-        else if(card.classList.contains('card__hover--3d-100deg-left-with-shadow-left-top') || card.classList.contains('card__hover--3d-100deg-right-with-shadow-left-top')){
-            this.handleDirection(-65,-15,65,15)
-        }
-        else if(card.classList.contains('card__hover--3d-100deg-left-with-shadow-left-bottom') || card.classList.contains('card__hover--3d-100deg-right-with-shadow-left-bottom')){
-            this.handleDirection(-65,15,65,15)
-        }
-        else if(card.classList.contains('card__hover--3d-100deg-left-with-shadow-right-bottom') || card.classList.contains('card__hover--3d-100deg-right-with-shadow-right-bottom')){
-            this.handleDirection(65,15,65,15)
-        }
-        else if(card.classList.contains('card__hover--3d-100deg-left-with-shadow-right-top') || card.classList.contains('card__hover--3d-100deg-right-with-shadow-right-top')){
-            this.handleDirection(65,-15,65,15) 
-        }
-        else if(card.classList.contains('card__hover--3d-65deg-left-with-shadow-left-top') || card.classList.contains('card__hover--3d-65deg-right-with-shadow-left-top')){
+        else if(card.classList.contains('card__hover--3d-65deg-left-with-shadow-left-top')){
             this.handleDirection(-25,-10,25,10)
         }
-        else if(card.classList.contains('card__hover--3d-65deg-left-with-shadow-left-bottom') || card.classList.contains('card__hover--3d-65deg-right-with-shadow-left-bottom')){
-            this.handleDirection(-25,10,25,10)
+        else if(card.classList.contains('card__hover--3d-65deg-left-with-shadow-left-bottom')){
+            this.handleDirection(-25,10,25,-10)
         }
-        else if(card.classList.contains('card__hover--3d-65deg-left-with-shadow-right-bottom') || card.classList.contains('card__hover--3d-65deg-right-with-shadow-right-bottom')){
-            this.handleDirection(25,10,25,10)
+        else if(card.classList.contains('card__hover--3d-65deg-left-with-shadow-right-bottom')){
+            this.handleDirection(25,10,-25,-10)
         }
-        else if(card.classList.contains('card__hover--3d-65deg-left-with-shadow-right-top') || card.classList.contains('card__hover--3d-65deg-right-with-shadow-right-top')){
-            this.handleDirection(25,-10,25,10) 
+        else if(card.classList.contains('card__hover--3d-65deg-left-with-shadow-right-top')){
+            this.handleDirection(25,-10,-25,10) 
         }
     }
     setupWithShadow(event_in,event_out){
@@ -2037,121 +1974,79 @@ class Card{
           
         }
     }
-    setupWithPaint(event_in,event_out){
-        if(event_in !== 'click'){
-            this.card[`on${event_in}`] = ''
-            this.card[`on${event_in}`] = (e)=>{
-                this.handleAnimation()
-                e.stopPropagation()
-                e.stopImmediatePropagation()
-                this.handleCardShadow()
-                this.isBack = false
-            }
-            this.card[`on${event_out}`] = ''
-            this.card[`on${event_out}`] = (e)=>{
-                this.isBack = true
-                this.handleRotateBackClear()
-            }
-        }else{
-            this.card[`on${event_in}`] = ''
-            this.card[`on${event_in}`] = (e)=>{
-                    if(!this.isClicked){
-                        this.isClicked = true
-                        this.handleMainAnimation()
-                        e.stopPropagation()
-                        e.stopImmediatePropagation()
-                        this.isBack = false
-                        this.handleCardShadow()
-                    }
-                }
-                this.card[`on${event_out}`] = ''
-                this.card[`on${event_out}`] = (e)=>{
-                    if(this.isClicked){
-                        this.isBack = true
-                        this.isClicked = false
-                        this.handleRotateBackClear()
-                    }
-                }
-        }
-    }
     handleSetup(event_in,event_out){
-        const isShadow  = [...this.card.classList].filter(c => /with-shadow-paint/gi.test(c))
-        if(isShadow?.length === 0){
-            this.setupWithShadow(event_in,event_out)
-        }else{
-            this.setupWithPaint(event_in,event_out)
-        }
+        this.setupWithShadow(event_in,event_out)
     }
 }
-class CanvasCard {
-    constructor(card,c_instance){
-        this.place = card.parentElement
-        this.canvas = document.createElement('canvas')
-        this.canvas_2 = document.createElement('canvas')
-        this.ctx = this.canvas.getContext('2d')
-        this.ctx_2 = this.canvas_2.getContext('2d')
-        this.x = 0
-        this.y = 0
-        this.step = 0
-        this.instance = c_instance
-        this.cardPixels = []
-        this.textPixels = []
-        this.index = 0
-        this.w = this.canvas.width
-        this.h = this.canvas.height
-        this.cards = document.querySelectorAll('.card')
-    }
-    setCanvas(){      
-        this.canvas.style.position = 'absolute'
-        this.canvas.style.top = this.instance.getY() + 400 + 'px'
-        this.canvas.style.left = this.instance.getX() - 90 + 'px'
-        this.canvas.setAttribute('width',this.instance.getWidth() + 200) 
-        this.canvas.setAttribute('height',this.instance.getHeight() + 200) 
-        this.canvas_2.style.position = 'absolute'
-        this.canvas_2.style.top = this.instance.getY() + 400 + 'px'
-        this.canvas_2.style.left = this.instance.getX() - 90 + 'px'
-        this.canvas_2.setAttribute('width',this.instance.getWidth() + 200) 
-        this.canvas_2.setAttribute('height',this.instance.getHeight() + 200) 
-        this.place.appendChild(this.canvas)
-    }
+// class CanvasCard {
+//     constructor(card,c_instance){
+//         this.place = card.parentElement
+//         this.canvas = document.createElement('canvas')
+//         this.canvas_2 = document.createElement('canvas')
+//         this.ctx = this.canvas.getContext('2d')
+//         this.ctx_2 = this.canvas_2.getContext('2d')
+//         this.x = 0
+//         this.y = 0
+//         this.step = 0
+//         this.instance = c_instance
+//         this.cardPixels = []
+//         this.textPixels = []
+//         this.index = 0
+//         this.w = this.canvas.width
+//         this.h = this.canvas.height
+//         this.cards = document.querySelectorAll('.card')
+//     }
+//     setCanvas(){      
+//         this.canvas.style.position = 'absolute'
+//         this.canvas.style.top = this.instance.getY() + 400 + 'px'
+//         this.canvas.style.left = this.instance.getX() - 90 + 'px'
+//         this.canvas.setAttribute('width',this.instance.getWidth() + 200) 
+//         this.canvas.setAttribute('height',this.instance.getHeight() + 200) 
+//         this.canvas_2.style.position = 'absolute'
+//         this.canvas_2.style.top = this.instance.getY() + 400 + 'px'
+//         this.canvas_2.style.left = this.instance.getX() - 90 + 'px'
+//         this.canvas_2.setAttribute('width',this.instance.getWidth() + 200) 
+//         this.canvas_2.setAttribute('height',this.instance.getHeight() + 200) 
+//         this.place.appendChild(this.canvas)
+//     }
     
-    getCardPixels(){
-        let card = []
-        const imageData = this.ctx.getImageData(0,0,this.canvas.width,this.canvas.height)
-        const data = imageData.data       
-        for(let i = 0; i < data.length; i+=4){
-            var x = (i / 4) % this.canvas.width;
-            var y = Math.floor((i / 4) / this.canvas.width);
+//     getCardPixels(){
+//         let card = []
+//         const imageData = this.ctx.getImageData(0,0,this.canvas.width,this.canvas.height)
+//         const data = imageData.data       
+//         for(let i = 0; i < data.length; i+=4){
+//             var x = (i / 4) % this.canvas.width;
+//             var y = Math.floor((i / 4) / this.canvas.width);
 
-            const r = data[i]
-            const g = data[i+1]
-            const b = data[i+2]
-            const a = data[i+3]
-            if(a !== 0){
-                card.push({x,y,r,g,b,a,c:`rgba(${r},${g},${b},${a})`,green:g,blue:b,alpha:a,red:r})
-            }
-        }
-        this.cardPixels = card
-    }
-    getTextPixels(){
-        let text = []
-        const imageData = this.ctx_2.getImageData(0,0,this.canvas.width,this.canvas.height)
-        const data = imageData.data       
-        for(let i = 0; i < data.length; i+=4){
-            var x = (i / 4) % this.canvas.width;
-            var y = Math.floor((i / 4) / this.canvas.width);
+//             const r = data[i]
+//             const g = data[i+1]
+//             const b = data[i+2]
+//             const a = data[i+3]
+//             if(a !== 0){
+//                 card.push({x,y,r,g,b,a,c:`rgba(${r},${g},${b},${a})`,green:g,blue:b,alpha:a,red:r})
+//             }
+//         }
+//         this.cardPixels = card
+//     }
+//     getTextPixels(){
+//         let text = []
+//         const imageData = this.ctx_2.getImageData(0,0,this.canvas.width,this.canvas.height)
+//         const data = imageData.data       
+//         for(let i = 0; i < data.length; i+=4){
+//             var x = (i / 4) % this.canvas.width;
+//             var y = Math.floor((i / 4) / this.canvas.width);
 
-            const r = data[i]
-            const g = data[i+1]
-            const b = data[i+2]
-            const a = data[i+3]
-            if(a !== 0){
-                text.push({x,y,r,g,b,a,c:`rgba(${r},${g},${b},${a})`,green:g,blue:b,alpha:a,red:r})
-            }
-        }
-        this.textPixels = text
-    }
-}
+//             const r = data[i]
+//             const g = data[i+1]
+//             const b = data[i+2]
+//             const a = data[i+3]
+//             if(a !== 0){
+//                 text.push({x,y,r,g,b,a,c:`rgba(${r},${g},${b},${a})`,green:g,blue:b,alpha:a,red:r})
+//             }
+//         }
+//         this.textPixels = text
+//     }
+// }
 class CardUtils{
     constructor(){
         this.canva = undefined
@@ -4102,6 +3997,7 @@ class CarouselEffect{
             const prev = el.querySelector('.carousel-effect__prev')
             const next = el.querySelector('.carousel-effect__next')
             const max = el.querySelectorAll('.carousel-effect__item').length
+          
             prev.onclick = ''
             prev.onclick = () => {
                 if(!this.isClicked){
@@ -4726,7 +4622,7 @@ class Tooltip{
     }
     handleSetup(){
         this.elements.forEach(el =>{
-            const child = document.querySelector('[class^="tooltip__content"]')
+            const child = el.querySelector('[class^="tooltip__content"]')
             // const header = document.querySelector('[class^="tooltip__header"]')
             if(child.classList.contains('tooltip__content-left')){
                 child.style.top = el.offsetTop + el.clientHeight / 2 + 'px'
@@ -5796,10 +5692,7 @@ class Framework{
         const ThreeD100degLeftCardsWithShadow = [...document.querySelectorAll('.card__hover--3d-100deg-left-with-shadow')]
         const ThreeD65degLeftCardsWithShadow = [...document.querySelectorAll('.card__hover--3d-65deg-left-with-shadow')]
        
-        const ThreeD100degRightCardsWithShadowPaint = [...document.querySelectorAll('.card__hover--3d-100deg-right-with-shadow-paint')]
-        const ThreeD65degRightCardsWithShadowPaint = [...document.querySelectorAll('.card__hover--3d-65deg-right-with-shadow-paint')]
-        const ThreeD100degLeftCardsWithShadowPaint = [...document.querySelectorAll('.card__hover--3d-100deg-left-with-shadow-paint')]
-        const ThreeD65degLeftCardsWithShadowPaint = [...document.querySelectorAll('.card__hover--3d-65deg-left-with-shadow-paint')]
+       
         // need to move to controller
         if(ThreeD100degRightCardsWithShadow){
             ThreeD100degRightCardsWithShadow.forEach(card => {
@@ -5809,47 +5702,52 @@ class Framework{
         }
         if(ThreeD65degRightCardsWithShadow){
             ThreeD65degRightCardsWithShadow.forEach(card => {
-                const instance = new Card('.card__hover--3d-100deg-right-with-shadow',card,false,false,false,25,10,25,10,65,65)
+                const instance = new Card('.card__hover--3d-65deg-right-with-shadow',card,false,false,false,25,10,25,10,65,65)
                 instance.handleSetup('mouseover','mouseleave')
             })
         }
         if(ThreeD100degLeftCardsWithShadow){
             ThreeD100degLeftCardsWithShadow.forEach(card => {
-                const instance = new Card('.card__hover--3d-100deg-right-with-shadow',card,false,false,false,65,15,65,15,100,100)
+                const instance = new Card('.card__hover--3d-100deg-left-with-shadow',card,false,true,false,65,15,65,15,100,100)
                 instance.handleSetup('mouseover','mouseleave')
             })
         }
         if(ThreeD65degLeftCardsWithShadow){
             ThreeD65degLeftCardsWithShadow.forEach(card => {
-                const instance = new Card('.card__hover--3d-100deg-right-with-shadow',card,false,false,false,25,10,25,10,65,65)
+                const instance = new Card('.card__hover--3d-65deg-left-with-shadow',card,false,true,false,25,10,25,10,65,65)
                 instance.handleSetup('mouseover','mouseleave')
             })
         }
-        if(ThreeD100degRightCardsWithShadowPaint){
-            ThreeD100degRightCardsWithShadowPaint.forEach(card => {
-                const instance = new Card('.card__hover--3d-100deg-right-with-shadow',card,true,false,false,65,15,65,15,100,100)
+        const ThreeD65degLeftCardsWithShadowLeftTop = [...document.querySelectorAll('.card__hover--3d-65deg-left-with-shadow-left-top')]
+        const ThreeD65degLeftCardsWithShadowLeftBottom = [...document.querySelectorAll('.card__hover--3d-65deg-left-with-shadow-left-bottom')]
+        const ThreeD65degLeftCardsWithShadowRightTop = [...document.querySelectorAll('.card__hover--3d-65deg-left-with-shadow-right-top')]
+        const ThreeD65degLeftCardsWithShadowRightBottom = [...document.querySelectorAll('.card__hover--3d-65deg-left-with-shadow-right-bottom')]
+      
+
+        if(ThreeD65degLeftCardsWithShadowLeftTop){
+            ThreeD65degLeftCardsWithShadowLeftTop.forEach(card => {
+                const instance = new Card('.card__hover--3d-65deg-left-with-shadow-left-top',card,false,true,false,25,10,25,10,65,65)
                 instance.handleSetup('mouseover','mouseleave')
             })
         }
-        if(ThreeD65degRightCardsWithShadowPaint){
-            ThreeD65degRightCardsWithShadowPaint.forEach(card => {
-                const instance = new Card('.card__hover--3d-100deg-right-with-shadow',card,true,false,false,25,10,25,10,65,65)
+        if(ThreeD65degLeftCardsWithShadowLeftBottom){
+            ThreeD65degLeftCardsWithShadowLeftBottom.forEach(card => {
+                const instance = new Card('.card__hover--3d-65deg-left-with-shadow-left-bottom',card,false,true,false,25,10,25,10,65,65)
                 instance.handleSetup('mouseover','mouseleave')
             })
         }
-        if(ThreeD100degLeftCardsWithShadowPaint){
-            ThreeD100degLeftCardsWithShadowPaint.forEach(card => {
-                const instance = new Card('.card__hover--3d-100deg-right-with-shadow',card,true,true,false,65,15,65,15,100,100)
+        if(ThreeD65degLeftCardsWithShadowRightTop){
+            ThreeD65degLeftCardsWithShadowRightTop.forEach(card => {
+                const instance = new Card('.card__hover--3d-65deg-left-with-shadow-right-top',card,false,true,false,25,10,25,10,65,65)
                 instance.handleSetup('mouseover','mouseleave')
             })
         }
-        if(ThreeD65degLeftCardsWithShadowPaint){
-            ThreeD65degLeftCardsWithShadowPaint.forEach(card => {
-                const instance = new Card('.card__hover--3d-100deg-right-with-shadow',card,true,true,false,25,10,25,10,65,65)
+        if(ThreeD65degLeftCardsWithShadowRightBottom){
+            ThreeD65degLeftCardsWithShadowRightBottom.forEach(card => {
+                const instance = new Card('.card__hover--3d-65deg-left-with-shadow-right-bottom',card,false,true,false,25,10,25,10,65,65)
                 instance.handleSetup('mouseover','mouseleave')
             })
         }
-    
     }
     handleSetupFunctions(){
         this.utils.handleTransforms()
