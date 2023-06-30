@@ -890,11 +890,11 @@ class Effects {
     handleShadowAnimations(){
         framework.globalSetup.classes.forEach(c => {
             const elsActive = document.querySelectorAll(`.shadow__${c}--click`)
+            const elsActiveLight = document.querySelectorAll(`.shadow__${c}-light--click`)
             const elsActiveOff = document.querySelectorAll(`.shadow__${c}--click-off`)
             const elsActiveLightOff = document.querySelectorAll(`.shadow__${c}-light--click-off`)
-            const elsActiveLightInsideOff = document.querySelectorAll(`.shadow__${c}-light-inside--click-off`)
             const elsActiveOffInside = document.querySelectorAll(`.shadow__${c}-inside-click-off`)
-            const elsActiveLight = document.querySelectorAll(`.shadow__${c}-light--click`)
+            const elsActiveLightInsideOff = document.querySelectorAll(`.shadow__${c}-light-inside--click-off`)
             const elsActiveInside = document.querySelectorAll(`.shadow__${c}-inside--click`)
             const elsActiveLightInside = document.querySelectorAll(`.shadow__${c}-inside-light--click`)
             const animation = (e,transition) =>{
@@ -912,36 +912,28 @@ class Effects {
             }
     
             elsActive.forEach(el => {
-                el.onclick = ''    
-                el.onclick = () => animation(e,`shadowClick${c} ${framework.globalSetup.cssShadowAnimationTime}s ease`)
+                el.addEventListener('click',(e) => animation(e,`shadowClick${c} ${framework.globalSetup.cssShadowAnimationTime}s ease`))
             })
             elsActiveInside.forEach(el => {
-                el.onclick = ''
-                el.onclick = () => animation(e,`shadowClickInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
+                el.addEventListener('click',(e) => animation(e,`shadowClick${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`))
             })
             elsActiveLight.forEach(el => {
-                el.onclick = ''
-                el.onclick = () => animation(e,`shadowClickLight${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
+                el.addEventListener('click',(e) => animation(e,`shadowClickLight${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`))
             })
             elsActiveLightInside.forEach(el => {
-                el.onclick = ''
-                el.onclick = () => animation(e,`shadowClickLightInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
+                el.addEventListener('click',(e) => animation(e,`shadowClickLightInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`))
             })
             elsActiveOff.forEach(el => {
-                el.onclick = ''
-                el.onclick = () =>animation(e,`shadowClickOff${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
+                el.addEventListener('click',(e) =>animation(e,`shadowClickOff${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`))
             })
             elsActiveOffInside.forEach(el => {
-                el.onclick = ''
-                el.onclick = () =>animation(e,`shadowClickOffInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
+                el.addEventListener('click',(e) =>animation(e,`shadowClickOffInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`))
             })
             elsActiveLightOff.forEach(el => {
-                el.onclick = ''
-                el.onclick = () =>animation(e,`shadowClickOffLight${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
+                el.addEventListener('click',(e) =>animation(e,`shadowClickOffLight${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`))
             })
             elsActiveLightInsideOff.forEach(el => {
-                el.onclick = ''
-                el.onclick = () =>animation(e,`shadowClickOffLightInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`)
+                el.addEventListener('click',(e) =>animation(e,`shadowClickOffLightInside${c} ${framework.globalSetup.cssShadowAnimationTime}s  ease`))
             })
         })
     }
